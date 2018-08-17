@@ -33,6 +33,7 @@ public class PostAdapter extends RealmRecyclerViewAdapter<Post,PostAdapter.Custo
 
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
+
         final Post current = realmResults.get(position); //This is nice
         holder.txtTitle.setText(current.getTitle());
         holder.txtPreview.setText(current.getPreview());
@@ -40,6 +41,7 @@ public class PostAdapter extends RealmRecyclerViewAdapter<Post,PostAdapter.Custo
         try {
             com.mahta.rastin.broadcastapplication.helper.DateConverter converter = new com.mahta.rastin.broadcastapplication.helper.DateConverter();
             String[] date = current.getDate().split(" ")[0].split("-");
+
             holder.txtDate.setText(converter.GregorianToPersian(
                     Integer.parseInt(date[0]),
                     Integer.parseInt(date[1]),
@@ -58,6 +60,7 @@ public class PostAdapter extends RealmRecyclerViewAdapter<Post,PostAdapter.Custo
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
         TextView txtTitle;
         TextView txtPreview;
         TextView txtDate;
@@ -66,6 +69,7 @@ public class PostAdapter extends RealmRecyclerViewAdapter<Post,PostAdapter.Custo
 
         private CustomViewHolder(View itemView) {
             super(itemView);
+            
             txtTitle = itemView.findViewById(R.id.txtTitle);
             txtPreview = itemView.findViewById(R.id.txtPreview);
             txtDate = itemView.findViewById(R.id.txtDate);
