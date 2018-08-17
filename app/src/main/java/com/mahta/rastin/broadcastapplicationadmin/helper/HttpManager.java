@@ -1,7 +1,7 @@
 package com.mahta.rastin.broadcastapplicationadmin.helper;
 
 import android.content.ContentValues;
-import com.mahta.rastin.broadcastapplication.interfaces.OnResultListener;
+import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 
 import java.io.IOException;
@@ -30,7 +30,9 @@ public class HttpManager{
     }
 
     public void post(String url, ContentValues params){
+
         FormBody.Builder builder = new FormBody.Builder();
+
         if (params!=null && params.size() > 0)
             for (String key:params.keySet()) {
                 builder.add(key,params.getAsString(key));
@@ -47,8 +49,10 @@ public class HttpManager{
     }
 
     public void get(String url,String[] args){
+
         StringBuilder builder = new StringBuilder();
         builder.append(url);
+
         if (args != null && args.length>0)
             for (String arg:args) {
                 builder.append("/");
@@ -71,15 +75,19 @@ public class HttpManager{
     }
 
     private void doRequest(final Request request){
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 Response response;
+
                 try {
                     response = client.newCall(request).execute();
                     if (!response.isSuccessful()) {
+
                         G.e(response.body().string());
                     }else {
+
                         httpResult = response.body().string();
                         if(onResultListener!=null){
                             G.HANDLER.post(new Runnable() {

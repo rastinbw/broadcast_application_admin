@@ -12,6 +12,7 @@ public abstract class RealmRecyclerViewAdapter<T extends RealmObject, VH extends
     protected Context context;
 
     public RealmRecyclerViewAdapter(Context context, RealmResults<T> realmResults) {
+
         if (context == null) {
             throw new IllegalArgumentException("Context cannot be null");
         }

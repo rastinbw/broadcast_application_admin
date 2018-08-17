@@ -26,14 +26,18 @@ public class TextViewPlus extends android.support.v7.widget.AppCompatTextView {
     }
 
     private void setCustomFont(Context ctx, AttributeSet attrs) {
+
         TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.TextViewPlus);
         String customFont = a.getString(R.styleable.TextViewPlus_fontTextView);
+
         setCustomFont(ctx, customFont);
         a.recycle();
     }
 
     public boolean setCustomFont(Context ctx, String asset) {
+
         Typeface tf;
+
         try {
             tf = Typeface.createFromAsset(ctx.getAssets(), "fonts/"+asset);
         } catch (Exception e) {

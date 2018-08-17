@@ -1,4 +1,4 @@
-package com.mahta.rastin.broadcastapplication.interfaces;
+package com.mahta.rastin.broadcastapplicationadmin.interfaces;
 
 
 import android.os.Bundle;

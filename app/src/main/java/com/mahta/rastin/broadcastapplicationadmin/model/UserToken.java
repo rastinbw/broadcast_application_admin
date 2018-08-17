@@ -1,4 +1,4 @@
-package com.mahta.rastin.broadcastapplication.model;
+package com.mahta.rastin.broadcastapplicationadmin.model;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

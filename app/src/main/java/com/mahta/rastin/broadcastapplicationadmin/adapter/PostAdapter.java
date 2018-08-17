@@ -18,7 +18,7 @@ import io.realm.RealmResults;
 public class PostAdapter extends RealmRecyclerViewAdapter<Post,PostAdapter.CustomViewHolder>{
 
     private LayoutInflater inflater;
-    private com.mahta.rastin.broadcastapplication.interfaces.OnItemClickListener onItemClickListener;
+    private com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener onItemClickListener;
 
     public PostAdapter(Context context, RealmResults<Post> realmResults) {
         super(context, realmResults);
@@ -69,7 +69,7 @@ public class PostAdapter extends RealmRecyclerViewAdapter<Post,PostAdapter.Custo
 
         private CustomViewHolder(View itemView) {
             super(itemView);
-            
+
             txtTitle = itemView.findViewById(R.id.txtTitle);
             txtPreview = itemView.findViewById(R.id.txtPreview);
             txtDate = itemView.findViewById(R.id.txtDate);
@@ -87,7 +87,7 @@ public class PostAdapter extends RealmRecyclerViewAdapter<Post,PostAdapter.Custo
 
     }
 
-    public void setOnItemClickListener(com.mahta.rastin.broadcastapplication.interfaces.OnItemClickListener onItemClickListener){
+    public void setOnItemClickListener(com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener onItemClickListener){
         this.onItemClickListener = onItemClickListener;
     }
 }

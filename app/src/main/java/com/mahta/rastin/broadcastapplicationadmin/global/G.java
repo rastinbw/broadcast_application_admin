@@ -14,10 +14,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 import io.realm.Realm;
-import com.mahta.rastin.broadcastapplication.model.UserToken;
+import com.mahta.rastin.broadcastapplicationadmin.model.UserToken;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 
 public class G extends Application {
+
     public static int providerId = 1; //This id is unique for each provider
     public static AppCompatActivity currentActivity;
     public static final String TAG = "mahta";
@@ -41,6 +42,7 @@ public class G extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
         Realm.init(getApplicationContext());
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -50,6 +52,7 @@ public class G extends Application {
     }
 
     private void registerNetworkBroadcastForNougat() {
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             registerReceiver(networkWatcher, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
@@ -60,6 +63,7 @@ public class G extends Application {
 
 
     public static boolean isNetworkAvailable(Context context) {
+
         final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
 
         return  connectivityManager != null &&
@@ -101,7 +105,9 @@ public class G extends Application {
     }
 
     public static Bitmap getBitmapFromResources(Resources resources, int resImage) {
+
         BitmapFactory.Options options = new BitmapFactory.Options();
+
         options.inJustDecodeBounds = false;
         options.inDither = false;
         options.inSampleSize = 1;
@@ -113,6 +119,7 @@ public class G extends Application {
 
     // TODO: 6/6/18 Remove this method
     private void booz_login(){
+
         UserToken userToken = new UserToken();
         userToken.setToken("38ccca707cd15ce18bbb3f34197cf777");
         RealmController.getInstance().addUserToken(userToken);

@@ -1,4 +1,4 @@
-package com.mahta.rastin.broadcastapplication.interfaces;
+package com.mahta.rastin.broadcastapplicationadmin.interfaces;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,6 +7,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 
 
 public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollListener {
+
     // The minimum amount of items to have below your current scroll position
     // before loading more.
     private int visibleThreshold = 5;
@@ -36,8 +37,10 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
     }
 
     public int getLastVisibleItem(int[] lastVisibleItemPositions) {
+
         int maxSize = 0;
         for (int i = 0; i < lastVisibleItemPositions.length; i++) {
+
             if (i == 0) {
                 maxSize = lastVisibleItemPositions[i];
             }
@@ -98,6 +101,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
 
     // Call this method whenever performing new searches
     public void resetState() {
+
         this.currentPage = this.startingPageIndex;
         this.previousTotalItemCount = 0;
         this.loading = true;

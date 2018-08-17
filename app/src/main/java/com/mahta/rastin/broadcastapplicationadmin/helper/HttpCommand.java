@@ -1,11 +1,12 @@
 package com.mahta.rastin.broadcastapplicationadmin.helper;
 
 import android.content.ContentValues;
-import com.mahta.rastin.broadcastapplication.interfaces.OnResultListener;
+import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 
 
 public class HttpCommand {
+
     private OnResultListener onResultListener;
     private String currentCommand;
     private ContentValues currentParams;
@@ -28,6 +29,7 @@ public class HttpCommand {
 
 
     public HttpCommand(String command,ContentValues params,String ... args){
+
         this.currentCommand = command;
         this.currentParams = params;
         this.currentArgs = args;
@@ -35,8 +37,11 @@ public class HttpCommand {
     }
 
     public void execute(){
+
         if (httpManager!=null && onResultListener!=null){
+
             switch (currentCommand) {
+
                 case COMMAND_LOGIN:
                     setCommandLogin();
                     break;
@@ -82,7 +87,9 @@ public class HttpCommand {
 
 
     public HttpCommand setOnResultListener(OnResultListener listener){
+
         onResultListener = listener;
+
         httpManager.setOnResultListener(new OnResultListener() {
             @Override
             public void onResult(String result) {

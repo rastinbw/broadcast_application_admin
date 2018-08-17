@@ -25,14 +25,18 @@ public class EditTextPlus extends android.support.v7.widget.AppCompatEditText {
     }
 
     private void setCustomFont(Context ctx, AttributeSet attrs) {
+
         TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.EditTextPlus);
         String customFont = a.getString(R.styleable.EditTextPlus_fontEditText);
+
         setCustomFont(ctx, customFont);
         a.recycle();
     }
 
     public boolean setCustomFont(Context ctx, String asset) {
+
         Typeface tf;
+
         try {
             tf = Typeface.createFromAsset(ctx.getAssets(), "fonts/"+asset);
         } catch (Exception e) {

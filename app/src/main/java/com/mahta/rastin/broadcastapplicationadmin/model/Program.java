@@ -7,6 +7,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class Program extends RealmObject implements Parcelable{
+
     @PrimaryKey
     private int id;
 
@@ -54,6 +55,7 @@ public class Program extends RealmObject implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+
         dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(content);

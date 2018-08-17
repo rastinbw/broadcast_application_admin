@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JSONParser {
+
     public static int getResultCodeFromJson(String content){
         int resultCode;
+
         try {
             JSONObject obj = new JSONObject(content);
             resultCode = obj.getInt(Keys.KEY_RESULT_CODE);
@@ -28,7 +30,9 @@ public class JSONParser {
 
 
     public static String parseToken(String content){
+
         String token = "";
+
         try {
             JSONObject obj = new JSONObject(content);
             token = obj.getString(Keys.KEY_DATA);
@@ -40,13 +44,16 @@ public class JSONParser {
 
 
     public static List<Post> parsePosts(String content){
+
         try {
             JSONObject obj = new JSONObject(content);
             JSONArray data = obj.getJSONArray(Keys.KEY_DATA);
+
             if (data.length() > 0){
                 List<Post> postList = new ArrayList<>();
 
                 for (int i = 0; i < data.length(); i++) {
+
                     if (!data.isNull(i)){
                         JSONObject jpost = data.getJSONObject(i);
                         Post post = new Post();
@@ -72,14 +79,17 @@ public class JSONParser {
 
 
     public static List<Program> parsePrograms(String content){
+
         try {
             JSONObject obj = new JSONObject(content);
             JSONArray data = obj.getJSONArray(Keys.KEY_DATA);
+
             if (data.length() > 0){
                 List<Program> programList = new ArrayList<>();
 
                 for (int i = 0; i < data.length(); i++) {
                     if (!data.isNull(i)){
+
                         JSONObject jprogram = data.getJSONObject(i);
                         Program program = new Program();
 
@@ -105,9 +115,11 @@ public class JSONParser {
 
 
     public static List<Media> parseMedia(String content){
+
         try {
             JSONObject obj = new JSONObject(content);
             JSONArray data = obj.getJSONArray(Keys.KEY_DATA);
+
             if (data.length() > 0){
                 List<Media> mediaList = new ArrayList<>();
 
@@ -137,6 +149,7 @@ public class JSONParser {
 
 
     public static Post parsePost(String content){
+
         try {
             JSONObject obj = new JSONObject(content);
             JSONObject pobj = obj.getJSONArray(Keys.KEY_DATA).getJSONObject(0);

@@ -23,13 +23,16 @@ public class ButtonPlus extends android.support.v7.widget.AppCompatButton {
     }
 
     private void setCustomFont(Context ctx, AttributeSet attrs) {
+
         TypedArray a = ctx.obtainStyledAttributes(attrs, R.styleable.ButtonPlus);
         String customFont = a.getString(R.styleable.ButtonPlus_fontButton);
+
         setCustomFont(ctx, customFont);
         a.recycle();
     }
 
     public boolean setCustomFont(Context ctx, String asset) {
+
         Typeface tf;
         try {
             tf = Typeface.createFromAsset(ctx.getAssets(), "fonts/"+asset);

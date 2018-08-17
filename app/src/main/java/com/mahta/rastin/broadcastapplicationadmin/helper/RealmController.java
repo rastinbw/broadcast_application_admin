@@ -1,6 +1,6 @@
 package com.mahta.rastin.broadcastapplicationadmin.helper;
 
-import com.mahta.rastin.broadcastapplication.model.UserToken;
+import com.mahta.rastin.broadcastapplicationadmin.model.UserToken;
 import com.mahta.rastin.broadcastapplicationadmin.model.Media;
 import com.mahta.rastin.broadcastapplicationadmin.model.Post;
 import com.mahta.rastin.broadcastapplicationadmin.model.Program;
@@ -56,14 +56,17 @@ public class RealmController {
 
         userToken.setId((int) (Math.random()*100));
         realm.beginTransaction();
+
         realm.copyToRealm(userToken);
         realm.commitTransaction();
     }
 
     //remove UserToken from realm
     public void removeUserToken() {
+
         realm.beginTransaction();
         RealmResults<UserToken> result = realm.where(UserToken.class).findAll();
+
         result.deleteAllFromRealm();
         realm.commitTransaction();
     }
@@ -83,14 +86,17 @@ public class RealmController {
 
     //clear all objects from Post.class
     public void clearAllPosts() {
+
         realm.beginTransaction();
         RealmResults<Post> result = realm.where(Post.class).findAll();
+
         result.deleteAllFromRealm();
         realm.commitTransaction();
     }
 
     //add a Post to Realm
     public void addPost(Post post){
+
         realm.beginTransaction();
         realm.copyToRealm(post);
         realm.commitTransaction();
@@ -111,6 +117,7 @@ public class RealmController {
 
     //clear all objects from Post.class
     public void clearAllMedia() {
+
         realm.beginTransaction();
         RealmResults<Media> result = realm.where(Media.class).findAll();
         result.deleteAllFromRealm();
@@ -119,6 +126,7 @@ public class RealmController {
 
     //add a Media to Realm
     public void addMedia(Media media){
+
         realm.beginTransaction();
         realm.copyToRealm(media);
         realm.commitTransaction();
@@ -139,14 +147,17 @@ public class RealmController {
 
     //clear all objects from Post.class
     public void clearAllPrograms() {
+
         realm.beginTransaction();
         RealmResults<Program> result = realm.where(Program.class).findAll();
+
         result.deleteAllFromRealm();
         realm.commitTransaction();
     }
 
     //add a Post to Realm
     public void addProgram(Program program){
+
         realm.beginTransaction();
         realm.copyToRealm(program);
         realm.commitTransaction();

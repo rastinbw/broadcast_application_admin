@@ -18,8 +18,9 @@ import com.mahta.rastin.broadcastapplicationadmin.model.Media;
 import io.realm.RealmResults;
 
 public class MediaAdapter extends RealmRecyclerViewAdapter<Media,MediaAdapter.CustomViewHolder>{
+
     private LayoutInflater inflater;
-    private com.mahta.rastin.broadcastapplication.interfaces.OnItemClickListener onItemClickListener;
+    private com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener onItemClickListener;
 
     public MediaAdapter(Context context, RealmResults<Media> realmResults) {
         super(context, realmResults);
@@ -34,12 +35,14 @@ public class MediaAdapter extends RealmRecyclerViewAdapter<Media,MediaAdapter.Cu
 
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
+
         final Media current = realmResults.get(position); //This is nice
         holder.txtTitle.setText(current.getTitle());
 
         try {
             com.mahta.rastin.broadcastapplication.helper.DateConverter converter = new com.mahta.rastin.broadcastapplication.helper.DateConverter();
             String[] date = current.getDate().split(" ")[0].split("-");
+
             holder.txtDate.setText(converter.GregorianToPersian(
                     Integer.parseInt(date[0]),
                     Integer.parseInt(date[1]),
@@ -58,6 +61,7 @@ public class MediaAdapter extends RealmRecyclerViewAdapter<Media,MediaAdapter.Cu
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
         TextView txtTitle;
         TextView txtDate;
         LinearLayout lnlListItem;
@@ -65,6 +69,7 @@ public class MediaAdapter extends RealmRecyclerViewAdapter<Media,MediaAdapter.Cu
 
         private CustomViewHolder(View itemView) {
             super(itemView);
+
             txtTitle = itemView.findViewById(R.id.txtTitle);
             txtDate = itemView.findViewById(R.id.txtDate);
             lnlListItem = itemView.findViewById(R.id.lnlListItem);
@@ -80,7 +85,7 @@ public class MediaAdapter extends RealmRecyclerViewAdapter<Media,MediaAdapter.Cu
 
     }
 
-    public void setOnItemClickListener(com.mahta.rastin.broadcastapplication.interfaces.OnItemClickListener onItemClickListener){
+    public void setOnItemClickListener(com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener onItemClickListener){
         this.onItemClickListener = onItemClickListener;
     }
 }
