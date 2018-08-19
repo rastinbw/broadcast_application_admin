@@ -1,12 +1,16 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.other;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -20,10 +24,12 @@ import com.mahta.rastin.broadcastapplicationadmin.adapter.PostAdapter;
 import com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus;
 import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
+import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.EndlessRecyclerViewScrollListener;
+import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Post;
 
@@ -45,7 +51,7 @@ public class PostActivity extends AppCompatActivity implements SwipeRefreshLayou
     private LinearLayout lnlNoNetwork;
     private ButtonPlus btnTryAgain;
     private boolean isFirstLoad = true;
-    private boolean doesFragmentExists = true;
+    private boolean doesActivityExists = true;
     private boolean isLoading;
 
     @Override
@@ -53,10 +59,103 @@ public class PostActivity extends AppCompatActivity implements SwipeRefreshLayou
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
+        final RecyclerView rcvPosts = findViewById(R.id.rcvPosts);
+
+        btnShowFavoritePost = findViewById(R.id.btnShowFavoritePost);
+
+        findViewById(R.id.btnShowFavoritePost).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
+                R.color.colorPrimaryDark,
+                R.color.colorAccent
+        );
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+
+        btnTryAgain = findViewById(R.id.btnTryAgain);
+        btnTryAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                G.i("pressed");
+                loadPosts(Constant.POST_REQUEST_COUNT,0,0, searchPhrase);
+            }
+        });
+
+        txtNoPosts = findViewById(R.id.txtNoPost);
+        lnlLoading = findViewById(R.id.lnlLoading);
+        lnlNoNetwork = findViewById(R.id.lnlNoNetwork);
+
+        adapter = new PostAdapter(this, RealmController.getInstance().getAllPosts());
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClicked(View view, int position) {
+
+                if (G.isNetworkAvailable(PostActivity.this)){
+
+                    Intent intent = new Intent(PostActivity.this, PostDisplayActivity.class);
+                    intent.putExtra(Keys.KEY_EXTRA_FLAG,RealmController.getInstance().getAllPosts().get(position));
+                    startActivity(intent);
+
+                }else {
+                    G.toastLong(G.getStringFromResource(R.string.no_internet, getActivity()), getActivity());
+                }
+
+            }
+        });
+        rcvPosts.setAdapter(adapter);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        rcvPosts.setLayoutManager(linearLayoutManager);
+
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                G.i("YOOOHO");
+
+                G.i("passed threshold p: " + page + " activity: " + totalItemsCount);
+                if (!noMorePost){
+                    loadPosts(Constant.POST_REQUEST_COUNT,totalItemsCount,page, searchPhrase);
+                }else
+                    noMorePost = false;
+
+            }
+
+            @Override
+            public void onScroll(RecyclerView view, int dx, int dy) {
+                if (dy > 0 && btnShowFavoritePost.getVisibility() == View.VISIBLE) {
+                    btnShowFavoritePost.hide();
+                } else if (dy < 0 && btnShowFavoritePost.getVisibility() != View.VISIBLE) {
+                    btnShowFavoritePost.show();
+                }
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        rcvPosts.addOnScrollListener(scrollListener);
+
+        return view;
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setupSearchBar(toolbar);
 
     }
+
+
+
+//    @Override
+//    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//
+//        loadPosts(Constant.POST_REQUEST_COUNT,0,0, searchPhrase);
+//    }
 
 
     private void setupSearchBar(final View parent){
@@ -132,7 +231,7 @@ public class PostActivity extends AppCompatActivity implements SwipeRefreshLayou
                 @Override
                 public void run() {
 
-                    if (doesFragmentExists) {
+                    if (doesActivityExists) {
                         if (!isLoaded) {
                             changeLoadingResource(0);
                             isLoading = false;
@@ -147,7 +246,7 @@ public class PostActivity extends AppCompatActivity implements SwipeRefreshLayou
                     @Override
                     public void onResult(String result) {
 
-                        if (doesFragmentExists) {
+                        if (doesActivityExists) {
                             isLoading = false;
 
                             if (isFirstLoad) {
@@ -235,6 +334,6 @@ public class PostActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     public void onDestroy() {
         super.onDestroy();
-        doesFragmentExists = false;
+        doesActivityExists = false;
     }
 }

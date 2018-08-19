@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".global.G"
@@ -14,7 +14,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-
         <activity
             android:name=".activity.other.SplashActivity"
             android:theme="@style/AppTheme.SplashActivity">
@@ -24,13 +23,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".activity.main.MainActivity"/>
+        <activity android:name=".activity.main.MainActivity" />
         <activity android:name=".activity.other.LoginActivity" />
         <activity android:name=".activity.other.PostActivity" />
         <activity android:name=".activity.other.MediaActivity" />
         <activity android:name=".activity.other.ProgramActivity" />
-        <activity android:name=".activity.other.HelpActivity"/>
+        <activity android:name=".activity.other.HelpActivity" />
+        <activity android:name=".activity.other.PostDisplayActivity"></activity>
     </application>
 
 </manifest>
