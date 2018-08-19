@@ -15,16 +15,17 @@ import com.mahta.rastin.broadcastapplicationadmin.activity.other.PostActivity;
 import com.mahta.rastin.broadcastapplicationadmin.activity.other.ProgramActivity;
 
 import jp.wasabeef.richeditor.RichEditor;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private CardView announceCard, mediaCard, helpCard, scheduleCard;
 
-    //changing activity font
-//    @Override
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-//    }
+//    changing activity font
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

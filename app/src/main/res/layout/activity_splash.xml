@@ -7,13 +7,14 @@
     android:background="@android:color/white"
     tools:context=".activity.other.SplashActivity">
 
-    <TextView
+    <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Management Panel"/>
+        android:text="Management Panel"
+        />
 
-    <TextView
+    <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"

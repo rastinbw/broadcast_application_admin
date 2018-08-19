@@ -22,11 +22,13 @@ public class PostAdapter extends RealmRecyclerViewAdapter<Post,PostAdapter.Custo
 
     public PostAdapter(Context context, RealmResults<Post> realmResults) {
         super(context, realmResults);
+
         inflater = LayoutInflater.from(context);
     }
 
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view = inflater.inflate(R.layout.layout_post_adapter_item,parent,false);
         return new CustomViewHolder(view);
     }
@@ -35,6 +37,7 @@ public class PostAdapter extends RealmRecyclerViewAdapter<Post,PostAdapter.Custo
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
 
         final Post current = realmResults.get(position); //This is nice
+
         holder.txtTitle.setText(current.getTitle());
         holder.txtPreview.setText(current.getPreview());
 
@@ -47,11 +50,11 @@ public class PostAdapter extends RealmRecyclerViewAdapter<Post,PostAdapter.Custo
                     Integer.parseInt(date[1]),
                     Integer.parseInt(date[2])
             ).toString());
+
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        holder.imgLogo.setImageBitmap(G.getBitmapFromResources(context.getResources(), R.drawable.img_news));
     }
 
     @Override
@@ -65,7 +68,6 @@ public class PostAdapter extends RealmRecyclerViewAdapter<Post,PostAdapter.Custo
         TextView txtPreview;
         TextView txtDate;
         LinearLayout lnlListItem;
-        ImageView imgLogo;
 
         private CustomViewHolder(View itemView) {
             super(itemView);
@@ -74,7 +76,6 @@ public class PostAdapter extends RealmRecyclerViewAdapter<Post,PostAdapter.Custo
             txtPreview = itemView.findViewById(R.id.txtPreview);
             txtDate = itemView.findViewById(R.id.txtDate);
             lnlListItem = itemView.findViewById(R.id.lnlListItem);
-            imgLogo = itemView.findViewById(R.id.imgLogo);
 
             lnlListItem.setOnClickListener(this);
         }

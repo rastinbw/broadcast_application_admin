@@ -14,6 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 import io.realm.Realm;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
+import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.model.UserToken;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 
@@ -43,7 +46,15 @@ public class G extends Application {
     public void onCreate() {
         super.onCreate();
 
+        //init realm
         Realm.init(getApplicationContext());
+
+        //init Calligraphy
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/shabnam.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             registerNetworkBroadcastForNougat();

@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layoutDirection="rtl"
-    android:textDirection="rtl"
     tools:context=".activity.other.MediaActivity">
 
     <EditText
@@ -16,20 +14,21 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="30dp"
-        android:background="#a0b0bd"
+        android:background="@color/colorPrimaryLight"
         android:drawableLeft="@drawable/ic_label"
         android:drawableStart="@drawable/ic_label"
         android:hint=" عنوان"
+        android:layoutDirection="rtl"
         android:padding="10dp"
         android:textColorHint="@android:color/white"
         android:textSize="20sp"
         />
 
     <LinearLayout
-        android:layout_margin="30dp"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="250dp"
+        android:layout_margin="30dp"
+        android:orientation="vertical"
         >
 
         <HorizontalScrollView
@@ -39,28 +38,10 @@
             >
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 >
-
-                <ImageButton
-                    android:id="@+id/action_undo"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@null"
-                    android:contentDescription="@null"
-                    android:src="@drawable/undo"
-                    />
-
-                <ImageButton
-                    android:id="@+id/action_redo"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@null"
-                    android:contentDescription="@null"
-                    android:src="@drawable/redo"
-                    />
 
                 <ImageButton
                     android:id="@+id/action_bold"
@@ -81,33 +62,6 @@
                     />
 
                 <ImageButton
-                    android:id="@+id/action_subscript"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@null"
-                    android:contentDescription="@null"
-                    android:src="@drawable/subscript"
-                    />
-
-                <ImageButton
-                    android:id="@+id/action_superscript"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@null"
-                    android:contentDescription="@null"
-                    android:src="@drawable/superscript"
-                    />
-
-                <ImageButton
-                    android:id="@+id/action_strikethrough"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@null"
-                    android:contentDescription="@null"
-                    android:src="@drawable/strikethrough"
-                    />
-
-                <ImageButton
                     android:id="@+id/action_underline"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
@@ -123,43 +77,6 @@
                     android:background="@null"
                     android:contentDescription="@null"
                     android:src="@drawable/txt_color"
-                    />
-
-                <ImageButton
-                    android:id="@+id/action_bg_color"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@null"
-                    android:contentDescription="@null"
-                    android:src="@drawable/bg_color"
-                    />
-
-
-                <ImageButton
-                    android:id="@+id/action_indent"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@null"
-                    android:contentDescription="@null"
-                    android:src="@drawable/indent"
-                    />
-
-                <ImageButton
-                    android:id="@+id/action_outdent"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@null"
-                    android:contentDescription="@null"
-                    android:src="@drawable/outdent"
-                    />
-
-                <ImageButton
-                    android:id="@+id/action_align_left"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@null"
-                    android:contentDescription="@null"
-                    android:src="@drawable/justify_left"
                     />
 
                 <ImageButton
@@ -190,24 +107,6 @@
                     />
 
                 <ImageButton
-                    android:id="@+id/action_insert_numbers"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@null"
-                    android:contentDescription="@null"
-                    android:src="@drawable/numbers"
-                    />
-
-                <ImageButton
-                    android:id="@+id/action_blockquote"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@null"
-                    android:contentDescription="@null"
-                    android:src="@drawable/blockquote"
-                    />
-
-                <ImageButton
                     android:id="@+id/action_insert_image"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
@@ -225,15 +124,6 @@
                     android:src="@drawable/insert_link"
                     />
 
-                <ImageButton
-                    android:id="@+id/action_insert_checkbox"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@null"
-                    android:contentDescription="@null"
-                    android:src="@android:drawable/checkbox_on_background"
-                    />
-
             </LinearLayout>
         </HorizontalScrollView>
 
@@ -241,10 +131,11 @@
             android:id="@+id/media_editor"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             />
 
     </LinearLayout>
-
 
     <Button
         android:id="@+id/btn_login"
@@ -253,7 +144,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:background="#858585"
+        android:background="@color/colorPrimary"
         android:text="انتخاب فایل"
         android:textColor="@android:color/white"
         android:textSize="20sp" />
