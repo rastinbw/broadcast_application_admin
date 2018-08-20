@@ -13,6 +13,7 @@ import com.mahta.rastin.broadcastapplicationadmin.activity.other.HelpActivity;
 import com.mahta.rastin.broadcastapplicationadmin.activity.other.MediaActivity;
 import com.mahta.rastin.broadcastapplicationadmin.activity.other.PostActivity;
 import com.mahta.rastin.broadcastapplicationadmin.activity.other.ProgramActivity;
+import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
 
 import jp.wasabeef.richeditor.RichEditor;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -22,14 +23,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CardView announceCard, mediaCard, helpCard, scheduleCard;
 
 //    changing activity font
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
+//    @Override
+//    protected void attachBaseContext(Context newBase) {
+//        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+//    }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //setting tollbar title
+        ((TextViewPlus) findViewById(R.id.txtTitle)).setText("داشبورد");
+
 
         announceCard = findViewById(R.id.announce_card);
         mediaCard = findViewById(R.id.media_card);

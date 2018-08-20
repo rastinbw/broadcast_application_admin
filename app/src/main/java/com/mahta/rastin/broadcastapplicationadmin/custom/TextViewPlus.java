@@ -14,7 +14,8 @@ public class TextViewPlus extends android.support.v7.widget.AppCompatTextView {
 
     public TextViewPlus(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        setCustomFont(context, attrs);    }
+        setCustomFont(context, attrs);
+    }
 
     public TextViewPlus(Context context, AttributeSet attrs) {
         super(context, attrs);

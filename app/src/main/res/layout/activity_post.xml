@@ -115,11 +115,11 @@
             </android.support.v7.widget.RecyclerView>
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/btnShowFavoritePost"
+                android:id="@+id/btnNewPost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/img_play"
-                app:borderWidth="0dp"
+                android:src="@drawable/ic_add"
+                android:scaleType="center"
                 app:backgroundTint="@color/colorPrimary"
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="10dp"

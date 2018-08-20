@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -40,7 +39,7 @@ public class PostActivity extends AppCompatActivity implements SwipeRefreshLayou
     private boolean noMorePost = false;
 
     public SwipeRefreshLayout swipeRefreshLayout;
-    private FloatingActionButton btnShowFavoritePost;
+    private FloatingActionButton btnNewPost;
     private EndlessRecyclerViewScrollListener scrollListener;
     private PostAdapter adapter;
     private TextView txtNoPosts;
@@ -59,11 +58,11 @@ public class PostActivity extends AppCompatActivity implements SwipeRefreshLayou
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
-        final RecyclerView rcvPosts = findViewById(R.id.rcvPosts);
+        RecyclerView rcvPosts = findViewById(R.id.rcvPosts);
 
-        btnShowFavoritePost = findViewById(R.id.btnShowFavoritePost);
+        btnNewPost = findViewById(R.id.btnNewPost);
 
-        findViewById(R.id.btnShowFavoritePost).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btnNewPost).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -103,14 +102,14 @@ public class PostActivity extends AppCompatActivity implements SwipeRefreshLayou
                     startActivity(intent);
 
                 }else {
-                    G.toastLong(G.getStringFromResource(R.string.no_internet, getActivity()), getActivity());
+                    G.toastLong(G.getStringFromResource(R.string.no_internet, PostActivity.this), PostActivity.this);
                 }
 
             }
         });
         rcvPosts.setAdapter(adapter);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rcvPosts.setLayoutManager(linearLayoutManager);
 
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
@@ -130,21 +129,21 @@ public class PostActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             @Override
             public void onScroll(RecyclerView view, int dx, int dy) {
-                if (dy > 0 && btnShowFavoritePost.getVisibility() == View.VISIBLE) {
-                    btnShowFavoritePost.hide();
-                } else if (dy < 0 && btnShowFavoritePost.getVisibility() != View.VISIBLE) {
-                    btnShowFavoritePost.show();
+                if (dy > 0 && btnNewPost.getVisibility() == View.VISIBLE) {
+                    btnNewPost.hide();
+                } else if (dy < 0 && btnNewPost.getVisibility() != View.VISIBLE) {
+                    btnNewPost.show();
                 }
             }
         };
         // Adds the scroll listener to RecyclerView
         rcvPosts.addOnScrollListener(scrollListener);
 
-        return view;
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setupSearchBar(toolbar);
+
 
     }
 

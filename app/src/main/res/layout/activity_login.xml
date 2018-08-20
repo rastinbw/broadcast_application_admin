@@ -9,7 +9,20 @@
     android:textDirection="rtl"
     tools:context=".activity.other.LoginActivity">
 
-    <EditText
+    <LinearLayout
+        android:id="@+id/container_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layoutDirection="ltr"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_simple_toolbar" />
+
+    </LinearLayout>
+
+    <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
         android:id="@+id/edt_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +38,7 @@
         android:textSize="20sp"
         />
 
-    <EditText
+    <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
         android:id="@+id/edt_pass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,7 +54,7 @@
         android:textSize="20sp"
         />
 
-    <Button
+    <com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

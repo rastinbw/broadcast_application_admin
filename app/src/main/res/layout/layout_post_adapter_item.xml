@@ -18,7 +18,8 @@
         android:layout_height="95dp"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -30,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:gravity="right"
+                android:gravity="center"
                 android:maxLines="1"
                 android:text="موضوع اطلاعیه اینجاست"
                 android:textColor="@color/colorPrimaryText"
@@ -45,7 +46,7 @@
                 android:layout_below="@+id/txtTitle"
                 android:layout_marginTop="2dp"
                 android:ellipsize="end"
-                android:gravity="right"
+                android:gravity="center"
                 android:maxLines = "2"
                 android:text="بخش پیش نمایش"
                 android:textColor="@color/colorPrimaryText"
@@ -53,10 +54,10 @@
                 app:fontTextView="shabnam.ttf"/>
 
             <View
-                android:layout_below="@id/txtPreview"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/colorGrayLight"/>
+                android:layout_below="@id/txtPreview"
+                android:background="@color/colorGray"/>
 
             <LinearLayout
                 android:id="@+id/lnlDate"

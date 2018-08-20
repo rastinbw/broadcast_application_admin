@@ -1,16 +1,18 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.other;
 
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
+import com.mahta.rastin.broadcastapplicationadmin.activity.main.MainActivity;
+import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
+import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
 
 import jp.wasabeef.richeditor.RichEditor;
 
@@ -22,6 +24,17 @@ public class MediaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        toolbar.findViewById(R.id.imgBack).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        ((TextViewPlus) findViewById(R.id.txtTitle)).setText("رسانه");
+
 
         mEditor = findViewById(R.id.media_editor);
 
