@@ -1,22 +1,17 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.main;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.View;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.activity.other.HelpActivity;
 import com.mahta.rastin.broadcastapplicationadmin.activity.other.MediaActivity;
-import com.mahta.rastin.broadcastapplicationadmin.activity.other.PostActivity;
-import com.mahta.rastin.broadcastapplicationadmin.activity.other.ProgramActivity;
+import com.mahta.rastin.broadcastapplicationadmin.activity.other.PostListActivity;
+import com.mahta.rastin.broadcastapplicationadmin.activity.other.ProgramListActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
-
-import jp.wasabeef.richeditor.RichEditor;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -62,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.announce_card:
 
-                intent = new Intent(MainActivity.this, PostActivity.class);
+                intent = new Intent(MainActivity.this, PostListActivity.class);
                 startActivity(intent);
 
                 break;
@@ -76,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.schedules_card:
 
-                intent = new Intent(MainActivity.this, ProgramActivity.class);
+                intent = new Intent(MainActivity.this, ProgramListActivity.class);
                 startActivity(intent);
 
                 break;

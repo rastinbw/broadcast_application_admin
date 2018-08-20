@@ -25,11 +25,13 @@
         </activity>
         <activity android:name=".activity.main.MainActivity" />
         <activity android:name=".activity.other.LoginActivity" />
-        <activity android:name=".activity.other.PostActivity" />
+        <activity android:name=".activity.other.PostListActivity" />
         <activity android:name=".activity.other.MediaActivity" />
-        <activity android:name=".activity.other.ProgramActivity" />
+        <activity android:name=".activity.other.ProgramListActivity" />
         <activity android:name=".activity.other.HelpActivity" />
-        <activity android:name=".activity.other.PostDisplayActivity"></activity>
+        <activity android:name=".activity.other.NewPostActivity" />
+        <activity android:name=".activity.other.EditPostActivity" />
+        <activity android:name=".activity.other.EditProgramActivity"></activity>
     </application>
 
 </manifest>

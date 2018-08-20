@@ -26,7 +26,7 @@
                 android:textColor="#ffffff"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:layout_marginRight="2dp"
+                android:layout_marginRight="4dp"
                 app:fontTextView="shabnam_bold.ttf"/>
 
         </RelativeLayout>

@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.other.ProgramActivity">
+    tools:context=".activity.other.EditPostActivity">
 
 </android.support.constraint.ConstraintLayout>

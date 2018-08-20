@@ -34,7 +34,7 @@ import com.mahta.rastin.broadcastapplicationadmin.model.Post;
 
 import java.util.List;
 
-public class PostActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class PostListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
     private boolean noMorePost = false;
 
@@ -56,7 +56,10 @@ public class PostActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post);
+        setContentView(R.layout.activity_post_list);
+
+
+        clearPosts();
 
         RecyclerView rcvPosts = findViewById(R.id.rcvPosts);
 
@@ -65,7 +68,8 @@ public class PostActivity extends AppCompatActivity implements SwipeRefreshLayou
         findViewById(R.id.btnNewPost).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(PostListActivity.this, NewPostActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -95,14 +99,14 @@ public class PostActivity extends AppCompatActivity implements SwipeRefreshLayou
             @Override
             public void onItemClicked(View view, int position) {
 
-                if (G.isNetworkAvailable(PostActivity.this)){
+                if (G.isNetworkAvailable(PostListActivity.this)){
 
-                    Intent intent = new Intent(PostActivity.this, PostDisplayActivity.class);
+                    Intent intent = new Intent(PostListActivity.this, EditPostActivity.class);
                     intent.putExtra(Keys.KEY_EXTRA_FLAG,RealmController.getInstance().getAllPosts().get(position));
                     startActivity(intent);
 
                 }else {
-                    G.toastLong(G.getStringFromResource(R.string.no_internet, PostActivity.this), PostActivity.this);
+                    G.toastLong(G.getStringFromResource(R.string.no_internet, PostListActivity.this), PostListActivity.this);
                 }
 
             }
@@ -187,7 +191,7 @@ public class PostActivity extends AppCompatActivity implements SwipeRefreshLayou
                 View view = getCurrentFocus();
 
                 if (view == null) {
-                    view = new View(PostActivity.this);
+                    view = new View(PostListActivity.this);
                 }
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 

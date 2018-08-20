@@ -25,15 +25,13 @@ public class MediaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-
-        toolbar.findViewById(R.id.imgBack).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.imgBack).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        ((TextViewPlus) findViewById(R.id.txtTitle)).setText("رسانه");
+        ((TextViewPlus) findViewById(R.id.txtTitle)).setText("بازگشت");
 
 
         mEditor = findViewById(R.id.media_editor);
@@ -61,7 +59,7 @@ public class MediaActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
-                Toast.makeText(MediaActivity.this, "Cliked", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MediaActivity.this, "Cliked", Toast.LENGTH_SHORT).show();
                 mEditor.focusEditor();
 
                 return true;
