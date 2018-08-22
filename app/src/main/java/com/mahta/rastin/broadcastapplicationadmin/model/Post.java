@@ -24,7 +24,7 @@ public class Post extends RealmObject implements Parcelable {
     public Post(){}
 
     //parcelable part***********************************************************************
-    protected Post(Parcel in) {
+    private Post(Parcel in) {
         id = in.readInt();
         title = in.readString();
         content = in.readString();

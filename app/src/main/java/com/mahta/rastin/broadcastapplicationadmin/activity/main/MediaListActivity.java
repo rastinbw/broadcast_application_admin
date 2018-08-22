@@ -1,6 +1,7 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.main;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
@@ -19,10 +20,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
+import com.mahta.rastin.broadcastapplicationadmin.activity.other.EditMediaActivity;
+import com.mahta.rastin.broadcastapplicationadmin.activity.other.EditPostActivity;
+import com.mahta.rastin.broadcastapplicationadmin.activity.other.NewMediaActivity;
 import com.mahta.rastin.broadcastapplicationadmin.adapter.MediaAdapter;
 import com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus;
 import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
+import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
@@ -71,6 +76,8 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
             @Override
             public void onClick(View v) {
 
+                Intent intent = new Intent(MediaListActivity.this, NewMediaActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -101,15 +108,10 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
 
                 if (G.isNetworkAvailable(MediaListActivity.this)){
 
-                    Media media = RealmController.getInstance().getAllMedia().get(position);
-//                    if (media != null){
-//                        PlayerDialog dialog = new PlayerDialog(
-//                                getActivity(),
-//                                media
-//                        );
-//                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//                        dialog.show();
-//                    }
+                    Intent intent = new Intent(MediaListActivity.this, EditMediaActivity.class);
+                    intent.putExtra(Keys.KEY_EXTRA_FLAG, RealmController.getInstance().getAllMedia().get(position));
+                    startActivity(intent);
+
                 }else {
                     G.toastLong(G.getStringFromResource(R.string.no_internet, MediaListActivity.this), MediaListActivity.this);
                 }
@@ -124,6 +126,7 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
                 G.i("YOOOHO");
@@ -138,6 +141,7 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
 
             @Override
             public void onScroll(RecyclerView view, int dx, int dy) {
+
                 if (dy > 0 && btnAddMedia.getVisibility() == View.VISIBLE) {
                     btnAddMedia.hide();
                 } else if (dy < 0 && btnAddMedia.getVisibility() != View.VISIBLE) {

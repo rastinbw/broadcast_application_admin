@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.SwipeRefreshLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activity.main.PostListActivity"
     android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".activity.main.PostListActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,100 +30,99 @@
             android:layout_height="match_parent">
 
             <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
-                android:visibility="gone"
                 android:id="@+id/txtNoPost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:text="@string/there_is_no_post"
                 android:textAppearance="?android:textAppearanceSmall"
                 android:textColor="@color/colorPrimaryText"
-                app:fontTextView="shabnam_bold.ttf"
-                android:text="@string/there_is_no_post"/>
+                android:visibility="gone"
+                app:fontTextView="shabnam_bold.ttf"/>
 
             <LinearLayout
                 android:id="@+id/lnlLoading"
-                android:layout_marginBottom="10dp"
-                android:layout_centerInParent="true"
-                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
 
                 <com.wang.avi.AVLoadingIndicatorView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:indicatorName="LineScaleIndicator"
-                    app:indicatorColor="@color/colorAccent"
                     android:layout_gravity="center_horizontal"
+                    app:indicatorColor="@color/colorAccent"
+                    app:indicatorName="LineScaleIndicator"
                     />
 
                 <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryText"
                     android:text="@string/loading"
+                    android:textColor="@color/colorPrimaryText"
                     android:textSize="14sp"
                     app:fontTextView="shabnam_bold.ttf"/>
 
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/lnlNoNetwork"
-                android:layout_marginBottom="10dp"
-                android:layout_centerInParent="true"
-                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/imgCry"
-                    android:src="@drawable/img_crying"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center_horizontal"
+                    android:src="@drawable/img_crying"
                     />
 
                 <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryText"
-                    android:text="@string/network_error"
-                    android:textSize="14sp"
                     android:layout_gravity="center_horizontal"
+                    android:text="@string/network_error"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="14sp"
                     app:fontTextView="shabnam_bold.ttf"/>
 
             </LinearLayout>
 
             <com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus
-                android:visibility="gone"
-                android:text="@string/try_again"
                 android:id="@+id/btnTryAgain"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:textColor="#ffffff"
-                android:textAppearance="?android:textAppearanceSmall"
-                android:background="@drawable/shape_button"
-                android:layout_gravity="center_horizontal"
                 android:layout_below="@+id/lnlNoNetwork"
                 android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/shape_button"
+                android:text="@string/try_again"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:textColor="#ffffff"
+                android:visibility="gone"
                 app:fontButton="shabnam_bold.ttf"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rcvPosts"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </android.support.v7.widget.RecyclerView>
+                android:layout_height="match_parent"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/btnNewPost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_add"
-                android:scaleType="center"
-                app:backgroundTint="@color/colorPrimary"
                 android:layout_alignParentBottom="true"
+                android:layout_marginBottom="15dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginBottom="15dp"/>
+                android:scaleType="center"
+                android:src="@drawable/ic_add"
+                app:backgroundTint="@color/colorPrimary"/>
 
         </RelativeLayout>
 

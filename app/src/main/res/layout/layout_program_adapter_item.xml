@@ -14,17 +14,12 @@
     <LinearLayout
         android:id="@+id/lnlListItem"
         android:layout_width="match_parent"
-        android:layout_height="95dp"
+        android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="7dp">
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
 
             <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
                 android:id="@+id/txtTitle"
@@ -42,9 +37,8 @@
                 android:id="@+id/txtPreview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/lnlDate"
-                android:layout_below="@+id/txtTitle"
-                android:layout_marginTop="2dp"
+                android:layout_marginBottom="9dp"
+                android:layout_marginTop="4dp"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines = "2"
@@ -56,14 +50,12 @@
             <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/txtPreview"
             android:background="@color/colorGray"/>
 
             <LinearLayout
                 android:id="@+id/lnlDate"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:layout_alignParentBottom="true"
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
@@ -71,14 +63,12 @@
                     android:id="@+id/txtDate"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="right|center_vertical"
+                    android:gravity="end|center_vertical"
                     android:textColor="@color/colorPrimaryText"
                     android:textSize="11sp"
                     app:fontTextView="shabnam.ttf"/>
 
             </LinearLayout>
-
-        </RelativeLayout>
 
     </LinearLayout>
 

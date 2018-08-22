@@ -112,7 +112,7 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
                 if (G.isNetworkAvailable(PostListActivity.this)){
 
                     Intent intent = new Intent(PostListActivity.this, EditPostActivity.class);
-                    intent.putExtra(Keys.KEY_EXTRA_FLAG,RealmController.getInstance().getAllPosts().get(position));
+                    intent.putExtra(Keys.KEY_EXTRA_FLAG, RealmController.getInstance().getAllPosts().get(position));
                     startActivity(intent);
 
                 }else {

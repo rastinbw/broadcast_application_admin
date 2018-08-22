@@ -5,14 +5,11 @@ import android.os.Bundle;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
 
-public class EditProgramActivity extends AppCompatActivity {
+public class NewProgramActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_program);
-
-
-
     }
 }

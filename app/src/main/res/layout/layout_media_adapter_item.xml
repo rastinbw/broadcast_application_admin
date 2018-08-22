@@ -28,12 +28,24 @@
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="2"
-                android:paddingTop="3dp"
-                android:paddingBottom="7dp"
                 android:text="موسیقی هفته بادبادک"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="13sp"
                 app:fontTextView="shabnam_bold.ttf"/>
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                android:id="@+id/txtPreview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="9dp"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines = "2"
+                android:text="بخش پیش نمایش"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="12sp"
+                app:fontTextView="shabnam.ttf"/>
 
             <View
                 android:id="@+id/grayLine"
@@ -45,7 +57,6 @@
                 android:id="@+id/lnlDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
@@ -54,8 +65,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end|center_vertical"
-                    android:textColor="@color/colorPrimaryText"
                     android:text="1397-12-06"
+                    android:textColor="@color/colorPrimaryText"
                     android:textSize="11sp"
                     app:fontTextView="shabnam.ttf"/>
 

@@ -1,9 +1,12 @@
 package com.mahta.rastin.broadcastapplicationadmin.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Media extends RealmObject {
+public class Media extends RealmObject implements Parcelable {
 
     @PrimaryKey
     private int id;
@@ -17,6 +20,42 @@ public class Media extends RealmObject {
     private String date;
 
     public Media(){}
+
+    private Media (Parcel parcel) {
+
+        id = parcel.readInt();
+        title = parcel.readString();
+        description = parcel.readString();
+        path  = parcel.readString();
+        date = parcel.readString();
+    }
+
+    public static final Creator<Media> CREATOR = new Creator<Media>() {
+        @Override
+        public Media createFromParcel(Parcel parcel) {
+            return new Media(parcel);
+        }
+
+        @Override
+        public Media[] newArray(int size) {
+            return new Media[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(path);
+        dest.writeString(date);
+    }
 
     public int getId() {
         return id;
@@ -57,4 +96,6 @@ public class Media extends RealmObject {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
 }
