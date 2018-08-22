@@ -22,4 +22,12 @@ public class EditPostActivity extends AppCompatActivity {
         });
         ((TextViewPlus) findViewById(R.id.txtTitle)).setText("بازگشت");
     }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        finish();
+    }
 }

@@ -1,12 +1,11 @@
-package com.mahta.rastin.broadcastapplicationadmin.activity.other;
+package com.mahta.rastin.broadcastapplicationadmin.activity.main;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -14,18 +13,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
+import com.mahta.rastin.broadcastapplicationadmin.activity.other.EditPostActivity;
+import com.mahta.rastin.broadcastapplicationadmin.activity.other.NewPostActivity;
 import com.mahta.rastin.broadcastapplicationadmin.adapter.PostAdapter;
-import com.mahta.rastin.broadcastapplicationadmin.adapter.ProgramAdapter;
 import com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus;
-import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
-import com.mahta.rastin.broadcastapplicationadmin.dialog.GroupListDialog;
 import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
@@ -33,70 +34,52 @@ import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.EndlessRecyclerViewScrollListener;
-import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnDismissListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
-import com.mahta.rastin.broadcastapplicationadmin.model.Program;
+import com.mahta.rastin.broadcastapplicationadmin.model.Post;
 
 import java.util.List;
 
-public class ProgramListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class PostListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
-    private boolean noMoreProgram = false;
+    private boolean noMorePost = false;
 
     public SwipeRefreshLayout swipeRefreshLayout;
-    private FloatingActionButton btnShowFavoriteProgram;
+    private FloatingActionButton btnNewPost;
     private EndlessRecyclerViewScrollListener scrollListener;
-    private TextViewPlus txtGroups;
-    private ProgramAdapter adapter;
-    private TextView txtNoPrograms;
+    private PostAdapter adapter;
+    private TextView txtNoPosts;
     public SearchView searchView;
     private String searchPhrase = "null";
-    private String mGroupId = "null";
     private boolean isLoaded;
     private LinearLayout lnlLoading;
     private LinearLayout lnlNoNetwork;
     private ButtonPlus btnTryAgain;
     private boolean isFirstLoad = true;
-    private boolean doesFragmentExists = true;
+    private boolean doesActivityExists = true;
     private boolean isLoading;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_program_list);
+        setContentView(R.layout.activity_post_list);
+
+        //must clear realm before loading
+        clearPosts();
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setupSearchBar(toolbar);
 
-        final RecyclerView rcvPrograms = findViewById(R.id.rcvPrograms);
+        RecyclerView rcvPosts = findViewById(R.id.rcvPosts);
 
-        findViewById(R.id.lnlGroup).setOnClickListener(new View.OnClickListener() {
+        btnNewPost = findViewById(R.id.btnNewPost);
+
+        findViewById(R.id.btnNewPost).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                GroupListDialog dialog = new GroupListDialog(ProgramListActivity.this);
-                dialog.setOnDismissListener(new OnDismissListener() {
-                    @Override
-                    public void onDismiss(String groupId, String groupTitle) {
-                        mGroupId = groupId;
-                        txtGroups.setText(groupTitle);
-                        G.i(groupId);
-                        reset();
-                        loadPrograms(Constant.PROGRAM_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId);
-                    }
-                });
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
-        });
-
-        btnShowFavoriteProgram = findViewById(R.id.btnShowFavoriteProgram);
-        findViewById(R.id.btnShowFavoriteProgram).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
+                Intent intent = new Intent(PostListActivity.this, NewPostActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -113,34 +96,35 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
             @Override
             public void onClick(View v) {
                 G.i("pressed");
-                loadPrograms(Constant.PROGRAM_REQUEST_COUNT,0,0, searchPhrase, mGroupId);
+                loadPosts(Constant.POST_REQUEST_COUNT,0,0, searchPhrase);
             }
         });
 
-        txtGroups = findViewById(R.id.txtGroup);
-        txtNoPrograms = findViewById(R.id.txtNoProgram);
+        txtNoPosts = findViewById(R.id.txtNoPost);
         lnlLoading = findViewById(R.id.lnlLoading);
         lnlNoNetwork = findViewById(R.id.lnlNoNetwork);
 
-        adapter = new ProgramAdapter(this, RealmController.getInstance().getAllPrograms());
+        adapter = new PostAdapter(this, RealmController.getInstance().getAllPosts());
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position) {
 
-                if (G.isNetworkAvailable(ProgramListActivity.this)){
-                    Intent intent = new Intent(ProgramListActivity.this, EditProgramActivity.class);
-                    intent.putExtra(Keys.KEY_EXTRA_FLAG, RealmController.getInstance().getAllPrograms().get(position));
+                if (G.isNetworkAvailable(PostListActivity.this)){
+
+                    Intent intent = new Intent(PostListActivity.this, EditPostActivity.class);
+                    intent.putExtra(Keys.KEY_EXTRA_FLAG,RealmController.getInstance().getAllPosts().get(position));
                     startActivity(intent);
+
                 }else {
-                    G.toastLong(G.getStringFromResource(R.string.no_internet, ProgramListActivity.this), ProgramListActivity.this);
+                    G.toastLong(G.getStringFromResource(R.string.no_internet, PostListActivity.this), PostListActivity.this);
                 }
 
             }
         });
-        rcvPrograms.setAdapter(adapter);
+        rcvPosts.setAdapter(adapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        rcvPrograms.setLayoutManager(linearLayoutManager);
+        rcvPosts.setLayoutManager(linearLayoutManager);
 
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
@@ -150,34 +134,42 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
                 G.i("YOOOHO");
 
                 G.i("passed threshold p: " + page + " activity: " + totalItemsCount);
-                if (!noMoreProgram){
-                    loadPrograms(Constant.PROGRAM_REQUEST_COUNT,totalItemsCount,page, searchPhrase, mGroupId);
+                if (!noMorePost){
+                    loadPosts(Constant.POST_REQUEST_COUNT,totalItemsCount,page, searchPhrase);
                 }else
-                    noMoreProgram = false;
+                    noMorePost = false;
 
             }
 
             @Override
             public void onScroll(RecyclerView view, int dx, int dy) {
-                if (dy > 0 && btnShowFavoriteProgram.getVisibility() == View.VISIBLE) {
-                    btnShowFavoriteProgram.hide();
-                } else if (dy < 0 && btnShowFavoriteProgram.getVisibility() != View.VISIBLE) {
-                    btnShowFavoriteProgram.show();
+
+                if (dy > 0 && btnNewPost.getVisibility() == View.VISIBLE) {
+                    btnNewPost.hide();
+                } else if (dy < 0 && btnNewPost.getVisibility() != View.VISIBLE) {
+                    btnNewPost.show();
                 }
             }
         };
         // Adds the scroll listener to RecyclerView
-        rcvPrograms.addOnScrollListener(scrollListener);
+        rcvPosts.addOnScrollListener(scrollListener);
 
+        loadPosts(Constant.POST_REQUEST_COUNT,0,0, searchPhrase);
     }
 
 
-//    @Override
-//    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//        loadPrograms(Constant.PROGRAM_REQUEST_COUNT,0,0, searchPhrase, mGroupId);
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        finish();
+    }
 
     private void setupSearchBar(final View parent){
 
@@ -186,6 +178,7 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
 
         EditText text = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         text.setTextColor(Color.WHITE);
+
         text.setHintTextColor(G.getColorFromResource(R.color.colorGray, this));
         text.setHint(G.getStringFromResource(R.string.search, this));
         searchView.onActionViewCollapsed();
@@ -202,11 +195,13 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
                 //Closing the keyboard
                 InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
                 View view = getCurrentFocus();
+
                 if (view == null) {
-                    view = new View(ProgramListActivity.this);
+                    view = new View(PostListActivity.this);
                 }
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
@@ -216,27 +211,29 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
                 if (searchView.getQuery().length() == 0) {
                     reset();
                     searchPhrase = "null";
-                    loadPrograms(Constant.PROGRAM_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId);
+                    loadPosts(Constant.POST_REQUEST_COUNT, 0, 0, "null");
                 }
                 return false;
             }
 
             void callSearch(String query) {
+
                 reset();
                 searchPhrase = query;
-                loadPrograms(Constant.PROGRAM_REQUEST_COUNT, 0, 0, query, mGroupId);
+                loadPosts(Constant.POST_REQUEST_COUNT, 0, 0, query);
 //                //Make it visible
 //                prgWait.setVisibility(View.VISIBLE);
             }
 
         });
-
     }
 
-    private void loadPrograms(final int count, final int start, final int page, String searchPhrase, String groupId){
+    private void loadPosts(final int count, final int start, final int page, String searchPhrase){
+
         isLoading = true;
 
         if (isFirstLoad){
@@ -246,7 +243,8 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (doesFragmentExists) {
+
+                    if (doesActivityExists) {
                         if (!isLoaded) {
                             changeLoadingResource(0);
                             isLoading = false;
@@ -256,12 +254,12 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
             }, Constant.TIME_OUT);
         }
 
-        new HttpCommand(HttpCommand.COMMAND_GET_POSTS,null,Constant.TYPE_PROGRAM, count+"",page+"", searchPhrase, groupId)
+        new HttpCommand(HttpCommand.COMMAND_GET_POSTS,null,Constant.TYPE_HTML, count+"",page+"", searchPhrase, "null")
                 .setOnResultListener(new OnResultListener() {
                     @Override
                     public void onResult(String result) {
 
-                        if (doesFragmentExists) {
+                        if (doesActivityExists) {
                             isLoading = false;
 
                             if (isFirstLoad) {
@@ -270,50 +268,53 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
                                 changeLoadingResource(2);
                             }
 
-                            List<Program> programs = JSONParser.parsePrograms(result);
-                            if (programs != null) {
-                                for (Program program : programs) {
-                                    G.i(program.getId() + "");
-                                    RealmController.getInstance().addProgram(program);
-                                }
-                                adapter.notifyItemRangeInserted(start - 1, programs.size());
+                            List<Post> posts = JSONParser.parsePosts(result);
 
-                                if (programs.size() < count)
-                                    noMoreProgram = true;
+                            if (posts != null) {
+
+                                for (Post post : posts) {
+                                    G.i(post.getId() + "");
+                                    RealmController.getInstance().addPost(post);
+                                }
+                                adapter.notifyItemRangeInserted(start - 1, posts.size());
+
+                                if (posts.size() < count)
+                                    noMorePost = true;
 
                             } else {
-                                G.i("No more program is returned");
+                                G.i("No more Post is returned");
                             }
 
                             if (adapter.getItemCount() <= 0)
-                                txtNoPrograms.setVisibility(View.VISIBLE);
+                                txtNoPosts.setVisibility(View.VISIBLE);
                             else
-                                txtNoPrograms.setVisibility(View.GONE);
+                                txtNoPosts.setVisibility(View.GONE);
                         }
                     }
                 }).execute();
     }
 
     private void changeLoadingResource(int state) {
+
         if (swipeRefreshLayout.isRefreshing()){
             swipeRefreshLayout.setRefreshing(false);
         }
 
         switch (state) {
             case 0:
-                txtNoPrograms.setVisibility(View.GONE);
+                txtNoPosts.setVisibility(View.GONE);
                 lnlNoNetwork.setVisibility(View.VISIBLE);
                 btnTryAgain.setVisibility(View.VISIBLE);
                 lnlLoading.setVisibility(View.GONE);
                 break;
             case 1:
-                txtNoPrograms.setVisibility(View.GONE);
+                txtNoPosts.setVisibility(View.GONE);
                 lnlNoNetwork.setVisibility(View.GONE);
                 btnTryAgain.setVisibility(View.GONE);
                 lnlLoading.setVisibility(View.VISIBLE);
                 break;
             default:
-                txtNoPrograms.setVisibility(View.GONE);
+                txtNoPosts.setVisibility(View.GONE);
                 lnlNoNetwork.setVisibility(View.GONE);
                 btnTryAgain.setVisibility(View.GONE);
                 lnlLoading.setVisibility(View.GONE);
@@ -323,28 +324,29 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
 
 
     private void reset() {
-        clearPrograms();
+
+        clearPosts();
         isFirstLoad = true;
         adapter.notifyDataSetChanged();
         scrollListener.resetState();
     }
 
-    private void clearPrograms(){
-        RealmController.getInstance().clearAllPrograms();
+    private void clearPosts(){
+        RealmController.getInstance().clearAllPosts();
     }
 
     @Override
     public void onRefresh() {
+
         if (!isLoading){
             reset();
-            loadPrograms(Constant.POST_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId);
+            loadPosts(Constant.POST_REQUEST_COUNT, 0, 0, searchPhrase);
         }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        doesFragmentExists = false;
+        doesActivityExists = false;
     }
-
 }

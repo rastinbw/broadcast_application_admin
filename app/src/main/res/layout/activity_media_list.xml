@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activity.main.PostListActivity"
+    tools:context=".activity.main.MediaListActivity"
     android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -29,16 +29,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
             <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
                 android:visibility="gone"
-                android:id="@+id/txtNoPost"
+                android:id="@+id/txtNoMedia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:textAppearance="?android:textAppearanceSmall"
                 android:textColor="@color/colorPrimaryText"
                 app:fontTextView="shabnam_bold.ttf"
-                android:text="@string/there_is_no_post"/>
+                android:text="@string/there_is_no_media"/>
 
             <LinearLayout
                 android:id="@+id/lnlLoading"
@@ -109,18 +110,18 @@
                 app:fontButton="shabnam_bold.ttf"/>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/rcvPosts"
+                android:id="@+id/rcvMedia"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
             </android.support.v7.widget.RecyclerView>
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/btnNewPost"
+                android:id="@+id/btnAddMedia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_add"
-                android:scaleType="center"
+                app:borderWidth="0dp"
                 app:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/ic_add"
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="15dp"/>

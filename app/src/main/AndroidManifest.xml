@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".activity.other.SplashActivity"
+            android:name=".activity.startup.SplashActivity"
             android:theme="@style/AppTheme.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,14 +24,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.main.MainActivity" />
-        <activity android:name=".activity.other.LoginActivity" />
-        <activity android:name=".activity.other.PostListActivity" />
+        <activity android:name=".activity.startup.LoginActivity" />
+        <activity android:name=".activity.main.PostListActivity" />
         <activity android:name=".activity.other.MediaActivity" />
-        <activity android:name=".activity.other.ProgramListActivity" />
-        <activity android:name=".activity.other.HelpActivity" />
+        <activity android:name=".activity.main.ProgramListActivity" />
+        <activity android:name=".activity.main.HelpActivity" />
         <activity android:name=".activity.other.NewPostActivity" />
         <activity android:name=".activity.other.EditPostActivity" />
-        <activity android:name=".activity.other.EditProgramActivity"></activity>
+        <activity android:name=".activity.other.EditProgramActivity" />
+        <activity android:name=".activity.main.MediaListActivity"></activity>
     </application>
 
 </manifest>

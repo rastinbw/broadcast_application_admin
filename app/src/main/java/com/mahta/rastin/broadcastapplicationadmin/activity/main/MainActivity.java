@@ -7,10 +7,6 @@ import android.support.v7.widget.CardView;
 import android.view.View;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
-import com.mahta.rastin.broadcastapplicationadmin.activity.other.HelpActivity;
-import com.mahta.rastin.broadcastapplicationadmin.activity.other.MediaActivity;
-import com.mahta.rastin.broadcastapplicationadmin.activity.other.PostListActivity;
-import com.mahta.rastin.broadcastapplicationadmin.activity.other.ProgramListActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -64,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.media_card:
 
-                intent = new Intent(MainActivity.this, MediaActivity.class);
+                intent = new Intent(MainActivity.this, MediaListActivity.class);
                 startActivity(intent);
 
                 break;

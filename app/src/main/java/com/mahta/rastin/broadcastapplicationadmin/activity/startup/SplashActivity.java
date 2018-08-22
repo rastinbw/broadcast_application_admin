@@ -1,4 +1,4 @@
-package com.mahta.rastin.broadcastapplicationadmin.activity.other;
+package com.mahta.rastin.broadcastapplicationadmin.activity.startup;
 
 import android.content.Intent;
 import android.os.Bundle;

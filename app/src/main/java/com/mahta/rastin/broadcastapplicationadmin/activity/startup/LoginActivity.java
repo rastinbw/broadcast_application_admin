@@ -1,6 +1,5 @@
-package com.mahta.rastin.broadcastapplicationadmin.activity.other;
+package com.mahta.rastin.broadcastapplicationadmin.activity.startup;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +9,6 @@ import android.widget.Button;
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.activity.main.MainActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
-
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class LoginActivity extends AppCompatActivity {
 

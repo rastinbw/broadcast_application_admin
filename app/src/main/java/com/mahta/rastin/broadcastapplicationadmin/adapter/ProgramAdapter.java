@@ -53,7 +53,6 @@ public class ProgramAdapter extends RealmRecyclerViewAdapter<Program,ProgramAdap
             e.printStackTrace();
         }
 
-        holder.imgLogo.setImageBitmap(G.getBitmapFromResources(context.getResources(), R.drawable.img_program));
     }
 
     @Override
@@ -67,7 +66,6 @@ public class ProgramAdapter extends RealmRecyclerViewAdapter<Program,ProgramAdap
         TextView txtPreview;
         TextView txtDate;
         LinearLayout lnlListItem;
-        ImageView imgLogo;
 
         private CustomViewHolder(View itemView) {
             super(itemView);
@@ -76,7 +74,6 @@ public class ProgramAdapter extends RealmRecyclerViewAdapter<Program,ProgramAdap
             txtPreview = itemView.findViewById(R.id.txtPreview);
             txtDate = itemView.findViewById(R.id.txtDate);
             lnlListItem = itemView.findViewById(R.id.lnlListItem);
-            imgLogo = itemView.findViewById(R.id.imgLogo);
 
             lnlListItem.setOnClickListener(this);
         }

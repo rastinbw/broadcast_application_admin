@@ -52,7 +52,6 @@ public class MediaAdapter extends RealmRecyclerViewAdapter<Media,MediaAdapter.Cu
             e.printStackTrace();
         }
 
-        holder.imgLogo.setImageBitmap(G.getBitmapFromResources(context.getResources(), R.drawable.img_media));
     }
 
     @Override
@@ -65,7 +64,6 @@ public class MediaAdapter extends RealmRecyclerViewAdapter<Media,MediaAdapter.Cu
         TextView txtTitle;
         TextView txtDate;
         LinearLayout lnlListItem;
-        ImageView imgLogo;
 
         private CustomViewHolder(View itemView) {
             super(itemView);
@@ -73,7 +71,6 @@ public class MediaAdapter extends RealmRecyclerViewAdapter<Media,MediaAdapter.Cu
             txtTitle = itemView.findViewById(R.id.txtTitle);
             txtDate = itemView.findViewById(R.id.txtDate);
             lnlListItem = itemView.findViewById(R.id.lnlListItem);
-            imgLogo = itemView.findViewById(R.id.imgLogo);
             lnlListItem.setOnClickListener(this);
         }
 

@@ -7,7 +7,7 @@
     android:layoutDirection="rtl"
     android:orientation="vertical"
     android:textDirection="rtl"
-    tools:context=".activity.other.LoginActivity">
+    tools:context=".activity.startup.LoginActivity">
 
     <LinearLayout
         android:id="@+id/container_toolbar"

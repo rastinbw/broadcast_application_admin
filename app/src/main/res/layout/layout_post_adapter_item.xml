@@ -19,7 +19,7 @@
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:orientation="horizontal"
-        android:padding="5dp">
+        android:padding="7dp">
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -74,7 +74,7 @@
                     android:gravity="right|center_vertical"
                     android:text="دو روز پیش"
                     android:textColor="@color/colorPrimaryText"
-                    android:textSize="10sp"
+                    android:textSize="11sp"
                     app:fontTextView="shabnam.ttf"/>
 
             </LinearLayout>

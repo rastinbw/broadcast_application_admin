@@ -39,9 +39,11 @@ public class GroupListDialog extends Dialog {
 
         final List<Group> list = RealmController.getInstance().getGroupList();
         GroupAdapter adapter = new GroupAdapter(activity, list);
+
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position) {
+
                 groupId = Integer.toString(list.get(position).getId());
                 groupTitle = list.get(position).getTitle();
                 dismiss();

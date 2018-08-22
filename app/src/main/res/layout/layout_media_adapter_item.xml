@@ -2,67 +2,64 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginRight="5dp"
-    android:layout_marginLeft="5dp"
     android:layout_marginBottom="3dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
     android:layout_marginTop="5dp"
+    android:orientation="vertical"
     app:cardCornerRadius="6dp">
 
     <LinearLayout
+        android:id="@+id/lnlListItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:background="?android:attr/selectableItemBackground"
-        android:id="@+id/lnlListItem"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="55dp">
+        android:orientation="vertical"
+        android:padding="7dp">
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <com.mahta.rastin.broadcastapplication.custom.TextViewPlus
+            <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
                 android:id="@+id/txtTitle"
-                android:textSize="13sp"
-                android:gravity="right"
-                android:textColor="@color/colorPrimaryText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="2"
                 android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="2"
+                android:paddingTop="3dp"
+                android:paddingBottom="7dp"
+                android:text="موسیقی هفته بادبادک"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="13sp"
                 app:fontTextView="shabnam_bold.ttf"/>
 
-            <LinearLayout
-                android:layout_marginTop="5dp"
-                android:id="@+id/lnlDate"
-                android:layout_alignParentBottom="true"
-                android:orientation="horizontal"
+            <View
+                android:id="@+id/grayLine"
                 android:layout_width="match_parent"
-                android:layout_height="20dp">
+                android:layout_height="1dp"
+                android:background="@color/colorGray"/>
 
-                <com.mahta.rastin.broadcastapplication.custom.TextViewPlus
+            <LinearLayout
+                android:id="@+id/lnlDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
                     android:id="@+id/txtDate"
-                    android:gravity="right|center_vertical"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="10sp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end|center_vertical"
+                    android:textColor="@color/colorPrimaryText"
+                    android:text="1397-12-06"
+                    android:textSize="11sp"
                     app:fontTextView="shabnam.ttf"/>
 
             </LinearLayout>
-
-        </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/imgLogo"
-            android:src="@android:color/holo_blue_dark"
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"/>
 
     </LinearLayout>
 

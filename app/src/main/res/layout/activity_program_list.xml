@@ -6,7 +6,7 @@
     android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.other.ProgramListActivity">
+    tools:context=".activity.main.ProgramListActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -157,7 +157,7 @@
             </android.support.v7.widget.RecyclerView>
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/btnShowFavoriteProgram"
+                android:id="@+id/btnAddProgram"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
