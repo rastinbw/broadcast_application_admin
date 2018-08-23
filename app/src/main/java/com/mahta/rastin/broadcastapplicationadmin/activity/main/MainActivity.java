@@ -13,12 +13,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private CardView announceCard, mediaCard, helpCard, scheduleCard;
 
-//    changing activity font
-//    @Override
-//    protected void attachBaseContext(Context newBase) {
-//        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-//    }
-
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

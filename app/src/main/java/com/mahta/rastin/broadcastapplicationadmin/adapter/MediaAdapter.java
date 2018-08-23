@@ -6,13 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
-import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.model.Media;
 
 import io.realm.RealmResults;
@@ -68,7 +66,7 @@ public class MediaAdapter extends RealmRecyclerViewAdapter<Media,MediaAdapter.Cu
         private CustomViewHolder(View itemView) {
             super(itemView);
 
-            txtTitle = itemView.findViewById(R.id.txtTitle);
+            txtTitle = itemView.findViewById(R.id.txtBack);
             txtDate = itemView.findViewById(R.id.txtDate);
             lnlListItem = itemView.findViewById(R.id.lnlListItem);
             lnlListItem.setOnClickListener(this);

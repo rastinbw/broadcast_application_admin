@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BroadcastApplicationAdmin</string>
+    <string name="app_name">پنل مدیریت</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="there_is_no_post">اطلاعیه ای وجود ندارد</string>

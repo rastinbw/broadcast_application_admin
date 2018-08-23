@@ -42,7 +42,7 @@
             android:layout_height="35dp">
 
             <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
-                android:id="@+id/txtTitle"
+                android:id="@+id/txtBack"
                 android:textSize="13sp"
                 android:textColor="#ffffff"
                 android:layout_width="wrap_content"

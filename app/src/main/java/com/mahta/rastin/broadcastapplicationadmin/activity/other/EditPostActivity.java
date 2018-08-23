@@ -4,7 +4,7 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
@@ -14,7 +14,7 @@ import com.mahta.rastin.broadcastapplicationadmin.model.Post;
 
 import jp.wasabeef.richeditor.RichEditor;
 
-public class EditPostActivity extends AppCompatActivity {
+public class EditPostActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Post post;
     private EditTextPlus edttitle, edtPreview;
@@ -25,16 +25,12 @@ public class EditPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_new);
 
+        findViewById(R.id.imgBack).setOnClickListener(this);
+        findViewById(R.id.txtApply).setOnClickListener(this);
+        findViewById(R.id.txtBack).setOnClickListener(this);
+
         edttitle = findViewById(R.id.edt_title);
         edtPreview = findViewById(R.id.edt_preview);
-
-        findViewById(R.id.imgBack).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        ((TextViewPlus) findViewById(R.id.txtTitle)).setText("بازگشت");
 
         post = getIntent().getParcelableExtra(Keys.KEY_EXTRA_FLAG);
 
@@ -133,5 +129,18 @@ public class EditPostActivity extends AppCompatActivity {
         super.onBackPressed();
 
         finish();
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        int id = v.getId();
+
+        if (id == R.id.imgBack || id == R.id.txtBack) {
+            finish();
+
+        } else if (id == R.id.txtApply) {
+            Toast.makeText(this, "ثبت", Toast.LENGTH_SHORT).show();
+        }
     }
 }

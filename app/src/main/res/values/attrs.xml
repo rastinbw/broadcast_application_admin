@@ -11,4 +11,9 @@
     <declare-styleable name="EditTextPlus">
         <attr name="fontEditText" format="string"/>
     </declare-styleable>
+
+    <declare-styleable name="RadioButtonPlus">
+        <attr name="fontRadioButton" format="string"/>
+    </declare-styleable>
+
 </resources>

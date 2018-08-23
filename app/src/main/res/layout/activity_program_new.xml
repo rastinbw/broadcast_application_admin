@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.other.NewPostActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/container_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/layout_simple_toolbar_2" />
+
+        </LinearLayout>
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+            android:id="@+id/edt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/colorPrimaryLight"
+            android:drawableLeft="@drawable/ic_label"
+            android:drawableStart="@drawable/ic_label"
+            android:hint=" عنوان"
+            android:layoutDirection="rtl"
+            android:padding="10dp"
+            android:textColorHint="@android:color/white"
+            android:textSize="16sp"
+            app:fontEditText="shabnam.ttf"
+            />
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+            android:id="@+id/edt_preview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/colorPrimaryLight"
+            android:hint=" پیش نمایش"
+            android:layoutDirection="rtl"
+            android:lines="2"
+            android:padding="10dp"
+            android:textColorHint="@android:color/white"
+            android:textSize="14sp"
+            app:fontEditText="shabnam.ttf"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <RadioGroup
+                android:layout_width="125dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_marginEnd="15dp"
+                >
+
+                <com.mahta.rastin.broadcastapplicationadmin.custom.RadioButtonPlus
+                    android:id="@+id/rb1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="7dp"
+                    android:background="@drawable/rb_background"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:padding="9dp"
+                    android:tag="1"
+                    android:text="دوازدهم دختران"
+                    android:textSize="14sp"
+                    app:fontRadioButton="shabnam.ttf"/>
+
+                <com.mahta.rastin.broadcastapplicationadmin.custom.RadioButtonPlus
+                    android:id="@+id/rb2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="7dp"
+                    android:background="@drawable/rb_background"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:padding="9dp"
+                    android:tag="1"
+                    android:text="یازدهم دختران"
+                    android:textSize="14sp"
+                    app:fontRadioButton="shabnam.ttf"/>
+
+                <com.mahta.rastin.broadcastapplicationadmin.custom.RadioButtonPlus
+                    android:id="@+id/rb3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="7dp"
+                    android:background="@drawable/rb_background"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:padding="9dp"
+                    android:tag="1"
+                    android:text="دهم دختران"
+                    android:textSize="14sp"
+                    app:fontRadioButton="shabnam.ttf"/>
+
+            </RadioGroup>
+
+            <RadioGroup
+                android:layout_width="125dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                >
+
+                <com.mahta.rastin.broadcastapplicationadmin.custom.RadioButtonPlus
+                    android:id="@+id/rb5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="7dp"
+                    android:background="@drawable/rb_background"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:padding="9dp"
+                    android:tag="1"
+                    android:text="دوازدهم پسران"
+                    android:textSize="14sp"
+                    app:fontRadioButton="shabnam.ttf"/>
+
+                <com.mahta.rastin.broadcastapplicationadmin.custom.RadioButtonPlus
+                    android:id="@+id/rb6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="7dp"
+                    android:background="@drawable/rb_background"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:padding="9dp"
+                    android:tag="1"
+                    android:text="یازدهم پسران"
+                    android:textSize="14sp"
+                    app:fontRadioButton="shabnam.ttf"/>
+
+                <com.mahta.rastin.broadcastapplicationadmin.custom.RadioButtonPlus
+                    android:id="@+id/rb7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="7dp"
+                    android:background="@drawable/rb_background"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:padding="9dp"
+                    android:tag="1"
+                    android:text="دهم پسران"
+                    android:textSize="14sp"
+                    app:fontRadioButton="shabnam.ttf"/>
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -12,9 +12,6 @@ import android.widget.TextView;
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Group;
-import com.mahta.rastin.broadcastapplicationadmin.R;
-import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener;
-import com.mahta.rastin.broadcastapplicationadmin.model.Group;
 
 import java.util.List;
 
@@ -53,7 +50,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.CustomViewHo
 
         private CustomViewHolder(View itemView) {
             super(itemView);
-            txtTitle = itemView.findViewById(R.id.txtTitle);
+            txtTitle = itemView.findViewById(R.id.txtBack);
             rtlListItem = itemView.findViewById(R.id.rtlListItem);
 
             rtlListItem.setOnClickListener(this);

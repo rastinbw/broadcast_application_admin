@@ -9,9 +9,9 @@
     <application
         android:name=".global.G"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/managemnet"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/managemnet"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
@@ -34,7 +34,7 @@
         <activity android:name=".activity.other.EditProgramActivity" />
         <activity android:name=".activity.main.MediaListActivity" />
         <activity android:name=".activity.other.NewProgramActivity" />
-        <activity android:name=".activity.other.EditMediaActivity"></activity>
+        <activity android:name=".activity.other.EditMediaActivity"/>
     </application>
 
 </manifest>

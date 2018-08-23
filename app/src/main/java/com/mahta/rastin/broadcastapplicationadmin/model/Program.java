@@ -27,6 +27,7 @@ public class Program extends RealmObject implements Parcelable{
 
     //parcelable part***********************************************************************
     protected Program(Parcel in) {
+
         id = in.readInt();
         title = in.readString();
         content = in.readString();

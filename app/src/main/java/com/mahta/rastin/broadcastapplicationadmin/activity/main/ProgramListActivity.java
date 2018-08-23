@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.activity.other.EditProgramActivity;
+import com.mahta.rastin.broadcastapplicationadmin.activity.other.NewProgramActivity;
 import com.mahta.rastin.broadcastapplicationadmin.adapter.ProgramAdapter;
 import com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
@@ -44,7 +45,7 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
     private boolean noMoreProgram = false;
 
     public SwipeRefreshLayout swipeRefreshLayout;
-    private FloatingActionButton btnShowFavoriteProgram;
+    private FloatingActionButton btnNewProgram;
     private EndlessRecyclerViewScrollListener scrollListener;
     private TextViewPlus txtGroups;
     private ProgramAdapter adapter;
@@ -96,11 +97,13 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
             }
         });
 
-        btnShowFavoriteProgram = findViewById(R.id.btnAddProgram);
-        findViewById(R.id.btnAddProgram).setOnClickListener(new View.OnClickListener() {
+        btnNewProgram = findViewById(R.id.btnNewProgram);
+        findViewById(R.id.btnNewProgram).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                Intent intent = new Intent(ProgramListActivity.this, NewProgramActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -132,9 +135,11 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
             public void onItemClicked(View view, int position) {
 
                 if (G.isNetworkAvailable(ProgramListActivity.this)){
+
                     Intent intent = new Intent(ProgramListActivity.this, EditProgramActivity.class);
                     intent.putExtra(Keys.KEY_EXTRA_FLAG, RealmController.getInstance().getAllPrograms().get(position));
                     startActivity(intent);
+
                 }else {
                     G.toastLong(G.getStringFromResource(R.string.no_internet, ProgramListActivity.this), ProgramListActivity.this);
                 }
@@ -165,10 +170,10 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
             @Override
             public void onScroll(RecyclerView view, int dx, int dy) {
 
-                if (dy > 0 && btnShowFavoriteProgram.getVisibility() == View.VISIBLE) {
-                    btnShowFavoriteProgram.hide();
-                } else if (dy < 0 && btnShowFavoriteProgram.getVisibility() != View.VISIBLE) {
-                    btnShowFavoriteProgram.show();
+                if (dy > 0 && btnNewProgram.getVisibility() == View.VISIBLE) {
+                    btnNewProgram.hide();
+                } else if (dy < 0 && btnNewProgram.getVisibility() != View.VISIBLE) {
+                    btnNewProgram.show();
                 }
             }
         };
