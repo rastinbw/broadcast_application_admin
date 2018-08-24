@@ -3,16 +3,16 @@ package com.mahta.rastin.broadcastapplicationadmin.activity.other;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
-import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
+import com.mahta.rastin.broadcastapplicationadmin.editor.RichEditor;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.model.Post;
 
-import jp.wasabeef.richeditor.RichEditor;
 
 public class EditPostActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -38,26 +38,33 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         edtPreview.setText(post.getPreview());
 
 
-
         mEditor = findViewById(R.id.post_editor);
 
+        //this is needed to request focus when clicked on bottom of editor
         mEditor.setEditorHeight(200);
-        mEditor.setEditorFontSize(22);
-        mEditor.setEditorFontColor(Color.RED);
 
-        //mEditor.setEditorBackgroundColor(Color.BLUE);
-        //mEditor.setBackgroundColor(Color.BLUE);
-        //mEditor.setBackgroundResource(R.drawable.bg);
+        mEditor.setEditorFontSize(17);
+        mEditor.setEditorFontColor(Color.BLACK);
 
         mEditor.setPadding(10, 10, 10, 10);
-        //mEditor.setBackground("https://raw.githubusercontent.com/wasabeef/art/master/chip.jpg");
 
-        mEditor.setPlaceholder("Insert text here...");
-        //mEditor.setInputEnabled(false);
+        mEditor.setPlaceholder("متن");
+
+        String html = "<div dir='rtl'>" + post.getContent() + "</div>";
+
+        mEditor.setHtml(html);
+
+        //to start activity with no focus on fields
+        mEditor.requestFocus();
+
+
+
+        Log.i("MYTAG", post.getContent());
 
 
         mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
             @Override public void onTextChange(String text) {
+
             }
         });
 
@@ -87,7 +94,6 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
                 isChanged = !isChanged;
             }
         });
-
 
         findViewById(R.id.action_align_center).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {

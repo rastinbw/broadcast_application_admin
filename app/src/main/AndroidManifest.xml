@@ -14,6 +14,7 @@
         android:roundIcon="@drawable/managemnet"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+
         <activity
             android:name=".activity.startup.SplashActivity"
             android:theme="@style/AppTheme.SplashActivity">
@@ -23,6 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".activity.main.MainActivity" />
         <activity android:name=".activity.startup.LoginActivity" />
         <activity android:name=".activity.main.PostListActivity" />
@@ -34,7 +36,8 @@
         <activity android:name=".activity.other.EditProgramActivity" />
         <activity android:name=".activity.main.MediaListActivity" />
         <activity android:name=".activity.other.NewProgramActivity" />
-        <activity android:name=".activity.other.EditMediaActivity"/>
+        <activity android:name=".activity.other.EditMediaActivity" />
+
     </application>
 
 </manifest>
