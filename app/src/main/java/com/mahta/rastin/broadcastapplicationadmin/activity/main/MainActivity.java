@@ -7,6 +7,8 @@ import android.support.v7.widget.CardView;
 import android.view.View;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
+import com.mahta.rastin.broadcastapplicationadmin.activity.post.PostListActivity;
+import com.mahta.rastin.broadcastapplicationadmin.activity.program.ProgramListActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {

@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="rtl"
-    android:orientation="vertical"
     android:textDirection="rtl"
+    android:orientation="vertical"
     tools:context=".activity.startup.LoginActivity">
 
     <LinearLayout
@@ -36,7 +36,7 @@
         android:padding="10dp"
         android:textColorHint="@android:color/white"
         android:textSize="20sp"
-        />
+    />
 
     <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
         android:id="@+id/edt_pass"

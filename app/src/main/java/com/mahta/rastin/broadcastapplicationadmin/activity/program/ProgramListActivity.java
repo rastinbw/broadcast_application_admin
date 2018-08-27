@@ -1,13 +1,14 @@
-package com.mahta.rastin.broadcastapplicationadmin.activity.main;
+package com.mahta.rastin.broadcastapplicationadmin.activity.program;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -19,10 +20,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
-import com.mahta.rastin.broadcastapplicationadmin.activity.other.EditMediaActivity;
-import com.mahta.rastin.broadcastapplicationadmin.activity.other.NewMediaActivity;
-import com.mahta.rastin.broadcastapplicationadmin.adapter.MediaAdapter;
+import com.mahta.rastin.broadcastapplicationadmin.adapter.ProgramAdapter;
 import com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus;
+import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
+import com.mahta.rastin.broadcastapplicationadmin.dialog.GroupListDialog;
 import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
@@ -30,23 +31,26 @@ import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.EndlessRecyclerViewScrollListener;
+import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnDismissListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
-import com.mahta.rastin.broadcastapplicationadmin.model.Media;
+import com.mahta.rastin.broadcastapplicationadmin.model.Program;
 
 import java.util.List;
 
-public class MediaListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class ProgramListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
-    private boolean noMoreMedia = false;
+    private boolean noMoreProgram = false;
 
     public SwipeRefreshLayout swipeRefreshLayout;
-    private FloatingActionButton btnAddMedia;
+    private FloatingActionButton btnNewProgram;
     private EndlessRecyclerViewScrollListener scrollListener;
-    private MediaAdapter adapter;
-    private TextView txtNoMedia;
+    private TextViewPlus txtGroups;
+    private ProgramAdapter adapter;
+    private TextView txtNoPrograms;
     public SearchView searchView;
     private String searchPhrase = "null";
+    private String mGroupId = "null";
     private boolean isLoaded;
     private LinearLayout lnlLoading;
     private LinearLayout lnlNoNetwork;
@@ -55,26 +59,48 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
     private boolean doesFragmentExists = true;
     private boolean isLoading;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_media_list);
+        setContentView(R.layout.activity_program_list);
 
         //must clear realm before loading
-        clearMedia();
+        clearPrograms();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setupSearchBar(toolbar);
 
-        RecyclerView rcvPosts = findViewById(R.id.rcvMedia);
+        RecyclerView rcvPrograms = findViewById(R.id.rcvPrograms);
 
-
-        btnAddMedia = findViewById(R.id.btnAddMedia);
-        btnAddMedia.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.lnlGroup).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(MediaListActivity.this, NewMediaActivity.class);
+                GroupListDialog dialog = new GroupListDialog(ProgramListActivity.this);
+
+                dialog.setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(String groupId, String groupTitle) {
+
+                        mGroupId = groupId;
+                        txtGroups.setText(groupTitle);
+                        G.i(groupId);
+                        reset();
+                        loadPrograms(Constant.PROGRAM_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId);
+                    }
+                });
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        btnNewProgram = findViewById(R.id.btnNewProgram);
+        findViewById(R.id.btnNewProgram).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(ProgramListActivity.this, NewProgramActivity.class);
                 startActivity(intent);
             }
         });
@@ -91,35 +117,37 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
         btnTryAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadMedia(Constant.MEDIA_REQUEST_COUNT,0,0, searchPhrase);
+                G.i("pressed");
+                loadPrograms(Constant.PROGRAM_REQUEST_COUNT,0,0, searchPhrase, mGroupId);
             }
         });
 
-        txtNoMedia = findViewById(R.id.txtNoMedia);
+        txtGroups = findViewById(R.id.txtGroup);
+        txtNoPrograms = findViewById(R.id.txtNoProgram);
         lnlLoading = findViewById(R.id.lnlLoading);
         lnlNoNetwork = findViewById(R.id.lnlNoNetwork);
 
-        adapter = new MediaAdapter(this, RealmController.getInstance().getAllMedia());
+        adapter = new ProgramAdapter(this, RealmController.getInstance().getAllPrograms());
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position) {
 
-                if (G.isNetworkAvailable(MediaListActivity.this)){
+                if (G.isNetworkAvailable(ProgramListActivity.this)){
 
-                    Intent intent = new Intent(MediaListActivity.this, EditMediaActivity.class);
-                    intent.putExtra(Keys.KEY_EXTRA_FLAG, RealmController.getInstance().getAllMedia().get(position));
+                    Intent intent = new Intent(ProgramListActivity.this, ProgramContentActivity.class);
+                    intent.putExtra(Keys.KEY_EXTRA_FLAG, RealmController.getInstance().getAllPrograms().get(position));
                     startActivity(intent);
 
                 }else {
-                    G.toastLong(G.getStringFromResource(R.string.no_internet, MediaListActivity.this), MediaListActivity.this);
+                    G.toastLong(G.getStringFromResource(R.string.no_internet, ProgramListActivity.this), ProgramListActivity.this);
                 }
 
             }
         });
+        rcvPrograms.setAdapter(adapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        rcvPosts.setLayoutManager(linearLayoutManager);
-        rcvPosts.setAdapter(adapter);
+        rcvPrograms.setLayoutManager(linearLayoutManager);
 
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
@@ -130,28 +158,51 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
                 G.i("YOOOHO");
 
                 G.i("passed threshold p: " + page + " activity: " + totalItemsCount);
-                if (!noMoreMedia) {
-                    loadMedia(Constant.MEDIA_REQUEST_COUNT, totalItemsCount, page, searchPhrase);
-                } else
-                    noMoreMedia = false;
 
+                if (!noMoreProgram){
+                    loadPrograms(Constant.PROGRAM_REQUEST_COUNT,totalItemsCount,page, searchPhrase, mGroupId);
+                }else
+                    noMoreProgram = false;
             }
 
             @Override
             public void onScroll(RecyclerView view, int dx, int dy) {
 
-                if (dy > 0 && btnAddMedia.getVisibility() == View.VISIBLE) {
-                    btnAddMedia.hide();
-                } else if (dy < 0 && btnAddMedia.getVisibility() != View.VISIBLE) {
-                    btnAddMedia.show();
+                if (dy > 0 && btnNewProgram.getVisibility() == View.VISIBLE) {
+                    btnNewProgram.hide();
+                } else if (dy < 0 && btnNewProgram.getVisibility() != View.VISIBLE) {
+                    btnNewProgram.show();
                 }
             }
         };
-        rcvPosts.addOnScrollListener(scrollListener);
+        // Adds the scroll listener to RecyclerView
+        rcvPrograms.addOnScrollListener(scrollListener);
 
 
-        loadMedia(Constant.MEDIA_REQUEST_COUNT, 0, 0, "null");
+        loadPrograms(Constant.PROGRAM_REQUEST_COUNT,0,0, searchPhrase, mGroupId);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        finish();
+    }
+
+
+//    @Override
+//    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        loadPrograms(Constant.PROGRAM_REQUEST_COUNT,0,0, searchPhrase, mGroupId);
+//    }
+
 
     private void setupSearchBar(final View parent){
 
@@ -161,7 +212,6 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
         EditText text = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         text.setTextColor(Color.WHITE);
         text.setHintTextColor(G.getColorFromResource(R.color.colorGray, this));
-
         text.setHint(G.getStringFromResource(R.string.search, this));
         searchView.onActionViewCollapsed();
 
@@ -182,8 +232,10 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
                 InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
                 View view = getCurrentFocus();
                 if (view == null) {
-                    view = new View(MediaListActivity.this);
-                }imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    view = new View(ProgramListActivity.this);
+                }
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
                 callSearch(query);
                 return true;
             }
@@ -194,7 +246,7 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
                 if (searchView.getQuery().length() == 0) {
                     reset();
                     searchPhrase = "null";
-                    loadMedia(Constant.MEDIA_REQUEST_COUNT, 0, 0, "null");
+                    loadPrograms(Constant.PROGRAM_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId);
                 }
                 return false;
             }
@@ -203,14 +255,16 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
 
                 reset();
                 searchPhrase = query;
-                loadMedia(Constant.MEDIA_REQUEST_COUNT, 0, 0, query);
+                loadPrograms(Constant.PROGRAM_REQUEST_COUNT, 0, 0, query, mGroupId);
+//                //Make it visible
+//                prgWait.setVisibility(View.VISIBLE);
             }
 
         });
 
     }
 
-    private void loadMedia(final int count, final int start, final int page, String searchPhrase) {
+    private void loadPrograms(final int count, final int start, final int page, String searchPhrase, String groupId){
         isLoading = true;
 
         if (isFirstLoad){
@@ -220,6 +274,7 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+
                     if (doesFragmentExists) {
                         if (!isLoaded) {
                             changeLoadingResource(0);
@@ -230,90 +285,92 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
             }, Constant.TIME_OUT);
         }
 
-        new HttpCommand(
-                HttpCommand.COMMAND_GET_POSTS,
-                null, Constant.TYPE_MEDIA,
-                count + "", page + "", searchPhrase, "null").setOnResultListener(new OnResultListener() {
-            @Override
-            public void onResult(String result) {
-                if (doesFragmentExists) {
-                    isLoading = false;
-                    if (isFirstLoad) {
-                        isLoaded = true;
-                        isFirstLoad = false;
-                        changeLoadingResource(2);
-                    }
+        new HttpCommand(HttpCommand.COMMAND_GET_POSTS,null,Constant.TYPE_PROGRAM, count + "" , page + "" , searchPhrase, groupId)
+                .setOnResultListener(new OnResultListener() {
+                    @Override
+                    public void onResult(String result) {
 
-                    List<Media> media = JSONParser.parseMedia(result);
-                    if (media != null) {
-                        for (Media m : media) {
-                            G.i(m.getId() + "");
-                            RealmController.getInstance().addMedia(m);
+                        if (doesFragmentExists) {
+                            isLoading = false;
+
+                            if (isFirstLoad) {
+                                isLoaded = true;
+                                isFirstLoad = false;
+                                changeLoadingResource(2);
+                            }
+
+                            List<Program> programs = JSONParser.parsePrograms(result);
+
+                            if (programs != null) {
+
+                                for (Program program : programs) {
+                                    G.i(program.getId() + "");
+                                    RealmController.getInstance().addProgram(program);
+                                }
+                                adapter.notifyItemRangeInserted(start - 1, programs.size());
+
+                                if (programs.size() < count)
+                                    noMoreProgram = true;
+
+                            } else {
+                                G.i("No more program is returned");
+                            }
+
+                            if (adapter.getItemCount() <= 0)
+                                txtNoPrograms.setVisibility(View.VISIBLE);
+                            else
+                                txtNoPrograms.setVisibility(View.GONE);
                         }
-                        adapter.notifyItemRangeInserted(start - 1, media.size());
-
-                        if (media.size() < count)
-                            noMoreMedia = true;
-
-                    } else {
-                        G.i("No more Media is returned");
                     }
-
-                    if (adapter.getItemCount() <= 0)
-                        txtNoMedia.setVisibility(View.VISIBLE);
-                    else
-                        txtNoMedia.setVisibility(View.GONE);
-
-                }
-            }
-        }).execute();
-
+                }).execute();
     }
 
     private void changeLoadingResource(int state) {
+
         if (swipeRefreshLayout.isRefreshing()){
             swipeRefreshLayout.setRefreshing(false);
         }
 
         switch (state) {
             case 0:
-                txtNoMedia.setVisibility(View.GONE);
+                txtNoPrograms.setVisibility(View.GONE);
                 lnlNoNetwork.setVisibility(View.VISIBLE);
                 btnTryAgain.setVisibility(View.VISIBLE);
                 lnlLoading.setVisibility(View.GONE);
                 break;
             case 1:
-                txtNoMedia.setVisibility(View.GONE);
+                txtNoPrograms.setVisibility(View.GONE);
                 lnlNoNetwork.setVisibility(View.GONE);
                 btnTryAgain.setVisibility(View.GONE);
                 lnlLoading.setVisibility(View.VISIBLE);
                 break;
             default:
-                txtNoMedia.setVisibility(View.GONE);
+                txtNoPrograms.setVisibility(View.GONE);
                 lnlNoNetwork.setVisibility(View.GONE);
                 btnTryAgain.setVisibility(View.GONE);
                 lnlLoading.setVisibility(View.GONE);
-                swipeRefreshLayout.setRefreshing(false);
                 break;
         }
     }
 
     private void reset() {
-        clearMedia();
+
+        clearPrograms();
         isFirstLoad = true;
+
         adapter.notifyDataSetChanged();
         scrollListener.resetState();
     }
 
-    private void clearMedia(){
-        RealmController.getInstance().clearAllMedia();
+    private void clearPrograms(){
+        RealmController.getInstance().clearAllPrograms();
     }
 
     @Override
     public void onRefresh() {
         if (!isLoading){
             reset();
-            loadMedia(Constant.MEDIA_REQUEST_COUNT, 0, 0, searchPhrase);
+            loadPrograms(Constant.POST_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId);
         }
     }
 
@@ -322,4 +379,5 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
         super.onDestroy();
         doesFragmentExists = false;
     }
+
 }

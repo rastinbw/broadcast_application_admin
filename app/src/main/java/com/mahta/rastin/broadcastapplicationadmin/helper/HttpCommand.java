@@ -14,7 +14,7 @@ public class HttpCommand {
     private HttpManager httpManager;
 
     //Commands
-    public static final String COMMAND_LOGIN = "login";
+
     public static final String COMMAND_AUTHORIZE = "authorize";
     public static final String COMMAND_CONFIRM = "confirm";
     public static final String COMMAND_GET_POSTS = "get posts";
@@ -26,6 +26,9 @@ public class HttpCommand {
     public static final String COMMAND_GET_PASSWORD = "get password";
     public static final String COMMAND_CHANGE_PASSWORD = "change password";
     public static final String COMMAND_GET_GROUP_LIST = "get group list";
+
+    public static final String COMMAND_LOGIN = "login";
+    public static final String COMMAND_CREATE_POST = "create post";
 
 
     public HttpCommand(String command,ContentValues params,String ... args){
@@ -77,6 +80,9 @@ public class HttpCommand {
                 case COMMAND_GET_GROUP_LIST:
                     commandGetGroupList();
                     break;
+                case COMMAND_CREATE_POST:
+                    commandCreatePost();
+                    break;
                 default:
                     G.e("Invalid Command");
             }
@@ -101,7 +107,7 @@ public class HttpCommand {
         return this;
     }
 
-    private void setCommandLogin(){ httpManager.post(G.BASE_URL+"student/login",currentParams); }
+//    private void setCommandLogin(){ httpManager.post(G.BASE_URL+"student/login",currentParams); }
 
     private void commandAuthorize(){ httpManager.post(G.BASE_URL+"student/authorize",currentParams); }
 
@@ -124,6 +130,13 @@ public class HttpCommand {
     private void commandChangePassword() { httpManager.post(G.BASE_URL+"student/change_password",currentParams); }
 
     private void commandGetGroupList() { httpManager.get(G.BASE_URL+"groups",currentArgs);}
+
+
+
+    private void commandCreatePost() { httpManager.post(G.CREATE_POST_URL, currentParams );}
+
+    private void setCommandLogin() {httpManager.post(G.LOGIN_URL, currentParams);}
+
 }
 
 

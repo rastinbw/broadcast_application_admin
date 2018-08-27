@@ -6,7 +6,7 @@
     android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.program.ProgramListActivity">
+    tools:context=".activity.post.PostListActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,58 +25,16 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/lnlGroup"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:background="@color/colorPrimary"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/imgDivider1"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:src="@color/colorPlatinum"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-
-                <ImageView
-                    android:id="@+id/imgArrow"
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="5dp"
-                    app:srcCompat="@drawable/ic_arrow_drop_down_24dp"/>
-
-                <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
-                    android:id="@+id/txtGroup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="@string/all_groups"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="#ffffff"
-                    app:fontTextView="shabnam_bold.ttf"/>
-
-            </RelativeLayout>
-
-
-        </LinearLayout>
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
-                android:id="@+id/txtNoProgram"
+                android:id="@+id/txtNoPost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/there_is_no_program"
+                android:text="@string/there_is_no_post"
                 android:textAppearance="?android:textAppearanceSmall"
                 android:textColor="@color/colorPrimaryText"
                 android:visibility="gone"
@@ -151,22 +109,20 @@
                 app:fontButton="shabnam_bold.ttf"/>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/rcvPrograms"
+                android:id="@+id/rcvPosts"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </android.support.v7.widget.RecyclerView>
+                android:layout_height="match_parent"/>
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/btnNewProgram"
+                android:id="@+id/btnNewPost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="15dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:scaleType="center"
                 android:src="@drawable/ic_add"
-                app:backgroundTint="@color/colorPrimary"
-                />
+                app:backgroundTint="@color/colorPrimary"/>
 
         </RelativeLayout>
 

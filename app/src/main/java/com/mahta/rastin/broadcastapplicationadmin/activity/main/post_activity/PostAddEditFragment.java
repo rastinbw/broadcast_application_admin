@@ -1,44 +1,49 @@
-package com.mahta.rastin.broadcastapplicationadmin.activity.other;
+package com.mahta.rastin.broadcastapplicationadmin.activity.main.post_activity;
 
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
-import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
 import com.mahta.rastin.broadcastapplicationadmin.editor.RichEditor;
-import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.model.Post;
 
+public class PostAddEditFragment extends Fragment implements View.OnClickListener {
 
-public class EditPostActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private Post post;
-    private EditTextPlus edttitle, edtPreview;
+    public Post post;
     private RichEditor mEditor;
 
+    public static PostAddEditFragment newInstance (Post post) {
+        PostAddEditFragment fragment = new PostAddEditFragment();
+
+//        Bundle args = new Bundle();
+//        args.putInt("score" , score);
+//        args.putString("name" , name);
+//        args.putString("id" , id);
+//
+//        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_new);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        findViewById(R.id.imgBack).setOnClickListener(this);
-        findViewById(R.id.txtApply).setOnClickListener(this);
-        findViewById(R.id.txtBack).setOnClickListener(this);
+        View rootView = inflater.inflate(R.layout.fragment_post_addedit , container , false);
 
-        edttitle = findViewById(R.id.edt_title);
-        edtPreview = findViewById(R.id.edt_preview);
-
-        post = getIntent().getParcelableExtra(Keys.KEY_EXTRA_FLAG);
-
-        edttitle.setText(post.getTitle());
-        edtPreview.setText(post.getPreview());
+        rootView.findViewById(R.id.imgBack).setOnClickListener(this);
+        rootView.findViewById(R.id.txtApply).setOnClickListener(this);
+        rootView.findViewById(R.id.txtBack).setOnClickListener(this);
 
 
-        mEditor = findViewById(R.id.post_editor);
+        mEditor = rootView.findViewById(R.id.post_editor);
 
         //this is needed to request focus when clicked on bottom of editor
         mEditor.setEditorHeight(200);
@@ -50,16 +55,15 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
 
         mEditor.setPlaceholder("متن");
 
-        String html = "<div dir='rtl'>" + post.getContent() + "</div>";
+        // to adjust text direction
+        String html = "<div dir='rtl'>" + "<br/>" + "</div>";
 
         mEditor.setHtml(html);
+
 
         //to start activity with no focus on fields
         mEditor.requestFocus();
 
-
-
-        Log.i("MYTAG", post.getContent());
 
 
         mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
@@ -68,25 +72,25 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        findViewById(R.id.action_bold).setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.action_bold).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 mEditor.setBold();
             }
         });
 
-        findViewById(R.id.action_italic).setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.action_italic).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 mEditor.setItalic();
             }
         });
 
-        findViewById(R.id.action_underline).setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.action_underline).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 mEditor.setUnderline();
             }
         });
 
-        findViewById(R.id.action_txt_color).setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.action_txt_color).setOnClickListener(new View.OnClickListener() {
             private boolean isChanged;
 
             @Override public void onClick(View v) {
@@ -95,25 +99,25 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        findViewById(R.id.action_align_center).setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.action_align_center).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 mEditor.setAlignCenter();
             }
         });
 
-        findViewById(R.id.action_align_right).setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.action_align_right).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 mEditor.setAlignRight();
             }
         });
 
-        findViewById(R.id.action_insert_bullets).setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.action_insert_bullets).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 mEditor.setBullets();
             }
         });
 
-        findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
 
                 mEditor.insertImage("http://www.1honeywan.com/dachshund/image/7.21/7.21_3_thumb.JPG",
@@ -121,20 +125,17 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        findViewById(R.id.action_insert_link).setOnClickListener(new View.OnClickListener() {
+        rootView.findViewById(R.id.action_insert_link).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 mEditor.insertLink("https://github.com/wasabeef", "wasabeef");
             }
         });
 
-    }
 
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
 
-        finish();
+
+        return rootView;
     }
 
     @Override
@@ -143,10 +144,11 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         int id = v.getId();
 
         if (id == R.id.imgBack || id == R.id.txtBack) {
-            finish();
+//            finish();
 
         } else if (id == R.id.txtApply) {
-            Toast.makeText(this, "ثبت", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "ثبت", Toast.LENGTH_SHORT).show();
         }
+
     }
 }

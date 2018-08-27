@@ -1,5 +1,6 @@
-package com.mahta.rastin.broadcastapplicationadmin.activity.other;
+package com.mahta.rastin.broadcastapplicationadmin.activity.post;
 
+import android.content.ContentValues;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,12 +9,18 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
-import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
+import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
 import com.mahta.rastin.broadcastapplicationadmin.editor.RichEditor;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
+import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
+import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
+import com.mahta.rastin.broadcastapplicationadmin.model.Post;
 
-public class NewPostActivity extends AppCompatActivity implements View.OnClickListener {
 
+public class EditPostActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private Post post;
+    private EditTextPlus edttitle, edtPreview;
     private RichEditor mEditor;
 
     @Override
@@ -21,9 +28,19 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_new);
 
+
+
         findViewById(R.id.imgBack).setOnClickListener(this);
         findViewById(R.id.txtApply).setOnClickListener(this);
         findViewById(R.id.txtBack).setOnClickListener(this);
+
+        edttitle = findViewById(R.id.edt_title);
+        edtPreview = findViewById(R.id.edt_preview);
+
+        post = getIntent().getParcelableExtra(Keys.KEY_EXTRA_FLAG);
+
+        edttitle.setText(post.getTitle());
+        edtPreview.setText(post.getPreview());
 
 
         mEditor = findViewById(R.id.post_editor);
@@ -38,15 +55,16 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
 
         mEditor.setPlaceholder("متن");
 
-        // to adjust text direction
-        String html = "<div dir='rtl'>" + "<br/>" + "</div>";
+        String html = "<div dir='rtl'>" + post.getContent() + "</div>";
 
         mEditor.setHtml(html);
-
 
         //to start activity with no focus on fields
         mEditor.requestFocus();
 
+
+
+        Log.i("MYTAG", post.getContent());
 
 
         mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
@@ -116,6 +134,14 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        finish();
+    }
+
     @Override
     public void onClick(View v) {
 
@@ -125,7 +151,29 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
             finish();
 
         } else if (id == R.id.txtApply) {
-            Toast.makeText(this, "ثبت", Toast.LENGTH_SHORT).show();
+
+            String title = edttitle.getText().toString().trim();
+            String preview = edtPreview.getText().toString().trim();
+            String html = mEditor.getHtml();
+
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put("token", "fd98f651272ad756be3fca610e4a3d25" );
+            contentValues.put("title", title);
+            contentValues.put("preview_content", preview);
+            contentValues.put("content", html);
+
+            new HttpCommand(HttpCommand.COMMAND_CREATE_POST, contentValues).setOnResultListener(new OnResultListener() {
+                @Override
+                public void onResult(String result) {
+                    Log.i("MYTAG", result);
+                }
+            }).execute();
+
+
+
+
+
         }
     }
 }
