@@ -64,8 +64,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
             <RadioGroup
                 android:layout_width="125dp"
@@ -98,7 +98,7 @@
                     android:gravity="center"
                     android:padding="9dp"
                     android:tag="1"
-                    android:text="یازدهم دختران"
+                    android:text="يازدهم دختران"
                     android:textSize="14sp"
                     app:fontRadioButton="shabnam.ttf"/>
 
@@ -148,7 +148,7 @@
                     android:gravity="center"
                     android:padding="9dp"
                     android:tag="1"
-                    android:text="یازدهم پسران"
+                    android:text="يازدهم پسران"
                     android:textSize="14sp"
                     app:fontRadioButton="shabnam.ttf"/>
 
@@ -167,6 +167,43 @@
                     app:fontRadioButton="shabnam.ttf"/>
 
             </RadioGroup>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginStart="30dp"
+                android:background="@color/colorGray"/>
+
+            <LinearLayout
+                android:id="@+id/layoutDots"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal"
+                />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                android:id="@+id/slide_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"/>
 
         </LinearLayout>
 

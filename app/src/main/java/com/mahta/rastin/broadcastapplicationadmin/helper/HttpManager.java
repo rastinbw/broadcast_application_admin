@@ -1,12 +1,20 @@
 package com.mahta.rastin.broadcastapplicationadmin.helper;
 
 import android.content.ContentValues;
+import android.util.Log;
+
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -29,24 +37,77 @@ public class HttpManager{
                 .build();
     }
 
-    public void post(String url, ContentValues params){
+    public void post(String url, ContentValues params, String[] args){
+
+        StringBuilder aBuilder = new StringBuilder();
+        aBuilder.append(url);
+
+        if (args != null && args.length > 0)
+            for (String arg : args) {
+                aBuilder.append("/");
+                aBuilder.append(arg);
+            }
+
+        Log.i("MYTAG", aBuilder.toString());
 
         FormBody.Builder builder = new FormBody.Builder();
 
-        if (params!=null && params.size() > 0)
-            for (String key:params.keySet()) {
+        if (params != null && params.size() > 0)
+
+            for (String key : params.keySet()) {
                 builder.add(key,params.getAsString(key));
             }
 
         RequestBody body = builder.build();
 
+
         Request request = new Request.Builder()
-                .url(url)
+                .url(aBuilder.toString())
                 .post(body)
                 .build();
 
         doRequest(request);
     }
+
+    public void upload(String url, File file, ContentValues params, String[] args) throws IOException {
+
+        StringBuilder aBuilder = new StringBuilder();
+        aBuilder.append(url);
+
+        if (args != null && args.length > 0)
+            for (String arg : args) {
+                aBuilder.append("/");
+                aBuilder.append(arg);
+            }
+
+        Log.i("MYTAG", aBuilder.toString());
+
+        FormBody.Builder builder = new FormBody.Builder();
+
+        if (params != null && params.size() > 0)
+            for (String key : params.keySet()) {
+                builder.add(key, params.getAsString(key));
+            }
+
+        RequestBody formBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("media", file.getName(),
+                          RequestBody.create(MediaType.parse("audio/mpeg"), file))
+                .addFormDataPart("token", "8a137759b39c2f877f818b108d256da2")
+                .addFormDataPart("title", "title")
+                .addFormDataPart("description", "description")
+                .build();
+
+
+
+        Request request = new Request.Builder()
+                .url(aBuilder.toString())
+                .post(formBody)
+                .build();
+
+        doRequest(request);
+    }
+
 
     public void get(String url,String[] args){
 
@@ -74,6 +135,7 @@ public class HttpManager{
         doRequest(request);
     }
 
+
     private void doRequest(final Request request){
 
         Thread thread = new Thread(new Runnable() {
@@ -89,6 +151,7 @@ public class HttpManager{
                     }else {
 
                         httpResult = response.body().string();
+
                         if(onResultListener!=null){
                             G.HANDLER.post(new Runnable() {
                                 @Override

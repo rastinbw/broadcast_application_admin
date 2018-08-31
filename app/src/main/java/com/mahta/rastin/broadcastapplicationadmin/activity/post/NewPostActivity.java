@@ -12,6 +12,8 @@ import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
 import com.mahta.rastin.broadcastapplicationadmin.editor.RichEditor;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
+import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
+import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Post;
 
@@ -140,7 +142,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
 
             ContentValues contentValues = new ContentValues();
 
-            contentValues.put("token", "fd98f651272ad756be3fca610e4a3d25" );
+            contentValues.put("token", RealmController.getInstance().getUserToken().getToken());
             contentValues.put("title", title);
             contentValues.put("preview_content", preview);
             contentValues.put("content", html);
@@ -148,7 +150,14 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
             new HttpCommand(HttpCommand.COMMAND_CREATE_POST, contentValues).setOnResultListener(new OnResultListener() {
                 @Override
                 public void onResult(String result) {
-                    Log.i("MYTAG", result);
+
+                    if (JSONParser.getResultCodeFromJson(result) == 1000){
+
+                        Toast.makeText(NewPostActivity.this, "اطلاعیه جدید افزوده شد", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+
+
                 }
             }).execute();
 

@@ -1,6 +1,7 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.post;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -108,6 +110,7 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
                     Intent intent = new Intent(PostListActivity.this, PostContentActivity.class);
                     intent.putExtra(Keys.KEY_EXTRA_FLAG, RealmController.getInstance().getAllPosts().get(position));
                     startActivity(intent);
+
 
                 }else {
                     G.toastLong(G.getStringFromResource(R.string.no_internet, PostListActivity.this), PostListActivity.this);
@@ -248,7 +251,10 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
             }, Constant.TIME_OUT);
         }
 
-        new HttpCommand(HttpCommand.COMMAND_GET_POSTS,null,Constant.TYPE_HTML, count+"",page+"", searchPhrase, "null")
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
+
+        new HttpCommand(HttpCommand.COMMAND_GET_POSTS, contentValues,Constant.TYPE_HTML, count + "", page + "", searchPhrase, "null")
                 .setOnResultListener(new OnResultListener() {
                     @Override
                     public void onResult(String result) {

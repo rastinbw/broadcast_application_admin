@@ -1,6 +1,7 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.program;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -285,7 +286,10 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
             }, Constant.TIME_OUT);
         }
 
-        new HttpCommand(HttpCommand.COMMAND_GET_POSTS,null,Constant.TYPE_PROGRAM, count + "" , page + "" , searchPhrase, groupId)
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
+
+        new HttpCommand(HttpCommand.COMMAND_GET_POSTS, contentValues,Constant.TYPE_PROGRAM, count + "" , page + "" , searchPhrase, groupId)
                 .setOnResultListener(new OnResultListener() {
                     @Override
                     public void onResult(String result) {

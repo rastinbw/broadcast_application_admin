@@ -1,8 +1,13 @@
 package com.mahta.rastin.broadcastapplicationadmin.helper;
 
 import android.content.ContentValues;
+import android.util.Log;
+
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
+
+import java.io.File;
+import java.io.IOException;
 
 
 public class HttpCommand {
@@ -12,6 +17,7 @@ public class HttpCommand {
     private ContentValues currentParams;
     private String[] currentArgs;
     private HttpManager httpManager;
+    private File file;
 
     //Commands
 
@@ -29,6 +35,8 @@ public class HttpCommand {
 
     public static final String COMMAND_LOGIN = "login";
     public static final String COMMAND_CREATE_POST = "create post";
+    public static final String COMMAND_UPDATE_POST = "update post";
+    public static final String COMMAND_CREATE_MEDIA = "create media";
 
 
     public HttpCommand(String command,ContentValues params,String ... args){
@@ -39,6 +47,16 @@ public class HttpCommand {
         httpManager = new HttpManager();
     }
 
+    public HttpCommand(String command, File file, ContentValues params,String ... args){
+
+        this.file = file;
+        this.currentCommand = command;
+        this.currentParams = params;
+        this.currentArgs = args;
+        httpManager = new HttpManager();
+    }
+
+
     public void execute(){
 
         if (httpManager!=null && onResultListener!=null){
@@ -48,41 +66,67 @@ public class HttpCommand {
                 case COMMAND_LOGIN:
                     setCommandLogin();
                     break;
+
                 case COMMAND_AUTHORIZE:
                     commandAuthorize();
                     break;
+
                 case COMMAND_GET_POSTS:
                     commandGetPosts();
                     break;
+
                 case COMMAND_CONFIRM:
                     commandConfirm();
                     break;
+
                 case COMMAND_GET_WORKBOOK:
                     commandGetWorkbook();
                     break;
+
                 case COMMAND_GET_INFO:
                     commandGetInfo();
                     break;
+
                 case COMMAND_GET_POST:
                     commandGetPost();
                     break;
+
                 case COMMAND_SEND_TICKET:
                     commandSendTicket();
                     break;
+
                 case COMMAND_GET_LAST_NOTIFICATIONS:
                     commandGetLastNotifications();
                     break;
+
                 case COMMAND_GET_PASSWORD:
                     commandGetPassword();
+                    break;
+
                 case COMMAND_CHANGE_PASSWORD:
                     commandChangePassword();
                     break;
+
                 case COMMAND_GET_GROUP_LIST:
                     commandGetGroupList();
                     break;
+
                 case COMMAND_CREATE_POST:
                     commandCreatePost();
                     break;
+
+                case COMMAND_UPDATE_POST:
+                    commandUpdatePost();
+                    break;
+
+                case COMMAND_CREATE_MEDIA:
+                    try {
+                        commandCreateMedia();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+
                 default:
                     G.e("Invalid Command");
             }
@@ -92,6 +136,8 @@ public class HttpCommand {
     }
 
 
+
+
     public HttpCommand setOnResultListener(OnResultListener listener){
 
         onResultListener = listener;
@@ -99,43 +145,53 @@ public class HttpCommand {
         httpManager.setOnResultListener(new OnResultListener() {
             @Override
             public void onResult(String result) {
-                if(onResultListener!=null){
+
+                if(onResultListener != null){
                     onResultListener.onResult(result);
+
+                    Log.i("MYTAG", result);
+
+                } else {
+                    Log.i("MYTAG", "result was null");
                 }
             }
         });
         return this;
     }
 
-//    private void setCommandLogin(){ httpManager.post(G.BASE_URL+"student/login",currentParams); }
+    private void commandAuthorize(){ httpManager.post(G.BASE_URL+"student/authorize",currentParams, currentArgs); }
 
-    private void commandAuthorize(){ httpManager.post(G.BASE_URL+"student/authorize",currentParams); }
+    private void commandConfirm(){ httpManager.post(G.BASE_URL+"student/confirm",currentParams, currentArgs); }
 
-    private void commandConfirm(){ httpManager.post(G.BASE_URL+"student/confirm",currentParams); }
+    private void commandGetWorkbook(){ httpManager.post(G.BASE_URL+"student/workbook",currentParams, currentArgs); }
 
-    private void commandGetWorkbook(){ httpManager.post(G.BASE_URL+"student/workbook",currentParams); }
 
-    private void commandGetPosts(){ httpManager.get(G.BASE_URL+"posts",currentArgs);}
 
     private void commandGetPost(){ httpManager.get(G.BASE_URL+"post",currentArgs);}
 
-    private void commandGetInfo() { httpManager.post(G.BASE_URL+"student/info",currentParams); }
+    private void commandGetInfo() { httpManager.post(G.BASE_URL+"student/info",currentParams, currentArgs); }
 
-    private void commandSendTicket() { httpManager.post(G.BASE_URL+"send_ticket",currentParams); }
+    private void commandSendTicket() { httpManager.post(G.BASE_URL+"send_ticket",currentParams, currentArgs); }
 
     private void commandGetLastNotifications(){ httpManager.get(G.BASE_URL+"notification",currentArgs);}
 
-    private void commandGetPassword() { httpManager.post(G.BASE_URL+"student/get_password",currentParams); }
+    private void commandGetPassword() { httpManager.post(G.BASE_URL+"student/get_password",currentParams, currentArgs); }
 
-    private void commandChangePassword() { httpManager.post(G.BASE_URL+"student/change_password",currentParams); }
+    private void commandChangePassword() { httpManager.post(G.BASE_URL+"student/change_password",currentParams, currentArgs); }
 
     private void commandGetGroupList() { httpManager.get(G.BASE_URL+"groups",currentArgs);}
 
 
 
-    private void commandCreatePost() { httpManager.post(G.CREATE_POST_URL, currentParams );}
+    private void commandCreatePost() { httpManager.post(G.BASE_URL+"post/create", currentParams, currentArgs );}
 
-    private void setCommandLogin() {httpManager.post(G.LOGIN_URL, currentParams);}
+    private void setCommandLogin() {httpManager.post(G.BASE_URL+"login", currentParams, currentArgs);}
+
+    private void commandUpdatePost() {httpManager.post(G.BASE_URL+"post/update", currentParams, currentArgs);}
+
+    private void commandGetPosts(){ httpManager.post(G.BASE_URL+"posts",currentParams, currentArgs);}
+
+    private void commandCreateMedia() throws IOException { httpManager.upload(G.BASE_URL+"media/create", file, currentParams, currentArgs);}
 
 }
 

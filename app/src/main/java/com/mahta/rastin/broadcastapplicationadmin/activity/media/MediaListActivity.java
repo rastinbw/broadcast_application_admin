@@ -1,6 +1,7 @@
-package com.mahta.rastin.broadcastapplicationadmin.activity.main;
+package com.mahta.rastin.broadcastapplicationadmin.activity.media;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
@@ -19,8 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
-import com.mahta.rastin.broadcastapplicationadmin.activity.other.EditMediaActivity;
-import com.mahta.rastin.broadcastapplicationadmin.activity.other.NewMediaActivity;
 import com.mahta.rastin.broadcastapplicationadmin.adapter.MediaAdapter;
 import com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus;
 import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
@@ -230,13 +229,16 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
             }, Constant.TIME_OUT);
         }
 
-        new HttpCommand(
-                HttpCommand.COMMAND_GET_POSTS,
-                null, Constant.TYPE_MEDIA,
-                count + "", page + "", searchPhrase, "null").setOnResultListener(new OnResultListener() {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
+
+        new HttpCommand(HttpCommand.COMMAND_GET_POSTS, contentValues,Constant.TYPE_MEDIA,count + "", page + "", searchPhrase, "null")
+                .setOnResultListener(new OnResultListener() {
             @Override
             public void onResult(String result) {
+
                 if (doesFragmentExists) {
+
                     isLoading = false;
                     if (isFirstLoad) {
                         isLoaded = true;
@@ -245,6 +247,7 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
                     }
 
                     List<Media> media = JSONParser.parseMedia(result);
+
                     if (media != null) {
                         for (Media m : media) {
                             G.i(m.getId() + "");

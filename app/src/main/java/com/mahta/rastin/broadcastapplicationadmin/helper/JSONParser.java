@@ -5,6 +5,7 @@ import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.model.Media;
 import com.mahta.rastin.broadcastapplicationadmin.model.Post;
 import com.mahta.rastin.broadcastapplicationadmin.model.Program;
+import com.mahta.rastin.broadcastapplicationadmin.model.UserToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +22,7 @@ public class JSONParser {
         try {
             JSONObject obj = new JSONObject(content);
             resultCode = obj.getInt(Keys.KEY_RESULT_CODE);
+
         } catch (JSONException e) {
             G.e("error_getResultCodeFromJson: " + e.getMessage());
             return 0;
@@ -29,23 +31,25 @@ public class JSONParser {
     }
 
 
-    public static String parseToken(String content){
+    public static UserToken parseToken(String content){
 
         String token = "";
 
         try {
             JSONObject obj = new JSONObject(content);
             token = obj.getString(Keys.KEY_DATA);
+
         } catch (JSONException e) {
             G.e("error_parseToken: " + e.getMessage());
         }
-        return token;
+        return new UserToken(token);
     }
 
 
     public static List<Post> parsePosts(String content){
 
         try {
+
             JSONObject obj = new JSONObject(content);
             JSONArray data = obj.getJSONArray(Keys.KEY_DATA);
 
@@ -55,6 +59,7 @@ public class JSONParser {
                 for (int i = 0; i < data.length(); i++) {
 
                     if (!data.isNull(i)){
+
                         JSONObject jpost = data.getJSONObject(i);
                         Post post = new Post();
 
@@ -71,6 +76,7 @@ public class JSONParser {
                 return null;
 
         } catch (JSONException e) {
+
             e.printStackTrace();
             G.e("error_parsePosts: " + e.getMessage());
             return null;

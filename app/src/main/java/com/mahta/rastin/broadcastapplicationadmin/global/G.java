@@ -24,20 +24,13 @@ public class G extends Application {
     public static AppCompatActivity currentActivity;
     public static final String TAG = "mahta";
 
-//    public static final String DOMAIN = "http://192.168.8.102/broadcast_app_server/public";
-    public static final String DOMAIN = "https://schoolbroadcastpanel.ir";
-
-    public static final String LOGIN_URL = DOMAIN + "/api/admin/login";
-    public static final String CREATE_POST_URL = DOMAIN + "/api/admin/post/create";
-
-
+    public static final String DOMAIN = "http://192.168.1.4/broadcast_app_server/public";
+//    public static final String DOMAIN = "https://schoolbroadcastpanel.ir";
     public static final String ABOUT_US_URL = DOMAIN + "/about_us";
 
     public static final String RULES_URL = DOMAIN + "/rules";
-    public static final String POST_URL = DOMAIN + "/api/post/";
-    public static final String PROGRAM_URL = DOMAIN + "/api/program/";
 
-    public static final String BASE_URL = DOMAIN + "/api/" + providerId + "/";
+    public static final String BASE_URL = DOMAIN + "/api/admin/";
     public static final String FILE_URL = DOMAIN + "/uploads/";
 
     public static final Handler HANDLER = new Handler();

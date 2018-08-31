@@ -1,4 +1,4 @@
-package com.mahta.rastin.broadcastapplicationadmin.activity.other;
+package com.mahta.rastin.broadcastapplicationadmin.activity.media;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

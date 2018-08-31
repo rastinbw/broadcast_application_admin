@@ -59,6 +59,7 @@ public class RealmController {
 
     //add a UserToken to Realm
     public void addUserToken(UserToken userToken){
+
         //Because each user can only have one UserToken
         removeUserToken();
 
@@ -70,6 +71,7 @@ public class RealmController {
 
     //remove UserToken from realm
     public void removeUserToken() {
+
         realm.beginTransaction();
         RealmResults<UserToken> result = realm.where(UserToken.class).findAll();
         result.deleteAllFromRealm();

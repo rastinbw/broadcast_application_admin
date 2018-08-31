@@ -23,21 +23,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".activity.main.MainActivity" />
         <activity android:name=".activity.startup.LoginActivity" />
         <activity android:name=".activity.post.PostListActivity" />
-        <activity android:name=".activity.other.NewMediaActivity" />
+        <activity android:name=".activity.media.NewMediaActivity" />
         <activity android:name=".activity.program.ProgramListActivity" />
         <activity android:name=".activity.main.HelpActivity" />
         <activity android:name=".activity.post.NewPostActivity" />
         <activity android:name=".activity.post.EditPostActivity" />
         <activity android:name=".activity.program.EditProgramActivity" />
-        <activity android:name=".activity.main.MediaListActivity" />
+        <activity android:name=".activity.media.MediaListActivity" />
         <activity android:name=".activity.program.NewProgramActivity" />
-        <activity android:name=".activity.other.EditMediaActivity" />
+        <activity android:name=".activity.media.EditMediaActivity" />
         <activity android:name=".activity.main.post_activity.PostActivity" />
         <activity android:name=".activity.post.PostContentActivity" />
-        <activity android:name=".activity.program.ProgramContentActivity"></activity>
+        <activity android:name=".activity.program.ProgramContentActivity"/>
+
     </application>
 
 </manifest>

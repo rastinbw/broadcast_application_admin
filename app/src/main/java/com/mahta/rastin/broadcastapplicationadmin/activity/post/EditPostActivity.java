@@ -13,6 +13,8 @@ import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
 import com.mahta.rastin.broadcastapplicationadmin.editor.RichEditor;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
+import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
+import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Post;
 
@@ -64,7 +66,7 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
 
 
 
-        Log.i("MYTAG", post.getContent());
+//        Log.i("MYTAG", post.getContent());
 
 
         mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
@@ -158,19 +160,23 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
 
             ContentValues contentValues = new ContentValues();
 
-            contentValues.put("token", "fd98f651272ad756be3fca610e4a3d25" );
+            contentValues.put("token", RealmController.getInstance().getUserToken().getToken());
             contentValues.put("title", title);
             contentValues.put("preview_content", preview);
             contentValues.put("content", html);
 
-            new HttpCommand(HttpCommand.COMMAND_CREATE_POST, contentValues).setOnResultListener(new OnResultListener() {
+            new HttpCommand(HttpCommand.COMMAND_UPDATE_POST, contentValues, post.getId()+"").setOnResultListener(new OnResultListener() {
                 @Override
                 public void onResult(String result) {
-                    Log.i("MYTAG", result);
+
+                    if (JSONParser.getResultCodeFromJson(result) == 1000){
+
+                        Toast.makeText(EditPostActivity.this, "اطلاعیه با موفقیت ویرایش شد", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+
                 }
             }).execute();
-
-
 
 
 

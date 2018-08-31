@@ -12,6 +12,12 @@ public class UserToken extends RealmObject {
     @Required
     private String token;
 
+    public UserToken(String token) {
+        this.token = token;
+    }
+
+    public UserToken() { }
+
     public int getId() {
         return id;
     }

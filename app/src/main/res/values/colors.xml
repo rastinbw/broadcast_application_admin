@@ -26,4 +26,12 @@
     <color name="colorGrayLight">#ededed</color>
     <color name="colorGrayDark">#6c6e70</color>
     <color name="colorGreen">#0b9b01</color>
+
+    <color name="dot_active">#008a00</color>
+    <color name="dot_inactive">#65ad65</color>
+
+    <color name="colorHeader">@color/colorPrimary</color>
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="textColorSecondary">#FFFFFF</color>
+
 </resources>

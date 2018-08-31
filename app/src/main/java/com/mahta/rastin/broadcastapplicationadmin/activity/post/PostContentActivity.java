@@ -55,6 +55,7 @@ public class PostContentActivity extends AppCompatActivity implements View.OnCli
         findViewById(R.id.imgBack).setOnClickListener(this);
         findViewById(R.id.imgEdit).setOnClickListener(this);
         findViewById(R.id.imgDelete).setOnClickListener(this);
+        findViewById(R.id.imgDelete).setOnClickListener(this);
 
         ((TextViewPlus)findViewById(R.id.txtTitle)).setText(currentPost.getTitle());
 
@@ -65,18 +66,27 @@ public class PostContentActivity extends AppCompatActivity implements View.OnCli
 
         int id  = v.getId();
 
-        if (id == R.id.imgBack) {
-            finish();
+        switch (id) {
 
-        } else if (id == R.id.imgEdit) {
+            case R.id.imgBack:
+                finish();
+                break;
 
-            Intent intent = new Intent(PostContentActivity.this, EditPostActivity.class);
-            intent.putExtra(Keys.KEY_EXTRA_FLAG, currentPost);
-            startActivity(intent);
+            case R.id.imgEdit:
+                Intent intent = new Intent(PostContentActivity.this, EditPostActivity.class);
+                intent.putExtra(Keys.KEY_EXTRA_FLAG, currentPost);
+                startActivity(intent);
 
-        } else if (id == R.id.imgDelete) {
+                break;
+
+            case R.id.imgDelete:
+                //server side url issue
+
+                break;
 
         }
+
+
 
     }
 }
