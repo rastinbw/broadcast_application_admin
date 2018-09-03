@@ -23,7 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".activity.main.MainActivity" />
         <activity android:name=".activity.startup.LoginActivity" />
         <activity android:name=".activity.post.PostListActivity" />
@@ -38,7 +37,11 @@
         <activity android:name=".activity.media.EditMediaActivity" />
         <activity android:name=".activity.main.post_activity.PostActivity" />
         <activity android:name=".activity.post.PostContentActivity" />
-        <activity android:name=".activity.program.ProgramContentActivity"/>
+        <activity android:name=".activity.program.ProgramContentActivity" />
+
+
+
+        <activity android:name=".activity.MyActivity"/>
 
     </application>
 

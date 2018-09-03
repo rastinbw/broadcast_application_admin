@@ -99,9 +99,11 @@ public class RealmController {
     }
 
     //remove UserToken from realm
-    public void clearGroup() {
+    public void clearAllGroups() {
+
         realm.beginTransaction();
         RealmResults<Group> result = realm.where(Group.class).findAll();
+
         result.deleteAllFromRealm();
         realm.commitTransaction();
     }

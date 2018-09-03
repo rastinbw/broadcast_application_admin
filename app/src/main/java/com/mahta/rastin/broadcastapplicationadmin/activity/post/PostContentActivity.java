@@ -1,5 +1,6 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.post;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,11 +8,18 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
+import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
+import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
+import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
+import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Post;
+
+import io.realm.Realm;
 
 public class PostContentActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -80,7 +88,22 @@ public class PostContentActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.imgDelete:
-                //server side url issue
+
+                ContentValues contentValues = new ContentValues();
+
+                contentValues.put("token", RealmController.getInstance().getUserToken().getToken());
+
+                new HttpCommand(HttpCommand.COMMAND_DELETE_POST, contentValues, currentPost.getId()+"" ).setOnResultListener(new OnResultListener() {
+                    @Override
+                    public void onResult(String result) {
+                        if (JSONParser.getResultCodeFromJson(result) == 1000){
+
+
+                            Toast.makeText(PostContentActivity.this, "اطلاعیه با موفقیت حذف شد", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }
+                }).execute();
 
                 break;
 

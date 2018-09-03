@@ -24,7 +24,7 @@ public class G extends Application {
     public static AppCompatActivity currentActivity;
     public static final String TAG = "mahta";
 
-    public static final String DOMAIN = "http://192.168.1.4/broadcast_app_server/public";
+    public static final String DOMAIN = "http://192.168.8.104/broadcast_app_server/public";
 //    public static final String DOMAIN = "https://schoolbroadcastpanel.ir";
     public static final String ABOUT_US_URL = DOMAIN + "/about_us";
 
@@ -35,7 +35,6 @@ public class G extends Application {
 
     public static final Handler HANDLER = new Handler();
     private BroadcastReceiver networkWatcher;
-
 
 
     @Override

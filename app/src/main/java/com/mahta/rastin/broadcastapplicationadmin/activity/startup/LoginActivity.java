@@ -38,13 +38,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //setting tollbar title
         ((TextViewPlus) findViewById(R.id.txtTitle)).setText("پنل مدیریت");
 
-        //check if token exists
-        if (RealmController.getInstance().hasUserToken()) {
-
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-        }
-
     }
 
     @Override
@@ -58,7 +51,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         params.put("email", email);
         params.put("password", pass);
 
-        new HttpCommand( HttpCommand.COMMAND_LOGIN , params , null).setOnResultListener(new OnResultListener() {
+        new HttpCommand( HttpCommand.COMMAND_LOGIN , params).setOnResultListener(new OnResultListener() {
             @Override
             public void onResult(String result) {
 

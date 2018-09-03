@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
+import com.mahta.rastin.broadcastapplicationadmin.activity.MyActivity;
 import com.mahta.rastin.broadcastapplicationadmin.adapter.PostAdapter;
 import com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus;
 import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
@@ -107,7 +108,7 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
 
                 if (G.isNetworkAvailable(PostListActivity.this)){
 
-                    Intent intent = new Intent(PostListActivity.this, PostContentActivity.class);
+                    Intent intent = new Intent(PostListActivity.this, EditPostActivity.class);
                     intent.putExtra(Keys.KEY_EXTRA_FLAG, RealmController.getInstance().getAllPosts().get(position));
                     startActivity(intent);
 

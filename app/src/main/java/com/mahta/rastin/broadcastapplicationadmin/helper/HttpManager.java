@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import io.realm.Realm;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -69,7 +70,7 @@ public class HttpManager{
         doRequest(request);
     }
 
-    public void upload(String url, File file, ContentValues params, String[] args) throws IOException {
+    public void upload(String url, File file, String title, String description, String[] args) throws IOException {
 
         StringBuilder aBuilder = new StringBuilder();
         aBuilder.append(url);
@@ -82,20 +83,14 @@ public class HttpManager{
 
         Log.i("MYTAG", aBuilder.toString());
 
-        FormBody.Builder builder = new FormBody.Builder();
-
-        if (params != null && params.size() > 0)
-            for (String key : params.keySet()) {
-                builder.add(key, params.getAsString(key));
-            }
-
         RequestBody formBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("media", file.getName(),
                           RequestBody.create(MediaType.parse("audio/mpeg"), file))
-                .addFormDataPart("token", "8a137759b39c2f877f818b108d256da2")
-                .addFormDataPart("title", "title")
-                .addFormDataPart("description", "description")
+
+                .addFormDataPart("token", RealmController.getInstance().getUserToken().getToken())
+                .addFormDataPart("title", title)
+                .addFormDataPart("description", description)
                 .build();
 
 
@@ -104,6 +99,8 @@ public class HttpManager{
                 .url(aBuilder.toString())
                 .post(formBody)
                 .build();
+
+        G.i(RealmController.getInstance().getUserToken().getToken());
 
         doRequest(request);
     }

@@ -13,7 +13,7 @@ import java.io.IOException;
 public class HttpCommand {
 
     private OnResultListener onResultListener;
-    private String currentCommand;
+    private String currentCommand, title, description;
     private ContentValues currentParams;
     private String[] currentArgs;
     private HttpManager httpManager;
@@ -36,10 +36,11 @@ public class HttpCommand {
     public static final String COMMAND_LOGIN = "login";
     public static final String COMMAND_CREATE_POST = "create post";
     public static final String COMMAND_UPDATE_POST = "update post";
+    public static final String COMMAND_DELETE_POST = "delete post";
     public static final String COMMAND_CREATE_MEDIA = "create media";
 
 
-    public HttpCommand(String command,ContentValues params,String ... args){
+    public HttpCommand(String command, ContentValues params, String ... args){
 
         this.currentCommand = command;
         this.currentParams = params;
@@ -47,11 +48,14 @@ public class HttpCommand {
         httpManager = new HttpManager();
     }
 
-    public HttpCommand(String command, File file, ContentValues params,String ... args){
+    public HttpCommand(String command, File file, String title, String description, String ... args){
 
         this.file = file;
+
+        this.title = title;
+        this.description = description;
+
         this.currentCommand = command;
-        this.currentParams = params;
         this.currentArgs = args;
         httpManager = new HttpManager();
     }
@@ -59,7 +63,7 @@ public class HttpCommand {
 
     public void execute(){
 
-        if (httpManager!=null && onResultListener!=null){
+        if (httpManager != null && onResultListener!=null){
 
             switch (currentCommand) {
 
@@ -117,6 +121,10 @@ public class HttpCommand {
 
                 case COMMAND_UPDATE_POST:
                     commandUpdatePost();
+                    break;
+
+                case COMMAND_DELETE_POST:
+                    commandDeletePost();
                     break;
 
                 case COMMAND_CREATE_MEDIA:
@@ -179,19 +187,22 @@ public class HttpCommand {
 
     private void commandChangePassword() { httpManager.post(G.BASE_URL+"student/change_password",currentParams, currentArgs); }
 
-    private void commandGetGroupList() { httpManager.get(G.BASE_URL+"groups",currentArgs);}
 
 
-
-    private void commandCreatePost() { httpManager.post(G.BASE_URL+"post/create", currentParams, currentArgs );}
 
     private void setCommandLogin() {httpManager.post(G.BASE_URL+"login", currentParams, currentArgs);}
+
+    private void commandGetGroupList() { httpManager.post(G.BASE_URL+"groups",currentParams, currentArgs);}
+
+    private void commandCreatePost() { httpManager.post(G.BASE_URL+"post/create", currentParams, currentArgs );}
 
     private void commandUpdatePost() {httpManager.post(G.BASE_URL+"post/update", currentParams, currentArgs);}
 
     private void commandGetPosts(){ httpManager.post(G.BASE_URL+"posts",currentParams, currentArgs);}
 
-    private void commandCreateMedia() throws IOException { httpManager.upload(G.BASE_URL+"media/create", file, currentParams, currentArgs);}
+    private void commandDeletePost() { httpManager.post(G.BASE_URL+"post/delete",currentParams, currentArgs);}
+
+    private void commandCreateMedia() throws IOException { httpManager.upload(G.BASE_URL+"media/create", file, title, description, currentArgs);}
 
 }
 

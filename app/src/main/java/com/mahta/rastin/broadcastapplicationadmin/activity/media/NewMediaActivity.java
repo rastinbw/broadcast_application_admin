@@ -11,16 +11,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Toast;
 
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.activity.main.MainActivity;
+import com.mahta.rastin.broadcastapplicationadmin.activity.program.NewProgramActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.file_picker.controller.DialogSelectionListener;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.file_picker.model.DialogConfigs;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.file_picker.model.DialogProperties;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.file_picker.view.FilePickerDialog;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
+import com.mahta.rastin.broadcastapplicationadmin.helper.HttpManager;
+import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Media;
@@ -61,38 +65,24 @@ public class NewMediaActivity extends AppCompatActivity implements View.OnClickL
 
                 properties.extensions = null;
 
-
-
-                FilePickerDialog fp = new FilePickerDialog(NewMediaActivity.this, "asd");
-
-
-
                 FilePickerDialog dialog = new FilePickerDialog(NewMediaActivity.this, properties);
 
                 dialog.setTitle("Select a File");
-
-
-
-
 
                 dialog.setDialogSelectionListener(new DialogSelectionListener() {
                     @Override
                     public void onSelectedFilePaths(String[] files) {
 
+                        Log.i("MYTAG", files[0]);
+
                         file = new File(files[0]);
 
-                        Log.i("MYTAG", file.toString());
+//                        Log.i("MYTAG", file.toString());
 
                     }
                 });
 
-//                Point size = new Point();
-//                getWindowManager().getDefaultDisplay().getSize(size);
-//
-//                dialog.getWindow().setLayout((int) (0.9 * size.x) , ViewGroup.LayoutParams.WRAP_CONTENT );
-
                 dialog.show();
-
 
             }
     });
@@ -118,10 +108,16 @@ public class NewMediaActivity extends AppCompatActivity implements View.OnClickL
             contentValues.put("title", title);
             contentValues.put("description", description);
 
-            new HttpCommand(HttpCommand.COMMAND_CREATE_POST, file, contentValues, null).setOnResultListener(new OnResultListener() {
+
+            new HttpCommand(HttpCommand.COMMAND_CREATE_MEDIA, file, title, description, null).setOnResultListener(new OnResultListener() {
                 @Override
                 public void onResult(String result) {
 
+                    if (JSONParser.getResultCodeFromJson(result) == 1000){
+
+                        Toast.makeText(NewMediaActivity.this, "رسانه جدید افزوده شد", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
                 }
             }).execute();
 

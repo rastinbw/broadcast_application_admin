@@ -451,7 +451,7 @@ public class FilePickerDialog extends Dialog implements AdapterView.OnItemClickL
 
         //currentDirName is dependent on dname
         String currentDirName = dname.getText().toString();
-        
+
         if (internalList.size() > 0) {
 
             FileListItem fitem = internalList.get(0);

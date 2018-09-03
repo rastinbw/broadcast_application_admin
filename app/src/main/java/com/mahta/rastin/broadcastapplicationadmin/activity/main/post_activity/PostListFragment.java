@@ -1,6 +1,7 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.main.post_activity;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -268,7 +269,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
             }, Constant.TIME_OUT);
         }
 
-        new HttpCommand(HttpCommand.COMMAND_GET_POSTS,null,Constant.TYPE_HTML, count + "" , page + "" , searchPhrase, "null")
+        new HttpCommand(HttpCommand.COMMAND_GET_POSTS, (ContentValues) null, Constant.TYPE_HTML, count + "" , page + "" , searchPhrase, "null")
                 .setOnResultListener(new OnResultListener() {
                     @Override
                     public void onResult(String result) {

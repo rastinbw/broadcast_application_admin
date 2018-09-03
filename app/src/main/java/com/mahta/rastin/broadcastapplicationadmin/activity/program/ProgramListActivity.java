@@ -21,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
+import com.mahta.rastin.broadcastapplicationadmin.activity.MyActivity;
+import com.mahta.rastin.broadcastapplicationadmin.activity.post.EditPostActivity;
 import com.mahta.rastin.broadcastapplicationadmin.adapter.ProgramAdapter;
 import com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
@@ -135,7 +137,7 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
 
                 if (G.isNetworkAvailable(ProgramListActivity.this)){
 
-                    Intent intent = new Intent(ProgramListActivity.this, ProgramContentActivity.class);
+                    Intent intent = new Intent(ProgramListActivity.this, MyActivity.class);
                     intent.putExtra(Keys.KEY_EXTRA_FLAG, RealmController.getInstance().getAllPrograms().get(position));
                     startActivity(intent);
 
