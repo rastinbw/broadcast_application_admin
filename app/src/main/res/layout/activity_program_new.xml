@@ -60,117 +60,12 @@
             app:fontEditText="shabnam.ttf"
             />
 
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcvGroups"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <RadioGroup
-                android:layout_width="125dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_marginEnd="15dp"
-                >
-
-                <com.mahta.rastin.broadcastapplicationadmin.custom.RadioButtonPlus
-                    android:id="@+id/rb1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="7dp"
-                    android:background="@drawable/rb_background"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:padding="9dp"
-                    android:tag="1"
-                    android:text="دوازدهم دختران"
-                    android:textSize="14sp"
-                    app:fontRadioButton="shabnam.ttf"/>
-
-                <com.mahta.rastin.broadcastapplicationadmin.custom.RadioButtonPlus
-                    android:id="@+id/rb2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="7dp"
-                    android:background="@drawable/rb_background"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:padding="9dp"
-                    android:tag="1"
-                    android:text="يازدهم دختران"
-                    android:textSize="14sp"
-                    app:fontRadioButton="shabnam.ttf"/>
-
-                <com.mahta.rastin.broadcastapplicationadmin.custom.RadioButtonPlus
-                    android:id="@+id/rb3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="7dp"
-                    android:background="@drawable/rb_background"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:padding="9dp"
-                    android:tag="1"
-                    android:text="دهم دختران"
-                    android:textSize="14sp"
-                    app:fontRadioButton="shabnam.ttf"/>
-
-            </RadioGroup>
-
-            <RadioGroup
-                android:layout_width="125dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                >
-
-                <com.mahta.rastin.broadcastapplicationadmin.custom.RadioButtonPlus
-                    android:id="@+id/rb5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="7dp"
-                    android:background="@drawable/rb_background"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:padding="9dp"
-                    android:tag="1"
-                    android:text="دوازدهم پسران"
-                    android:textSize="14sp"
-                    app:fontRadioButton="shabnam.ttf"/>
-
-                <com.mahta.rastin.broadcastapplicationadmin.custom.RadioButtonPlus
-                    android:id="@+id/rb6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="7dp"
-                    android:background="@drawable/rb_background"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:padding="9dp"
-                    android:tag="1"
-                    android:text="يازدهم پسران"
-                    android:textSize="14sp"
-                    app:fontRadioButton="shabnam.ttf"/>
-
-                <com.mahta.rastin.broadcastapplicationadmin.custom.RadioButtonPlus
-                    android:id="@+id/rb7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="7dp"
-                    android:background="@drawable/rb_background"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:padding="9dp"
-                    android:tag="1"
-                    android:text="دهم پسران"
-                    android:textSize="14sp"
-                    app:fontRadioButton="shabnam.ttf"/>
-
-            </RadioGroup>
-
-        </LinearLayout>
-
-
+            android:orientation="horizontal"/>
 
         <LinearLayout
             android:layout_width="match_parent"

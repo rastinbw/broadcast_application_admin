@@ -40,9 +40,6 @@
         <activity android:name=".activity.program.ProgramContentActivity" />
 
 
-
-        <activity android:name=".activity.MyActivity"/>
-
     </application>
 
 </manifest>

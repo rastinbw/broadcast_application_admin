@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,46 +16,52 @@ import com.mahta.rastin.broadcastapplicationadmin.model.Group;
 
 import java.util.List;
 
-public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.CustomViewHolder> {
+public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.GroupViewHolder> {
 
     private LayoutInflater inflater;
     private List<Group> data;
     private OnItemClickListener onItemClickListener;
 
-    public GroupAdapter(Context context, List<Group> data) {
+    public GroupListAdapter(Context context, List<Group> data) {
+
         inflater = LayoutInflater.from(context);
         this.data = data;
     }
 
+    @NonNull
     @Override
-    public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public GroupViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = inflater.inflate(R.layout.layout_group_adapter_item,parent,false);
-        return new CustomViewHolder(view);
+        View view = inflater.inflate(R.layout.layout_group_list_item,parent,false);
+
+        return new GroupViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
-        final Group current = data.get(position); //This is nice
-        holder.txtTitle.setText(current.getTitle());
+    public void onBindViewHolder(@NonNull GroupViewHolder holder, int position) {
+
+        final Group group = data.get(position); //This is nice
+        holder.grouptitle.setText(group.getTitle());
     }
+
 
     @Override
     public int getItemCount() {
         return data.size();
     }
 
-    public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class GroupViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView txtTitle;
-        RelativeLayout rtlListItem;
+        TextView grouptitle;
+        LinearLayout layoutItem;
 
-        private CustomViewHolder(View itemView) {
+        private GroupViewHolder(View itemView) {
             super(itemView);
-            txtTitle = itemView.findViewById(R.id.txtBack);
-            rtlListItem = itemView.findViewById(R.id.rtlListItem);
 
-            rtlListItem.setOnClickListener(this);
+            grouptitle = itemView.findViewById(R.id.txtGroup);
+            layoutItem = itemView.findViewById(R.id.groupItem);
+
+            layoutItem.setOnClickListener(this);
         }
 
         @Override

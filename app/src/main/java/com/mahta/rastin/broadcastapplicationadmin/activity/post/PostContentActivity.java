@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
+import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
@@ -98,8 +99,8 @@ public class PostContentActivity extends AppCompatActivity implements View.OnCli
                     public void onResult(String result) {
                         if (JSONParser.getResultCodeFromJson(result) == 1000){
 
+                            G.toastShort("اطلاعیه با موفقیت حذف شد", PostContentActivity.this);
 
-                            Toast.makeText(PostContentActivity.this, "اطلاعیه با موفقیت حذف شد", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }

@@ -49,7 +49,7 @@ public class HttpManager{
                 aBuilder.append(arg);
             }
 
-        Log.i("MYTAG", aBuilder.toString());
+        G.i(aBuilder.toString());
 
         FormBody.Builder builder = new FormBody.Builder();
 
@@ -81,7 +81,7 @@ public class HttpManager{
                 aBuilder.append(arg);
             }
 
-        Log.i("MYTAG", aBuilder.toString());
+        G.i(aBuilder.toString());
 
         RequestBody formBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)

@@ -24,7 +24,7 @@ public class G extends Application {
     public static AppCompatActivity currentActivity;
     public static final String TAG = "mahta";
 
-    public static final String DOMAIN = "http://192.168.8.104/broadcast_app_server/public";
+    public static final String DOMAIN = "http://192.168.1.2/broadcast_app_server/public";
 //    public static final String DOMAIN = "https://schoolbroadcastpanel.ir";
     public static final String ABOUT_US_URL = DOMAIN + "/about_us";
 
@@ -115,11 +115,4 @@ public class G extends Application {
         return BitmapFactory.decodeResource(resources, resImage, options);
     }
 
-    // TODO: 6/6/18 Remove this method
-    private void booz_login(){
-
-        UserToken userToken = new UserToken();
-        userToken.setToken("38ccca707cd15ce18bbb3f34197cf777");
-        RealmController.getInstance().addUserToken(userToken);
-    }
 }

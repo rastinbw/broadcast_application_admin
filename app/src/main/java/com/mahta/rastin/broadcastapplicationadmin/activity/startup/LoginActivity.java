@@ -13,11 +13,16 @@ import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.activity.main.MainActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
+import com.mahta.rastin.broadcastapplicationadmin.global.G;
+import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
+import com.mahta.rastin.broadcastapplicationadmin.model.Group;
 import com.mahta.rastin.broadcastapplicationadmin.model.UserToken;
+
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -46,12 +51,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String pass = edtPass.getText().toString().trim();
         String email = edtEmail.getText().toString().trim();
 
-        final ContentValues params = new ContentValues();
+        final ContentValues contentValues = new ContentValues();
 
-        params.put("email", email);
-        params.put("password", pass);
+        contentValues.put("email", email);
+        contentValues.put("password", pass);
 
-        new HttpCommand( HttpCommand.COMMAND_LOGIN , params).setOnResultListener(new OnResultListener() {
+        new HttpCommand( HttpCommand.COMMAND_LOGIN , contentValues).setOnResultListener(new OnResultListener() {
             @Override
             public void onResult(String result) {
 
@@ -62,8 +67,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     case 1000:
                         RealmController.getInstance().addUserToken(JSONParser.parseToken(result));
 
+                        contentValues.clear();
+                        contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
+
+                        //getting group list
+                        new HttpCommand(HttpCommand.COMMAND_GET_GROUP_LIST, contentValues).setOnResultListener(new OnResultListener() {
+                            @Override
+                            public void onResult(String result) {
+
+                                RealmController.getInstance().clearAllGroups();
+                                List<Group> list = JSONParser.parseGroups(result);
+
+                                if (list != null) {
+                                    for (Group group : list) {
+                                        RealmController.getInstance().addGroup(group);
+                                        G.i(group.getTitle());
+                                    }
+                                }
+
+                            }
+                        }).execute();
+
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
+
+                        finish();
 
                         break;
 
@@ -77,7 +105,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Toast.makeText(LoginActivity.this,"نام کاربری غیر قابل قبول است", Toast.LENGTH_SHORT).show();
                         break;
                 }
-
 
             }
         }).execute();

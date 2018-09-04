@@ -20,10 +20,9 @@ public class HttpCommand {
     private File file;
 
     //Commands
-
     public static final String COMMAND_AUTHORIZE = "authorize";
     public static final String COMMAND_CONFIRM = "confirm";
-    public static final String COMMAND_GET_POSTS = "get posts";
+
     public static final String COMMAND_GET_WORKBOOK = "get workbook";
     public static final String COMMAND_GET_INFO = "get info";
     public static final String COMMAND_GET_POST = "get post";
@@ -31,12 +30,19 @@ public class HttpCommand {
     public static final String COMMAND_GET_LAST_NOTIFICATIONS = "get last notifications";
     public static final String COMMAND_GET_PASSWORD = "get password";
     public static final String COMMAND_CHANGE_PASSWORD = "change password";
-    public static final String COMMAND_GET_GROUP_LIST = "get group list";
 
+
+    public static final String COMMAND_CHECK_TOKEN = "check token";
+    public static final String COMMAND_GET_GROUP_LIST = "get group list";
     public static final String COMMAND_LOGIN = "login";
+
+    public static final String COMMAND_GET_POSTS = "get posts";
     public static final String COMMAND_CREATE_POST = "create post";
     public static final String COMMAND_UPDATE_POST = "update post";
     public static final String COMMAND_DELETE_POST = "delete post";
+
+    public static final String COMMAND_UPDATE_PROGRAM = "update program";
+
     public static final String COMMAND_CREATE_MEDIA = "create media";
 
 
@@ -51,7 +57,6 @@ public class HttpCommand {
     public HttpCommand(String command, File file, String title, String description, String ... args){
 
         this.file = file;
-
         this.title = title;
         this.description = description;
 
@@ -63,7 +68,7 @@ public class HttpCommand {
 
     public void execute(){
 
-        if (httpManager != null && onResultListener!=null){
+        if (httpManager != null && onResultListener != null){
 
             switch (currentCommand) {
 
@@ -135,6 +140,14 @@ public class HttpCommand {
                     }
                     break;
 
+                case COMMAND_CHECK_TOKEN:
+                        commandCheckToken();
+                    break;
+
+                case COMMAND_UPDATE_PROGRAM:
+                    commandUpdateProgram();
+                    break;
+
                 default:
                     G.e("Invalid Command");
             }
@@ -142,8 +155,6 @@ public class HttpCommand {
         else
             G.e("Inappropriate Command Structure");
     }
-
-
 
 
     public HttpCommand setOnResultListener(OnResultListener listener){
@@ -157,10 +168,7 @@ public class HttpCommand {
                 if(onResultListener != null){
                     onResultListener.onResult(result);
 
-                    Log.i("MYTAG", result);
-
-                } else {
-                    Log.i("MYTAG", "result was null");
+                    G.i(result);
                 }
             }
         });
@@ -201,6 +209,10 @@ public class HttpCommand {
     private void commandGetPosts(){ httpManager.post(G.BASE_URL+"posts",currentParams, currentArgs);}
 
     private void commandDeletePost() { httpManager.post(G.BASE_URL+"post/delete",currentParams, currentArgs);}
+
+    private void commandCheckToken() { httpManager.post(G.BASE_URL+"check_token",currentParams, currentArgs);}
+
+    private void commandUpdateProgram() { httpManager.post(G.BASE_URL+"program/update",currentParams, currentArgs);}
 
     private void commandCreateMedia() throws IOException { httpManager.upload(G.BASE_URL+"media/create", file, title, description, currentArgs);}
 

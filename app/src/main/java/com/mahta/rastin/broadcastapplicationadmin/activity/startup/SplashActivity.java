@@ -27,35 +27,51 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-
-        intent = new Intent(this , LoginActivity.class);
-
         //check if token exists
         if (RealmController.getInstance().hasUserToken()) {
 
             contentValues = new ContentValues();
             contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
 
-            intent = new Intent(this, MainActivity.class);
-
-
-            new HttpCommand(HttpCommand.COMMAND_GET_GROUP_LIST, contentValues).setOnResultListener(new OnResultListener() {
+            new HttpCommand(HttpCommand.COMMAND_CHECK_TOKEN, contentValues).setOnResultListener(new OnResultListener() {
                 @Override
                 public void onResult(String result) {
 
-                    RealmController.getInstance().clearAllGroups();
-                    List<Group> list = JSONParser.parseGroups(result);
+                    if (JSONParser.getResultCodeFromJson(result) == Keys.RESULT_SUCCESS) {
 
-                    if (list != null) {
-                        for (Group group : list) {
-                            RealmController.getInstance().addGroup(group);
-                            G.i(group.getTitle());
-                        }
+                        G.i("Token is currect");
+                        intent = new Intent(SplashActivity.this, MainActivity.class);
+
+                        //getting group list
+                        new HttpCommand(HttpCommand.COMMAND_GET_GROUP_LIST, contentValues).setOnResultListener(new OnResultListener() {
+                            @Override
+                            public void onResult(String result) {
+
+                                RealmController.getInstance().clearAllGroups();
+                                List<Group> list = JSONParser.parseGroups(result);
+
+                                if (list != null) {
+                                    for (Group group : list) {
+                                        RealmController.getInstance().addGroup(group);
+                                        G.i(group.getTitle());
+                                    }
+                                }
+
+                            }
+                        }).execute();
+
+                    } else {
+                        G.i("Token is incorrect");
+
+                        intent = new Intent(SplashActivity.this, LoginActivity.class);
                     }
-
                 }
             }).execute();
+
+        } else {
+            intent = new Intent(SplashActivity.this, LoginActivity.class);
         }
+
 
 
 
@@ -66,9 +82,6 @@ public class SplashActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
-
-
-
 
                     startActivity(intent);
                     finish();
