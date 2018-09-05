@@ -92,7 +92,7 @@ public class HttpManager{
 
         RequestBody formBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("media", file.getName(),
+                .addFormDataPart(Keys.KEY_MEDIA, file.getName(),
                           RequestBody.create(MediaType.parse("audio/mpeg"), file))
 
                 .addFormDataPart(Keys.KEY_TOKEN, token)

@@ -89,6 +89,8 @@
     <string name="rules">قوانین</string>
     <string name="new_program">برنامه کلاسی جدید</string>
 
+    <string name="click_twice">برای خروج دوباره کلیک کنید</string>
+
 
     <string-array name="slide_titles">
         <item>شنبه</item>

@@ -59,7 +59,6 @@ public class HttpCommand {
     public HttpCommand(String command, File file, ContentValues params, String ... args){
 
         this.file = file;
-
         this.currentCommand = command;
         this.currentParams = params;
         this.currentArgs = args;

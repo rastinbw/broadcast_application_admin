@@ -1,6 +1,7 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.main;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -11,10 +12,12 @@ import com.mahta.rastin.broadcastapplicationadmin.activity.media.MediaListActivi
 import com.mahta.rastin.broadcastapplicationadmin.activity.post.PostListActivity;
 import com.mahta.rastin.broadcastapplicationadmin.activity.program.ProgramListActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
+import com.mahta.rastin.broadcastapplicationadmin.global.G;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private CardView announceCard, mediaCard, helpCard, scheduleCard;
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +39,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-//    @Override
-//    public void onBackPressed() {
-//
-//    }
+    @Override
+    public void onBackPressed() {
+
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        G.toastShort(G.getStringFromResource(
+                R.string.click_twice,
+                getApplicationContext()),
+                getApplicationContext()
+        );
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2200);
+    }
 
     @Override
     public void onClick(View v) {

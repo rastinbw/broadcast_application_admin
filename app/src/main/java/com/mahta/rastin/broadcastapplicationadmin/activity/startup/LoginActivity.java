@@ -53,8 +53,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         final ContentValues contentValues = new ContentValues();
 
-        contentValues.put("email", email);
-        contentValues.put("password", pass);
+        contentValues.put(Keys.KEY_EMAIL, email);
+        contentValues.put(Keys.KEY_PASSWORD, pass);
 
         new HttpCommand( HttpCommand.COMMAND_LOGIN , contentValues).setOnResultListener(new OnResultListener() {
             @Override
@@ -97,12 +97,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     case 1102:
 
-                        Toast.makeText(LoginActivity.this,"رمز عبور غیر قابل قبول است", Toast.LENGTH_SHORT).show();
+                        G.toastShort("رمز عبور غیر قابل قبول است", LoginActivity.this);
                         break;
 
                     case 1113:
 
-                        Toast.makeText(LoginActivity.this,"نام کاربری غیر قابل قبول است", Toast.LENGTH_SHORT).show();
+                        G.toastShort("ایمیل غیر قابل قبول است", LoginActivity.this);
                         break;
                 }
 

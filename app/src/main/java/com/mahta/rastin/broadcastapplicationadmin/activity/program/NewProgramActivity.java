@@ -12,7 +12,9 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,9 @@ import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
+import com.mahta.rastin.broadcastapplicationadmin.model.Group;
+
+import java.util.List;
 
 public class NewProgramActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,17 +36,18 @@ public class NewProgramActivity extends AppCompatActivity implements View.OnClic
     private LinearLayout layoutDots;
     private SliderPagerAdapter pagerAdapter;
 
+    private List<Group> groupList;
+    private Spinner spinner;
+    private ArrayAdapter adapter;
+    String[] groups;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_program_new);
 
-        findViewById(R.id.imgBack).setOnClickListener(this);
-        findViewById(R.id.txtApply).setOnClickListener(this);
-        findViewById(R.id.txtBack).setOnClickListener(this);
+        initViews();
 
-        edtTitle = findViewById(R.id.edt_title);
-        edtPreview = findViewById(R.id.edt_preview);
 
         viewPager = findViewById(R.id.view_pager);
         layoutDots = findViewById(R.id.layoutDots);
@@ -69,6 +75,31 @@ public class NewProgramActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
+    }
+
+    private void initViews() {
+
+        findViewById(R.id.imgBack).setOnClickListener(this);
+        findViewById(R.id.txtApply).setOnClickListener(this);
+        findViewById(R.id.txtBack).setOnClickListener(this);
+
+        spinner = findViewById(R.id.spinner_group);
+
+        edtTitle = findViewById(R.id.edt_title);
+        edtPreview = findViewById(R.id.edt_preview);
+
+        groupList = RealmController.getInstance().getGroupList();
+
+        groups = new String[groupList.size()];
+
+        for (int i = 0; i < groupList.size(); i++) {
+
+            groups[i] = groupList.get(i).getTitle();
+        }
+
+        adapter = new ArrayAdapter<>(this, R.layout.layout_group_spinner_item, groups);
+
+        spinner.setAdapter(adapter);
     }
 
     private void showDotes(int pageNumber) {

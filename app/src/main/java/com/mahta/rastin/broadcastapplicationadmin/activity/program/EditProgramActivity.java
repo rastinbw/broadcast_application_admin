@@ -156,8 +156,6 @@ public class EditProgramActivity extends AppCompatActivity implements View.OnCli
         edttitle.setText(program.getTitle());
         edtPreview.setText(program.getPreview());
 
-        StringBuilder stringBuilder = new StringBuilder();
-
         groupList = RealmController.getInstance().getGroupList();
 
         groups = new String[groupList.size()];

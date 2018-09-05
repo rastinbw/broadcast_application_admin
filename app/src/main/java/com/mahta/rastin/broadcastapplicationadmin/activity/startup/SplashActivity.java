@@ -74,7 +74,6 @@ public class SplashActivity extends AppCompatActivity {
 
 
 
-
         Thread timer = new Thread() {
             public void run() {
                 try {
