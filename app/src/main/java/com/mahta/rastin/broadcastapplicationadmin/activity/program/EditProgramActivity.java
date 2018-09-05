@@ -4,13 +4,12 @@ import android.content.ContentValues;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
-import com.mahta.rastin.broadcastapplicationadmin.adapter.GroupListAdapter;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
 import com.mahta.rastin.broadcastapplicationadmin.editor.RichEditor;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
@@ -18,47 +17,37 @@ import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
-import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Group;
 import com.mahta.rastin.broadcastapplicationadmin.model.Program;
 
+import java.security.Key;
 import java.util.List;
+
+import io.realm.Realm;
 
 public class EditProgramActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Program program;
     private EditTextPlus edttitle, edtPreview;
     private RichEditor mEditor;
-    private GroupListAdapter groupListAdapter;
     private RecyclerView rcvGroups;
     private List<Group> groupList;
+    private Spinner spinner;
+    private ArrayAdapter adapter;
+    String[] groups;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_new);
+        setContentView(R.layout.activity_program_edit);
 
         program = getIntent().getParcelableExtra(Keys.KEY_EXTRA_FLAG);
 
         initViews();
 
 
-        groupList = RealmController.getInstance().getGroupList();
 
-        groupListAdapter = new GroupListAdapter(this, groupList);
-
-        groupListAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClicked(View view, int position) {
-
-                G.toastShort(groupList.get(position).toString(), EditProgramActivity.this);
-            }
-        });
-
-        rcvGroups.setLayoutManager(new GridLayoutManager(this, 3));
-
-        rcvGroups.setAdapter(groupListAdapter);
 
 
 
@@ -159,8 +148,7 @@ public class EditProgramActivity extends AppCompatActivity implements View.OnCli
         findViewById(R.id.txtApply).setOnClickListener(this);
         findViewById(R.id.txtBack).setOnClickListener(this);
 
-        rcvGroups = findViewById(R.id.rcvGroups);
-
+        spinner = findViewById(R.id.spinner_group);
 
         edttitle = findViewById(R.id.edt_title);
         edtPreview = findViewById(R.id.edt_preview);
@@ -168,6 +156,21 @@ public class EditProgramActivity extends AppCompatActivity implements View.OnCli
         edttitle.setText(program.getTitle());
         edtPreview.setText(program.getPreview());
 
+        StringBuilder stringBuilder = new StringBuilder();
+
+        groupList = RealmController.getInstance().getGroupList();
+
+        groups = new String[groupList.size()];
+
+        for (int i = 0; i < groupList.size(); i++) {
+
+            groups[i] = groupList.get(i).getTitle();
+        }
+
+
+        adapter = new ArrayAdapter<>(this, R.layout.layout_group_spinner_item, groups);
+
+        spinner.setAdapter(adapter);
     }
 
     @Override
@@ -184,12 +187,19 @@ public class EditProgramActivity extends AppCompatActivity implements View.OnCli
             String preview = edtPreview.getText().toString();
             String content = mEditor.getHtml();
 
+            String groupTitle = spinner.getSelectedItem().toString();
+
+            G.i(groupTitle);
+
             ContentValues contentValues = new ContentValues();
+
+            G.i(spinner.getSelectedItemPosition()+"");
 
             contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
             contentValues.put(Keys.KEY_TITLE, title);
             contentValues.put(Keys.KEY_PREVIEW, preview);
             contentValues.put(Keys.KEY_CONTENT, content);
+            contentValues.put(Keys.KEY_GROUP_ID, groupList.get(spinner.getSelectedItemPosition()).getId());
 
             new HttpCommand(HttpCommand.COMMAND_UPDATE_PROGRAM, contentValues, program.getId()+"" ).setOnResultListener(new OnResultListener() {
                 @Override

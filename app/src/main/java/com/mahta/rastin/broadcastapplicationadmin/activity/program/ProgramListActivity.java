@@ -135,7 +135,7 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
 
                 if (G.isNetworkAvailable(ProgramListActivity.this)){
 
-                    Intent intent = new Intent(ProgramListActivity.this, EditProgramActivity.class);
+                    Intent intent = new Intent(ProgramListActivity.this, ProgramContentActivity.class);
                     intent.putExtra(Keys.KEY_EXTRA_FLAG, RealmController.getInstance().getAllPrograms().get(position));
                     startActivity(intent);
 

@@ -1,5 +1,6 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.program;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,10 @@ import com.mahta.rastin.broadcastapplicationadmin.activity.post.PostContentActiv
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
+import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
+import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
+import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
+import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Program;
 
 public class ProgramContentActivity extends AppCompatActivity implements View.OnClickListener {
@@ -61,8 +66,6 @@ public class ProgramContentActivity extends AppCompatActivity implements View.On
 
         ((TextViewPlus)findViewById(R.id.txtTitle)).setText(currentProgram.getTitle());
 
-        Log.i("MYTAG", currentProgram.getContent());
-
     }
 
     @Override
@@ -80,6 +83,22 @@ public class ProgramContentActivity extends AppCompatActivity implements View.On
             startActivity(intent);
 
         } else if (id == R.id.imgDelete) {
+
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put("token", RealmController.getInstance().getUserToken().getToken());
+
+            new HttpCommand(HttpCommand.COMMAND_DELETE_PROGRAM, contentValues, currentProgram.getId()+"" ).setOnResultListener(new OnResultListener() {
+                @Override
+                public void onResult(String result) {
+                    if (JSONParser.getResultCodeFromJson(result) == 1000){
+
+                        G.toastShort("برنامه با موفقیت حذف شد", ProgramContentActivity.this);
+
+                        finish();
+                    }
+                }
+            }).execute();
 
         }
     }

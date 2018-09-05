@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:paddingBottom="10dp"
+    android:paddingEnd="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="6dp"
+    android:text=""
+    android:textColor="@color/colorPrimaryText"
+    android:textSize="14sp"
+    app:fontTextView="shabnam.ttf"
+    />

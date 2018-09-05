@@ -1,7 +1,6 @@
 package com.mahta.rastin.broadcastapplicationadmin.helper;
 
 import android.content.ContentValues;
-import android.util.Log;
 
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
@@ -42,8 +41,11 @@ public class HttpCommand {
     public static final String COMMAND_DELETE_POST = "delete post";
 
     public static final String COMMAND_UPDATE_PROGRAM = "update program";
+    public static final String COMMAND_DELETE_PROGRAM = "delete program";
 
     public static final String COMMAND_CREATE_MEDIA = "create media";
+    public static final String COMMAND_UPDATE_MEDIA = "update media with file";
+    public static final String COMMAND_DELETE_MEDIA = "delete media";
 
 
     public HttpCommand(String command, ContentValues params, String ... args){
@@ -54,13 +56,12 @@ public class HttpCommand {
         httpManager = new HttpManager();
     }
 
-    public HttpCommand(String command, File file, String title, String description, String ... args){
+    public HttpCommand(String command, File file, ContentValues params, String ... args){
 
         this.file = file;
-        this.title = title;
-        this.description = description;
 
         this.currentCommand = command;
+        this.currentParams = params;
         this.currentArgs = args;
         httpManager = new HttpManager();
     }
@@ -148,6 +149,28 @@ public class HttpCommand {
                     commandUpdateProgram();
                     break;
 
+                case COMMAND_DELETE_PROGRAM:
+                    commandDeleteProgram();
+                    break;
+
+                case COMMAND_DELETE_MEDIA:
+                    commandDeleteMedia();
+                    break;
+
+                case COMMAND_UPDATE_MEDIA:
+
+                    if (file != null) {
+
+                        try {
+                            commandUpdateMediaFile();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        commandUpdateMediaNoFile();
+                    }
+                    break;
+
                 default:
                     G.e("Invalid Command");
             }
@@ -197,6 +220,7 @@ public class HttpCommand {
 
 
 
+    private void commandCheckToken() { httpManager.post(G.BASE_URL+"check_token",currentParams, currentArgs);}
 
     private void setCommandLogin() {httpManager.post(G.BASE_URL+"login", currentParams, currentArgs);}
 
@@ -210,11 +234,17 @@ public class HttpCommand {
 
     private void commandDeletePost() { httpManager.post(G.BASE_URL+"post/delete",currentParams, currentArgs);}
 
-    private void commandCheckToken() { httpManager.post(G.BASE_URL+"check_token",currentParams, currentArgs);}
-
     private void commandUpdateProgram() { httpManager.post(G.BASE_URL+"program/update",currentParams, currentArgs);}
 
-    private void commandCreateMedia() throws IOException { httpManager.upload(G.BASE_URL+"media/create", file, title, description, currentArgs);}
+    private void commandDeleteProgram() { httpManager.post(G.BASE_URL+"program/delete",currentParams, currentArgs);  }
+
+    private void commandCreateMedia() throws IOException { httpManager.upload(G.BASE_URL+"media/create", file, currentParams, currentArgs);}
+
+    private void commandUpdateMediaFile() throws IOException { httpManager.post(G.BASE_URL+"media/update", currentParams, currentArgs); }
+
+    private void commandUpdateMediaNoFile() { httpManager.post(G.BASE_URL+"media/update",currentParams, currentArgs); }
+
+    private void commandDeleteMedia() { httpManager.post(G.BASE_URL+"media/delete",currentParams, currentArgs);   }
 
 }
 

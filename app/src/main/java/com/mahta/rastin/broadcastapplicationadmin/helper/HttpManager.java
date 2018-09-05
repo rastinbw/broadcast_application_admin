@@ -3,6 +3,7 @@ package com.mahta.rastin.broadcastapplicationadmin.helper;
 import android.content.ContentValues;
 import android.util.Log;
 
+import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 
@@ -70,7 +71,7 @@ public class HttpManager{
         doRequest(request);
     }
 
-    public void upload(String url, File file, String title, String description, String[] args) throws IOException {
+    public void upload(String url, File file, ContentValues params, String[] args) throws IOException {
 
         StringBuilder aBuilder = new StringBuilder();
         aBuilder.append(url);
@@ -83,16 +84,21 @@ public class HttpManager{
 
         G.i(aBuilder.toString());
 
+
+        String token = params.get(Keys.KEY_TOKEN).toString();
+        String title = params.get(Keys.KEY_TITLE).toString();
+        String description = params.get(Keys.KEY_DESCRIPTION).toString();
+
+
         RequestBody formBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("media", file.getName(),
                           RequestBody.create(MediaType.parse("audio/mpeg"), file))
 
-                .addFormDataPart("token", RealmController.getInstance().getUserToken().getToken())
-                .addFormDataPart("title", title)
-                .addFormDataPart("description", description)
+                .addFormDataPart(Keys.KEY_TOKEN, token)
+                .addFormDataPart(Keys.KEY_TITLE, title)
+                .addFormDataPart(Keys.KEY_DESCRIPTION, description)
                 .build();
-
 
 
         Request request = new Request.Builder()
