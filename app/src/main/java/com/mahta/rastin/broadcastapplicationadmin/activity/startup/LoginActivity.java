@@ -3,16 +3,16 @@ package com.mahta.rastin.broadcastapplicationadmin.activity.startup;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.activity.main.MainActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
+import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
@@ -20,14 +20,18 @@ import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Group;
-import com.mahta.rastin.broadcastapplicationadmin.model.UserToken;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button btnLogin;
-    EditTextPlus edtEmail, edtPass;
+    private LinearLayout layoutLogin;
+    private EditTextPlus edtEmail, edtPass;
+    private String pass, email;
+    private AVLoadingIndicatorView indicator;
+    private TextViewPlus txtLogin;
+    boolean serverResponsed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +40,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         edtEmail = findViewById(R.id.edt_email);
         edtPass = findViewById(R.id.edt_pass);
-        btnLogin = findViewById(R.id.btn_login);
+        txtLogin = findViewById(R.id.txt_login);
+        layoutLogin = findViewById(R.id.layout_login);
 
-        btnLogin.setOnClickListener(this);
+        indicator = findViewById(R.id.login_loader);
+
+        layoutLogin.setOnClickListener(this);
 
         //setting tollbar title
         ((TextViewPlus) findViewById(R.id.txtTitle)).setText("پنل مدیریت");
@@ -48,67 +55,115 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
 
-        String pass = edtPass.getText().toString().trim();
-        String email = edtEmail.getText().toString().trim();
+        pass = edtPass.getText().toString().trim();
+        email = edtEmail.getText().toString().trim();
 
-        final ContentValues contentValues = new ContentValues();
+        if (pass.isEmpty() || email.isEmpty()) {
 
-        contentValues.put(Keys.KEY_EMAIL, email);
-        contentValues.put(Keys.KEY_PASSWORD, pass);
+            G.toastShort("اطلاعات ورودی ناکافی است", LoginActivity.this);
+            return;
+        }
 
-        new HttpCommand( HttpCommand.COMMAND_LOGIN , contentValues).setOnResultListener(new OnResultListener() {
+        //using this way just to handle scenarios that server didn't respond in SERVER_RESPONSE_TIME
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onResult(String result) {
+            public void run() {
 
-                int resultCode = JSONParser.getResultCodeFromJson(result);
+                if (!serverResponsed) {
+                    changeLoadingResource(1);
+                }
+            }
+        }, Constant.SERVER_RESPONSE_TIME);
 
-                switch (resultCode) {
 
-                    case 1000:
-                        RealmController.getInstance().addUserToken(JSONParser.parseToken(result));
+        authenticate();
 
-                        contentValues.clear();
-                        contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
+    }
 
-                        //getting group list
-                        new HttpCommand(HttpCommand.COMMAND_GET_GROUP_LIST, contentValues).setOnResultListener(new OnResultListener() {
-                            @Override
-                            public void onResult(String result) {
+    private void authenticate() {
 
-                                RealmController.getInstance().clearAllGroups();
-                                List<Group> list = JSONParser.parseGroups(result);
+        changeLoadingResource(0);
 
-                                if (list != null) {
-                                    for (Group group : list) {
-                                        RealmController.getInstance().addGroup(group);
-                                        G.i(group.getTitle());
+        if (!G.isNetworkAvailable(LoginActivity.this)) {
+
+            G.toastLong("عدم اتصال به اینترنت", LoginActivity.this);
+
+            changeLoadingResource(1);
+        } else {
+
+            final ContentValues contentValues = new ContentValues();
+
+            contentValues.put(Keys.KEY_EMAIL, email);
+            contentValues.put(Keys.KEY_PASSWORD, pass);
+
+            new HttpCommand(HttpCommand.COMMAND_LOGIN, contentValues).setOnResultListener(new OnResultListener() {
+                @Override
+                public void onResult(String result) {
+
+                    serverResponsed = true;
+
+                    switch (JSONParser.getResultCodeFromJson(result)) {
+
+                        case 1000:
+                            RealmController.getInstance().addUserToken(JSONParser.parseToken(result));
+
+                            contentValues.clear();
+                            contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
+
+                            //getting group list
+                            new HttpCommand(HttpCommand.COMMAND_GET_GROUP_LIST, contentValues).setOnResultListener(new OnResultListener() {
+                                @Override
+                                public void onResult(String result) {
+
+                                    RealmController.getInstance().clearAllGroups();
+                                    List<Group> list = JSONParser.parseGroups(result);
+
+                                    if (list != null) {
+                                        for (Group group : list) {
+                                            RealmController.getInstance().addGroup(group);
+                                            G.i(group.getTitle());
+                                        }
                                     }
                                 }
+                            }).execute();
 
-                            }
-                        }).execute();
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
+                            break;
 
-                        finish();
+                        case 1102:
 
-                        break;
+                            G.toastShort("رمز عبور غیر قابل قبول است", LoginActivity.this);
+                            changeLoadingResource(1);
+                            break;
 
-                    case 1102:
+                        case 1113:
 
-                        G.toastShort("رمز عبور غیر قابل قبول است", LoginActivity.this);
-                        break;
+                            G.toastShort("ایمیل غیر قابل قبول است", LoginActivity.this);
+                            changeLoadingResource(1);
+                            break;
+                    }
 
-                    case 1113:
-
-                        G.toastShort("ایمیل غیر قابل قبول است", LoginActivity.this);
-                        break;
                 }
+            }).execute();
 
-            }
-        }).execute();
+        }
+    }
 
+    private void changeLoadingResource(int state) {
 
+        switch (state) {
+            case 0:
+                indicator.setVisibility(View.VISIBLE);
+                txtLogin.setVisibility(View.GONE);
+                break;
+
+            case 1:
+                indicator.setVisibility(View.GONE);
+                txtLogin.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 }

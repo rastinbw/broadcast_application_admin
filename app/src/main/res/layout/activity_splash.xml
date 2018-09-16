@@ -1,27 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="#e1e1e1"
     tools:context=".activity.startup.SplashActivity">
 
-    <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/managemnet"/>
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/loader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Management Panel"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp"
         />
 
-    <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+    <LinearLayout
+        android:id="@+id/layout_noNetwork"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:textColor="#9f009f"
-        android:text="DGR forever"
         android:layout_alignParentBottom="true"
-        android:padding="30dp"
-        />
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="خطا در ارتباط با شبکه"
+            app:fontTextView="shabnam_bold.ttf"
+            android:src="@drawable/img_crying"/>
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus
+            android:id="@+id/btn_tryagain"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_button"
+            android:text="تلاش دوباره"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="12sp"
+            app:fontButton="shabnam.ttf"
+            />
+
+    </LinearLayout>
+
 
 </RelativeLayout>

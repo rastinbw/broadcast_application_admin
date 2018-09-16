@@ -248,7 +248,7 @@
             <!-- Column 2 -->
 
             <android.support.v7.widget.CardView
-                android:id="@+id/installs_card"
+                android:id="@+id/users_card"
                 android:layout_width="140dp"
                 android:layout_height="140dp"
                 android:layout_gravity="center"

@@ -14,11 +14,13 @@ import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.activity.post.EditPostActivity;
 import com.mahta.rastin.broadcastapplicationadmin.activity.post.PostContentActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
+import com.mahta.rastin.broadcastapplicationadmin.dialog.DeleteDialog;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
+import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnDeleteListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Program;
 
@@ -42,7 +44,7 @@ public class ProgramContentActivity extends AppCompatActivity implements View.On
         final String mimeType = "text/html";
         final String encoding = "UTF-8";
 
-        String html = "<div dir='rtl'>" + currentProgram.getContent() + "</div>";
+        String html = "<div>" + currentProgram.getContent() + "</div>";
 
         wbvContent.setWebViewClient(new WebViewClient() {
 
@@ -51,6 +53,7 @@ public class ProgramContentActivity extends AppCompatActivity implements View.On
             }
         });
 
+//        wbvContent.getSettings().setUseWideViewPort(true);
         wbvContent.getSettings().setLoadWithOverviewMode(true);
         wbvContent.getSettings().setBuiltInZoomControls(true);
         wbvContent.getSettings().setDisplayZoomControls(false);
@@ -84,21 +87,33 @@ public class ProgramContentActivity extends AppCompatActivity implements View.On
 
         } else if (id == R.id.imgDelete) {
 
-            ContentValues contentValues = new ContentValues();
+            DeleteDialog deleteDialog = new DeleteDialog(ProgramContentActivity.this);
 
-            contentValues.put("token", RealmController.getInstance().getUserToken().getToken());
-
-            new HttpCommand(HttpCommand.COMMAND_DELETE_PROGRAM, contentValues, currentProgram.getId()+"" ).setOnResultListener(new OnResultListener() {
+            deleteDialog.setOnDeleteListener(new OnDeleteListener() {
                 @Override
-                public void onResult(String result) {
-                    if (JSONParser.getResultCodeFromJson(result) == 1000){
+                public void onDeleteItem(boolean confirm) {
 
-                        G.toastShort("برنامه با موفقیت حذف شد", ProgramContentActivity.this);
+                    if (confirm) {
 
-                        finish();
+                        ContentValues contentValues = new ContentValues();
+
+                        contentValues.put("token", RealmController.getInstance().getUserToken().getToken());
+
+                        new HttpCommand(HttpCommand.COMMAND_DELETE_PROGRAM, contentValues, currentProgram.getId() + "").setOnResultListener(new OnResultListener() {
+                            @Override
+                            public void onResult(String result) {
+                                if (JSONParser.getResultCodeFromJson(result) == 1000) {
+
+                                    G.toastShort("برنامه با موفقیت حذف شد", ProgramContentActivity.this);
+
+                                    finish();
+                                }
+                            }
+                        }).execute();
                     }
                 }
-            }).execute();
+            });
+            deleteDialog.show();
 
         }
     }

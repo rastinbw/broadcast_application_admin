@@ -8,19 +8,18 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
+import com.mahta.rastin.broadcastapplicationadmin.dialog.DeleteDialog;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
+import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnDeleteListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Post;
-
-import io.realm.Realm;
 
 public class PostContentActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -30,7 +29,7 @@ public class PostContentActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_post);
+        setContentView(R.layout.activity_post_content);
 
         currentPost = getIntent().getParcelableExtra(Keys.KEY_EXTRA_FLAG);
 
@@ -42,7 +41,7 @@ public class PostContentActivity extends AppCompatActivity implements View.OnCli
 
         final String mimeType = "text/html";
         final String encoding = "UTF-8";
-        String html = "<div dir='rtl'>" + currentPost.getContent() + "</div>";
+        String html = "<div>" + currentPost.getContent() + "</div>";
 
         wbvContent.setWebViewClient(new WebViewClient() {
 
@@ -55,7 +54,6 @@ public class PostContentActivity extends AppCompatActivity implements View.OnCli
         wbvContent.getSettings().setBuiltInZoomControls(true);
         wbvContent.getSettings().setDisplayZoomControls(false);
         wbvContent.loadDataWithBaseURL("", html, mimeType, encoding, "");
-
 
     }
 
@@ -90,27 +88,34 @@ public class PostContentActivity extends AppCompatActivity implements View.OnCli
 
             case R.id.imgDelete:
 
-                ContentValues contentValues = new ContentValues();
+                DeleteDialog deleteDialog = new DeleteDialog(PostContentActivity.this);
 
-                contentValues.put("token", RealmController.getInstance().getUserToken().getToken());
-
-                new HttpCommand(HttpCommand.COMMAND_DELETE_POST, contentValues, currentPost.getId()+"" ).setOnResultListener(new OnResultListener() {
+                deleteDialog.setOnDeleteListener(new OnDeleteListener() {
                     @Override
-                    public void onResult(String result) {
-                        if (JSONParser.getResultCodeFromJson(result) == 1000){
+                    public void onDeleteItem(boolean confirm) {
 
-                            G.toastShort("اطلاعیه با موفقیت حذف شد", PostContentActivity.this);
+                        if (confirm) {
 
-                            finish();
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
+
+                            new HttpCommand(HttpCommand.COMMAND_DELETE_POST, contentValues, currentPost.getId()+"" ).setOnResultListener(new OnResultListener() {
+                                @Override
+                                public void onResult(String result) {
+                                    if (JSONParser.getResultCodeFromJson(result) == 1000){
+
+                                        G.toastShort("اطلاعیه با موفقیت حذف شد", PostContentActivity.this);
+
+                                        finish();
+                                    }
+                                }
+                            }).execute();
                         }
                     }
-                }).execute();
-
+                });
+                deleteDialog.show();
                 break;
 
         }
-
-
-
     }
 }

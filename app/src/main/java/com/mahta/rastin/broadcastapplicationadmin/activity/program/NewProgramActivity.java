@@ -1,28 +1,25 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.program;
 
 import android.content.ContentValues;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Html;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
+import com.mahta.rastin.broadcastapplicationadmin.activity.post.NewPostActivity;
+import com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
+import com.mahta.rastin.broadcastapplicationadmin.dialog.ProgramFormDialog;
+import com.mahta.rastin.broadcastapplicationadmin.global.G;
+import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
+import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnProgramFormSaveListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Group;
 
@@ -31,15 +28,14 @@ import java.util.List;
 public class NewProgramActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditTextPlus edtTitle, edtPreview;
-
-    private ViewPager viewPager;
-    private LinearLayout layoutDots;
-    private SliderPagerAdapter pagerAdapter;
+    private ButtonPlus btnSaturday, btnSunday, btnMonday, btnTuesday, btnWednesday, btnThursday, btnFriday;
 
     private List<Group> groupList;
     private Spinner spinner;
     private ArrayAdapter adapter;
     String[] groups;
+    private String programContent;
+    String[] dayContent = {"", "", "", "", "", ""};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,34 +43,6 @@ public class NewProgramActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_program_new);
 
         initViews();
-
-
-        viewPager = findViewById(R.id.view_pager);
-        layoutDots = findViewById(R.id.layoutDots);
-
-        pagerAdapter = new SliderPagerAdapter();
-        viewPager.setAdapter(pagerAdapter);
-        showDotes(viewPager.getCurrentItem());
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-                showDotes(position);
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
     }
 
     private void initViews() {
@@ -82,6 +50,20 @@ public class NewProgramActivity extends AppCompatActivity implements View.OnClic
         findViewById(R.id.imgBack).setOnClickListener(this);
         findViewById(R.id.txtApply).setOnClickListener(this);
         findViewById(R.id.txtBack).setOnClickListener(this);
+
+        btnSunday = findViewById(R.id.btn_sunday);
+        btnMonday = findViewById(R.id.btn_monday);
+        btnTuesday = findViewById(R.id.btn_tuesday);
+        btnWednesday = findViewById(R.id.btn_wednesday);
+        btnThursday = findViewById(R.id.btn_thursday);
+        btnSaturday = findViewById(R.id.btn_saturday);
+
+        btnSaturday.setOnClickListener(this);
+        btnSunday.setOnClickListener(this);
+        btnMonday.setOnClickListener(this);
+        btnTuesday.setOnClickListener(this);
+        btnWednesday.setOnClickListener(this);
+        btnThursday.setOnClickListener(this);
 
         spinner = findViewById(R.id.spinner_group);
 
@@ -100,25 +82,7 @@ public class NewProgramActivity extends AppCompatActivity implements View.OnClic
         adapter = new ArrayAdapter<>(this, R.layout.layout_group_spinner_item, groups);
 
         spinner.setAdapter(adapter);
-    }
 
-    private void showDotes(int pageNumber) {
-
-        TextView dots[] = new TextView[viewPager.getAdapter().getCount()];
-
-        layoutDots.removeAllViews();
-
-        for (int i = 0 ; i < dots.length ; i++) {
-
-            dots[i] = new TextView(this);
-            dots[i].setText(Html.fromHtml("&#8226;"));
-
-            dots[i].setTextSize(TypedValue.COMPLEX_UNIT_SP , 35);
-            dots[i].setTextColor(ContextCompat.getColor(this,
-                    (i == pageNumber)? R.color.dot_active : R.color.dot_inactive));
-
-            layoutDots.addView(dots[i]);
-        }
     }
 
     @Override
@@ -126,83 +90,122 @@ public class NewProgramActivity extends AppCompatActivity implements View.OnClic
 
         int id = v.getId();
 
-        if (id == R.id.imgBack || id == R.id.txtBack) {
+        if (id == R.id.btn_sunday) {
+            showProgramDialog(getString(R.string.sunday));
+
+        }else if (id == R.id.btn_saturday) {
+            showProgramDialog(getString(R.string.saturday));
+
+        }else if (id == R.id.btn_monday) {
+            showProgramDialog(getString(R.string.monday));
+
+        }else if (id == R.id.btn_tuesday ) {
+            showProgramDialog(getString(R.string.tuesday));
+
+        }else  if (id == R.id.btn_wednesday ){
+            showProgramDialog(getString(R.string.wednesday));
+
+        }else if (id == R.id.btn_thursday) {
+            showProgramDialog(getString(R.string.thursday));
+
+        }else if (id == R.id.imgBack || id == R.id.txtBack) {
             finish();
 
         } else if (id == R.id.txtApply) {
 
-
             String title = edtTitle.getText().toString().trim();
             String preview = edtPreview.getText().toString().trim();
-            String content = "";
-            int groupId = 2;
+            int groupId = groupList.get(spinner.getSelectedItemPosition()).getId();
 
+            if (title.isEmpty() || preview.isEmpty()) {
+
+                G.toastShort("اطلاعات ورودی ناکافی است", NewProgramActivity.this);
+                return;
+            }
+
+            programContent = "<table border='1' cellspacing=\"1\" style=\"width:445.5px; text-align: center\"> <tbody>"
+                    + dayContent[0]
+                    + dayContent[1]
+                    + dayContent[2]
+                    + dayContent[3]
+                    + dayContent[4]
+                    + dayContent[5]
+                    + "</tbody> </table>";
+
+
+            G.i(programContent);
 
             ContentValues contentValues = new ContentValues();
 
-            contentValues.put("token", RealmController.getInstance().getUserToken().getToken());
-            contentValues.put("title", title);
-            contentValues.put("preview_content", preview);
-            contentValues.put("content", content);
+            contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
+            contentValues.put(Keys.KEY_TITLE, title);
+            contentValues.put(Keys.KEY_PREVIEW, preview);
+            contentValues.put(Keys.KEY_CONTENT, programContent);
+            contentValues.put(Keys.KEY_GROUP_ID, groupId);
 
-            new HttpCommand(HttpCommand.COMMAND_CREATE_POST, contentValues).setOnResultListener(new OnResultListener() {
+            new HttpCommand(HttpCommand.COMMAND_CREATE_PROGRAM, contentValues).setOnResultListener(new OnResultListener() {
                 @Override
                 public void onResult(String result) {
 
-                    if (JSONParser.getResultCodeFromJson(result) == 1000){
+                    if (JSONParser.getResultCodeFromJson(result) == Keys.RESULT_COUNT_LIMIT){
 
-                        Toast.makeText(NewProgramActivity.this, "اطلاعیه جدید افزوده شد", Toast.LENGTH_SHORT).show();
+                        G.toastShort("تعداد برنامه مجاز : " + JSONParser.getLimitationCode(result) , NewProgramActivity.this);
+
+                    } else if (JSONParser.getResultCodeFromJson(result) == Keys.RESULT_SUCCESS) {
+                        G.toastShort("اطلاعیه جدید افزوده شد", NewProgramActivity.this);
                         finish();
                     }
-
 
                 }
             }).execute();
 
-
-        }
-
-    }
-
-    public class SliderPagerAdapter extends PagerAdapter {
-
-        String[] slideTitles;
-
-        public SliderPagerAdapter() {
-
-            slideTitles = getResources().getStringArray(R.array.slide_titles);
-        }
-
-        @NonNull
-        @Override
-        public Object instantiateItem(@NonNull ViewGroup container, int position) {
-
-            View view = LayoutInflater.from(NewProgramActivity.this)
-                    .inflate(R.layout.layout_program_slide , container , false);
-
-
-            ((TextView) findViewById(R.id.slide_title)).setText(slideTitles[position]);
-
-            container.addView(view);
-
-            return view;
-        }
-
-        @Override
-        public int getCount() {
-            return slideTitles.length;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-
-            View view = (View) object;
-            container.removeView(view);
         }
     }
+
+    private void showProgramDialog(String day) {
+
+        ProgramFormDialog dialog = new ProgramFormDialog(this, day);
+
+        dialog.setOnSaveListener(new OnProgramFormSaveListener() {
+            @Override
+            public void onSave(String day, String content) {
+
+                switch (day) {
+
+                    case "شنبه":
+                        dayContent[0] = content;
+                        btnSaturday.setBackgroundResource(R.drawable.rb_b);
+                        break;
+
+                    case "یکشنبه":
+                        dayContent[1] = content;
+                        btnSunday.setBackgroundResource(R.drawable.rb_b);
+                        break;
+
+                    case "دوشنبه":
+                        dayContent[2] = content;
+                        btnMonday.setBackgroundResource(R.drawable.rb_b);
+                        break;
+
+                    case "سه شنبه":
+                        dayContent[3] = content;
+                        btnTuesday.setBackgroundResource(R.drawable.rb_b);
+                        break;
+
+                    case "چهارشنبه":
+                        dayContent[4] = content;
+                        btnWednesday.setBackgroundResource(R.drawable.rb_b);
+                        break;
+
+                    case "پنجشنبه":
+                        dayContent[5] = content;
+                        btnThursday.setBackgroundResource(R.drawable.rb_b);
+                        break;
+                }
+            }
+        });
+
+        dialog.show();
+    }
+
 }

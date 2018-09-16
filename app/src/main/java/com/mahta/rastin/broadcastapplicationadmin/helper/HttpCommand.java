@@ -40,12 +40,17 @@ public class HttpCommand {
     public static final String COMMAND_UPDATE_POST = "update post";
     public static final String COMMAND_DELETE_POST = "delete post";
 
+    public static final String COMMAND_CREATE_PROGRAM = "create program";
     public static final String COMMAND_UPDATE_PROGRAM = "update program";
     public static final String COMMAND_DELETE_PROGRAM = "delete program";
 
     public static final String COMMAND_CREATE_MEDIA = "create media";
-    public static final String COMMAND_UPDATE_MEDIA = "update media with file";
+    public static final String COMMAND_UPDATE_MEDIA = "update media";
     public static final String COMMAND_DELETE_MEDIA = "delete media";
+
+    public static final String COMMAND_CREATE_MESSAGE = "create message";
+    public static final String COMMAND_UPDATE_MESSAGE = "update message";
+    public static final String COMMAND_DELETE_MESSAGE = "delete message";
 
 
     public HttpCommand(String command, ContentValues params, String ... args){
@@ -156,6 +161,22 @@ public class HttpCommand {
                     commandDeleteMedia();
                     break;
 
+                case COMMAND_CREATE_PROGRAM:
+                    commandCreateProgram();
+                    break;
+
+                case COMMAND_CREATE_MESSAGE:
+                    commandCreateMessage();
+                    break;
+
+                case COMMAND_UPDATE_MESSAGE:
+                    commandUpdateMessage();
+                    break;
+
+                case COMMAND_DELETE_MESSAGE:
+                    commandDeleteMessage();
+                    break;
+
                 case COMMAND_UPDATE_MEDIA:
 
                     if (file != null) {
@@ -177,7 +198,6 @@ public class HttpCommand {
         else
             G.e("Inappropriate Command Structure");
     }
-
 
     public HttpCommand setOnResultListener(OnResultListener listener){
 
@@ -233,6 +253,8 @@ public class HttpCommand {
 
     private void commandDeletePost() { httpManager.post(G.BASE_URL+"post/delete",currentParams, currentArgs);}
 
+    private void commandCreateProgram() { httpManager.post(G.BASE_URL+"program/create",currentParams, currentArgs); }
+
     private void commandUpdateProgram() { httpManager.post(G.BASE_URL+"program/update",currentParams, currentArgs);}
 
     private void commandDeleteProgram() { httpManager.post(G.BASE_URL+"program/delete",currentParams, currentArgs);  }
@@ -243,7 +265,13 @@ public class HttpCommand {
 
     private void commandUpdateMediaNoFile() { httpManager.post(G.BASE_URL+"media/update",currentParams, currentArgs); }
 
-    private void commandDeleteMedia() { httpManager.post(G.BASE_URL+"media/delete",currentParams, currentArgs);   }
+    private void commandDeleteMedia() { httpManager.post(G.BASE_URL+"media/delete",currentParams, currentArgs); }
+
+    private void commandCreateMessage() { httpManager.post(G.BASE_URL+"message/create",currentParams, currentArgs);   }
+
+    private void commandUpdateMessage() { httpManager.post(G.BASE_URL+"message/update",currentParams, currentArgs);   }
+
+    private void commandDeleteMessage() {  httpManager.post(G.BASE_URL+"message/delete",currentParams, currentArgs);   }
 
 }
 

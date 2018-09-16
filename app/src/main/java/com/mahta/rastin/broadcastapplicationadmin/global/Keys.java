@@ -13,6 +13,7 @@ public class Keys {
     public static final int RESULT_INVALID_NATIONAL_CODE = 1101;
     public static final int RESULT_INVALID_PASSWORD = 1102;
     public static final int RESULT_INVALID_TOKEN = 1103;
+    public static final int RESULT_COUNT_LIMIT = 1117;
 
 
     //Server Parameters

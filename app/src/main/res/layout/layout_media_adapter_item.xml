@@ -18,7 +18,6 @@
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:orientation="vertical"
         android:padding="7dp">
 
         <ImageButton
@@ -32,61 +31,61 @@
             android:src="@drawable/ic_delete"
             />
 
-            <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
-                android:id="@+id/txtBack"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/imgbtn_delete"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:maxLines="2"
-                android:text="موسیقی هفته بادبادک"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="13sp"
-                app:fontTextView="shabnam_bold.ttf"/>
+        <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+            android:id="@+id/txtBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/imgbtn_delete"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="موسیقی هفته بادبادک"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="13sp"
+            app:fontTextView="shabnam_bold.ttf"/>
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+            android:id="@+id/txtPreview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtBack"
+            android:layout_marginBottom="9dp"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@id/imgbtn_delete"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines = "2"
+            android:text="بخش پیش نمایش"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="12sp"
+            app:fontTextView="shabnam.ttf"/>
+
+        <View
+            android:id="@+id/grayLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/txtPreview"
+            android:background="@color/colorGray"/>
+
+        <LinearLayout
+            android:id="@+id/lnlDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/grayLine"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
             <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
-                android:id="@+id/txtPreview"
+                android:id="@+id/txtDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtBack"
-                android:layout_marginBottom="9dp"
-                android:layout_marginTop="4dp"
-                android:layout_toEndOf="@id/imgbtn_delete"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:maxLines = "2"
-                android:text="بخش پیش نمایش"
+                android:gravity="end|center_vertical"
+                android:text="1397-12-06"
                 android:textColor="@color/colorPrimaryText"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 app:fontTextView="shabnam.ttf"/>
 
-            <View
-                android:id="@+id/grayLine"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/txtPreview"
-                android:background="@color/colorGray"/>
-
-            <LinearLayout
-                android:id="@+id/lnlDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/grayLine"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
-                    android:id="@+id/txtDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end|center_vertical"
-                    android:text="1397-12-06"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="11sp"
-                    app:fontTextView="shabnam.ttf"/>
-
-            </LinearLayout>
+        </LinearLayout>
 
     </RelativeLayout>
 

@@ -1,53 +1,57 @@
-package com.mahta.rastin.broadcastapplicationadmin.activity.main.post_activity;
+package com.mahta.rastin.broadcastapplicationadmin.activity.message;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
-import com.mahta.rastin.broadcastapplicationadmin.adapter.PostAdapter;
+import com.mahta.rastin.broadcastapplicationadmin.adapter.MessageAdapter;
 import com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus;
+import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
+import com.mahta.rastin.broadcastapplicationadmin.dialog.GroupListDialog;
 import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
+import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.EndlessRecyclerViewScrollListener;
+import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnDismissListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
-import com.mahta.rastin.broadcastapplicationadmin.model.Post;
+import com.mahta.rastin.broadcastapplicationadmin.model.Message;
 
 import java.util.List;
 
+public class MessageListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
-public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
-
-    private boolean noMorePost = false;
+    private boolean noMoreMessage = false;
 
     public SwipeRefreshLayout swipeRefreshLayout;
-    private FloatingActionButton btnNewPost;
+    private FloatingActionButton btnNewMessage;
     private EndlessRecyclerViewScrollListener scrollListener;
-    private PostAdapter adapter;
-    private TextView txtNoPosts;
+    private TextViewPlus txtGroups;
+    private MessageAdapter adapter;
+    private TextView txtNoMessages;
     public SearchView searchView;
     private String searchPhrase = "null";
+    private String mGroupId = "null";
     private boolean isLoaded;
     private LinearLayout lnlLoading;
     private LinearLayout lnlNoNetwork;
@@ -55,46 +59,51 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
     private boolean isFirstLoad = true;
     private boolean doesFragmentExists = true;
     private boolean isLoading;
-    private boolean shouldUpdate = true;
-
-    private CallBacks activity;
-
-    public PostListFragment() {
-        clearPosts();
-
-    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_message_list);
 
-        this.activity = (CallBacks) getActivity();
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setupSearchBar(toolbar);
 
-        final View view = inflater.inflate(R.layout.fragment_post_list, container, false);
+        RecyclerView rcvMessages = findViewById(R.id.rcvPrograms);
 
-        final RecyclerView rcvPosts = view.findViewById(R.id.rcvPosts);
-
-        setupToolbar(view);
-
-        btnNewPost = view.findViewById(R.id.btnNewPost);
-
-        view.findViewById(R.id.btnNewPost).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.lnlGroup).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                shouldUpdate = false;
+                GroupListDialog dialog = new GroupListDialog(MessageListActivity.this);
 
-                PostAddEditFragment postAddEditFragment = new PostAddEditFragment();
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .addToBackStack("POST LIST")
-                        .replace(R.id.flayout_post, postAddEditFragment)
-                        .commit();
+                dialog.setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(String groupId, String groupTitle) {
 
+                        mGroupId = groupId;
+                        txtGroups.setText(groupTitle);
+                        G.i(groupId);
+
+                        reset();
+                        loadMessages(Constant.PROGRAM_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId);
+                    }
+                });
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
             }
         });
 
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        btnNewMessage = findViewById(R.id.btnNewProgram);
+        findViewById(R.id.btnNewProgram).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MessageListActivity.this, NewMessageActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
                 R.color.colorPrimaryDark,
                 R.color.colorAccent
@@ -102,39 +111,41 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
         swipeRefreshLayout.setOnRefreshListener(this);
 
 
-        btnTryAgain = view.findViewById(R.id.btnTryAgain);
+        btnTryAgain = findViewById(R.id.btnTryAgain);
         btnTryAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 G.i("pressed");
-                loadPosts(Constant.POST_REQUEST_COUNT,0,0, searchPhrase);
+                loadMessages(Constant.PROGRAM_REQUEST_COUNT,0,0, searchPhrase, mGroupId);
             }
         });
 
-        txtNoPosts = view.findViewById(R.id.txtNoPost);
-        lnlLoading = view.findViewById(R.id.lnlLoading);
-        lnlNoNetwork = view.findViewById(R.id.lnlNoNetwork);
+        txtGroups = findViewById(R.id.txtGroup);
+        txtNoMessages = findViewById(R.id.txtNoProgram);
+        lnlLoading = findViewById(R.id.lnlLoading);
+        lnlNoNetwork = findViewById(R.id.lnlNoNetwork);
 
-        adapter = new PostAdapter(getActivity(), RealmController.getInstance().getAllPosts());
+        adapter = new MessageAdapter(this, RealmController.getInstance().getAllMessages());
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position) {
 
-                if (G.isNetworkAvailable(getActivity())){
+                if (G.isNetworkAvailable(MessageListActivity.this)){
 
-                    Post post = RealmController.getInstance().getAllPosts().get(position);
-                    activity.onItemSelected(post);
+                    Intent intent = new Intent(MessageListActivity.this, EditMessageActivity.class);
+                    intent.putExtra(Keys.KEY_EXTRA_FLAG, RealmController.getInstance().getAllMessages().get(position));
+                    startActivity(intent);
 
                 }else {
-                    G.toastLong(G.getStringFromResource(R.string.no_internet, getActivity()), getActivity());
+                    G.toastLong(G.getStringFromResource(R.string.no_internet, MessageListActivity.this), MessageListActivity.this);
                 }
 
             }
         });
-        rcvPosts.setAdapter(adapter);
+        rcvMessages.setAdapter(adapter);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        rcvPosts.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rcvMessages.setLayoutManager(linearLayoutManager);
 
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
@@ -145,56 +156,55 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
                 G.i("YOOOHO");
 
                 G.i("passed threshold p: " + page + " activity: " + totalItemsCount);
-                if (!noMorePost){
-                    loadPosts(Constant.POST_REQUEST_COUNT,totalItemsCount,page, searchPhrase);
-                }else
-                    noMorePost = false;
 
+                if (!noMoreMessage){
+                    loadMessages(Constant.PROGRAM_REQUEST_COUNT,totalItemsCount,page, searchPhrase, mGroupId);
+                }else
+                    noMoreMessage = false;
             }
 
             @Override
             public void onScroll(RecyclerView view, int dx, int dy) {
 
-                if (dy > 0 && btnNewPost.getVisibility() == View.VISIBLE) {
-                    btnNewPost.hide();
-                } else if (dy < 0 && btnNewPost.getVisibility() != View.VISIBLE) {
-                    btnNewPost.show();
+                if (dy > 0 && btnNewMessage.getVisibility() == View.VISIBLE) {
+                    btnNewMessage.hide();
+                } else if (dy < 0 && btnNewMessage.getVisibility() != View.VISIBLE) {
+                    btnNewMessage.show();
                 }
             }
         };
         // Adds the scroll listener to RecyclerView
-        rcvPosts.addOnScrollListener(scrollListener);
+        rcvMessages.addOnScrollListener(scrollListener);
 
-        return view;
+
+
     }
-
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void onResume() {
+        super.onResume();
 
-            loadPosts(Constant.POST_REQUEST_COUNT,0,0, searchPhrase);
-
+        reset();
+        loadMessages(Constant.PROGRAM_REQUEST_COUNT,0,0, searchPhrase, mGroupId);
     }
 
-    void setupToolbar(View view){
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
-        setupSearchBar(toolbar);
-
+        finish();
     }
+
 
     private void setupSearchBar(final View parent){
 
         searchView = parent.findViewById(R.id.searchView);
-        searchView.setQueryHint(G.getStringFromResource(R.string.search, getActivity()));
+        searchView.setQueryHint(G.getStringFromResource(R.string.search, this));
 
         EditText text = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         text.setTextColor(Color.WHITE);
-
-        text.setHintTextColor(G.getColorFromResource(R.color.colorGray, getActivity()));
-        text.setHint(G.getStringFromResource(R.string.search, getActivity()));
-
+        text.setHintTextColor(G.getColorFromResource(R.color.colorGray, this));
+        text.setHint(G.getStringFromResource(R.string.search, this));
         searchView.onActionViewCollapsed();
 
         searchView.setOnClickListener(new View.OnClickListener() {
@@ -211,11 +221,10 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
             public boolean onQueryTextSubmit(String query) {
 
                 //Closing the keyboard
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                View view = getActivity().getCurrentFocus();
-
+                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                View view = getCurrentFocus();
                 if (view == null) {
-                    view = new View(getActivity());
+                    view = new View(MessageListActivity.this);
                 }
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
@@ -229,7 +238,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
                 if (searchView.getQuery().length() == 0) {
                     reset();
                     searchPhrase = "null";
-                    loadPosts(Constant.POST_REQUEST_COUNT, 0, 0, "null");
+                    loadMessages(Constant.PROGRAM_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId);
                 }
                 return false;
             }
@@ -238,7 +247,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
 
                 reset();
                 searchPhrase = query;
-                loadPosts(Constant.POST_REQUEST_COUNT, 0, 0, query);
+                loadMessages(Constant.PROGRAM_REQUEST_COUNT, 0, 0, query, mGroupId);
 //                //Make it visible
 //                prgWait.setVisibility(View.VISIBLE);
             }
@@ -247,8 +256,7 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     }
 
-    private void loadPosts(final int count, final int start, final int page, String searchPhrase){
-
+    private void loadMessages(final int count, final int start, final int page, String searchPhrase, String groupId){
         isLoading = true;
 
         if (isFirstLoad){
@@ -269,7 +277,10 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
             }, Constant.TIME_OUT);
         }
 
-        new HttpCommand(HttpCommand.COMMAND_GET_POSTS, (ContentValues) null, Constant.TYPE_HTML, count + "" , page + "" , searchPhrase, "null")
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
+
+        new HttpCommand(HttpCommand.COMMAND_GET_POSTS, contentValues,Constant.TYPE_MESSAGE, count + "" , page + "" , searchPhrase, groupId)
                 .setOnResultListener(new OnResultListener() {
                     @Override
                     public void onResult(String result) {
@@ -283,27 +294,27 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
                                 changeLoadingResource(2);
                             }
 
-                            List<Post> posts = JSONParser.parsePosts(result);
+                            List<Message> messages = JSONParser.parseMessages(result);
 
-                            if (posts != null) {
+                            if (messages != null) {
 
-                                for (Post post : posts) {
-                                    G.i(post.getId() + "");
-                                    RealmController.getInstance().addPost(post);
+                                for (Message message : messages) {
+                                    G.i(message.getId() + "");
+                                    RealmController.getInstance().addMessage(message);
                                 }
-                                adapter.notifyItemRangeInserted(start - 1, posts.size());
+                                adapter.notifyItemRangeInserted(start - 1, messages.size());
 
-                                if (posts.size() < count)
-                                    noMorePost = true;
+                                if (messages.size() < count)
+                                    noMoreMessage = true;
 
                             } else {
-                                G.i("No more Post is returned");
+                                G.i("No more Message is returned");
                             }
 
                             if (adapter.getItemCount() <= 0)
-                                txtNoPosts.setVisibility(View.VISIBLE);
+                                txtNoMessages.setVisibility(View.VISIBLE);
                             else
-                                txtNoPosts.setVisibility(View.GONE);
+                                txtNoMessages.setVisibility(View.GONE);
                         }
                     }
                 }).execute();
@@ -317,19 +328,19 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
 
         switch (state) {
             case 0:
-                txtNoPosts.setVisibility(View.GONE);
+                txtNoMessages.setVisibility(View.GONE);
                 lnlNoNetwork.setVisibility(View.VISIBLE);
                 btnTryAgain.setVisibility(View.VISIBLE);
                 lnlLoading.setVisibility(View.GONE);
                 break;
             case 1:
-                txtNoPosts.setVisibility(View.GONE);
+                txtNoMessages.setVisibility(View.GONE);
                 lnlNoNetwork.setVisibility(View.GONE);
                 btnTryAgain.setVisibility(View.GONE);
                 lnlLoading.setVisibility(View.VISIBLE);
                 break;
             default:
-                txtNoPosts.setVisibility(View.GONE);
+                txtNoMessages.setVisibility(View.GONE);
                 lnlNoNetwork.setVisibility(View.GONE);
                 btnTryAgain.setVisibility(View.GONE);
                 lnlLoading.setVisibility(View.GONE);
@@ -337,25 +348,24 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
         }
     }
 
-
     private void reset() {
 
-        clearPosts();
+        clearMessages();
         isFirstLoad = true;
+
         adapter.notifyDataSetChanged();
         scrollListener.resetState();
     }
 
-    private void clearPosts(){
-        RealmController.getInstance().clearAllPosts();
+    private void clearMessages(){
+        RealmController.getInstance().clearAllMessages();
     }
 
     @Override
     public void onRefresh() {
-
         if (!isLoading){
             reset();
-            loadPosts(Constant.POST_REQUEST_COUNT, 0, 0, searchPhrase);
+            loadMessages(Constant.POST_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId);
         }
     }
 
@@ -365,9 +375,4 @@ public class PostListFragment extends Fragment implements SwipeRefreshLayout.OnR
         doesFragmentExists = false;
     }
 
-    public interface CallBacks{
-
-        public void onItemSelected(Post post);
-
-    }
 }

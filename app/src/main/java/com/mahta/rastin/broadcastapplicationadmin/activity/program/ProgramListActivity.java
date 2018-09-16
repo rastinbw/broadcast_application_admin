@@ -66,8 +66,6 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_program_list);
 
-        //must clear realm before loading
-        clearPrograms();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setupSearchBar(toolbar);
@@ -87,6 +85,7 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
                         mGroupId = groupId;
                         txtGroups.setText(groupTitle);
                         G.i(groupId);
+
                         reset();
                         loadPrograms(Constant.PROGRAM_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId);
                     }
@@ -179,15 +178,14 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
         // Adds the scroll listener to RecyclerView
         rcvPrograms.addOnScrollListener(scrollListener);
 
-
-        loadPrograms(Constant.PROGRAM_REQUEST_COUNT,0,0, searchPhrase, mGroupId);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-
+        reset();
+        loadPrograms(Constant.PROGRAM_REQUEST_COUNT,0,0, searchPhrase, mGroupId);
     }
 
     @Override

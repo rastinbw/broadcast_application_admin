@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_dialog"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@drawable/shape_header_dialog">
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+            android:id="@+id/txt_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="اضافه کردن لینک"
+            android:textColor="#ffffff"
+            android:textSize="14sp"
+            app:fontTextView="shabnam_bold.ttf"/>
+
+    </RelativeLayout>
+
+
+    <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+        android:id="@+id/edt_link_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/shape_program_edittext"
+        android:gravity="center"
+        android:hint="عنوان"
+        android:lines="2"
+        android:maxLines="2"
+        android:textSize="16sp"
+        app:fontEditText="shabnam.ttf"
+        />
+
+    <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+        android:id="@+id/edt_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/shape_program_edittext"
+        android:gravity="center"
+        android:hint="آدرس"
+        android:textSize="16sp"
+        android:lines="2"
+        android:maxLines="2"
+        app:fontEditText="shabnam.ttf"
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:orientation="horizontal">
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus
+            android:id="@+id/btn_ok"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/rb_b"
+            android:text="ثبت"
+            app:fontButton="shabnam.ttf"/>
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button_disable"
+            android:text="لغو"
+            app:fontButton="shabnam.ttf"/>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -4,9 +4,11 @@ import android.content.ContentValues;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
+import com.mahta.rastin.broadcastapplicationadmin.activity.message.EditMessageActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.file_picker.controller.DialogSelectionListener;
@@ -29,6 +31,7 @@ public class EditMediaActivity extends AppCompatActivity implements View.OnClick
     private EditTextPlus edtTitle, edtDesc;
     private TextViewPlus txtFile;
     private File file;
+    private LinearLayout loadingLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +41,12 @@ public class EditMediaActivity extends AppCompatActivity implements View.OnClick
         findViewById(R.id.imgBack).setOnClickListener(this);
         findViewById(R.id.txtApply).setOnClickListener(this);
         findViewById(R.id.txtBack).setOnClickListener(this);
-        txtFile = findViewById(R.id.txt_file);
 
+
+        txtFile = findViewById(R.id.txt_file);
         edtTitle = findViewById(R.id.edt_title);
         edtDesc = findViewById(R.id.edt_desc);
+        loadingLayout = findViewById(R.id.layout_loading);
 
         media = getIntent().getParcelableExtra(Keys.KEY_EXTRA_FLAG);
 
@@ -120,6 +125,14 @@ public class EditMediaActivity extends AppCompatActivity implements View.OnClick
             String title = edtTitle.getText().toString().trim();
             String description = edtDesc.getText().toString().trim();
 
+            if (title.isEmpty() || description.isEmpty()) {
+
+                G.toastShort("اطلاعات ورودی ناکافی است", EditMediaActivity.this);
+                return;
+            }
+
+            loadingLayout.setVisibility(View.VISIBLE);
+
             ContentValues contentValues = new ContentValues();
 
             contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
@@ -135,6 +148,7 @@ public class EditMediaActivity extends AppCompatActivity implements View.OnClick
                             Toast.makeText(EditMediaActivity.this, "رسانه با موفقیت ویرایش شد", Toast.LENGTH_SHORT).show();
                             finish();
                         }
+                        loadingLayout.setVisibility(View.GONE);
                     }
                 }).execute();
 

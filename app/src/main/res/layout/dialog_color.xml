@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_dialog"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@drawable/shape_header_dialog">
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+            android:id="@+id/txt_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="رنگ مورد نظر را انتخاب کنید"
+            android:textColor="#ffffff"
+            android:textSize="14sp"
+            app:fontTextView="shabnam_bold.ttf"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_margin="20dp"
+        >
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.RoundedCornerLayout
+            android:id="@+id/layout_black"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/black"/>
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.RoundedCornerLayout
+            android:id="@+id/layout_blue"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="20dp"
+            android:background="@color/colorBlue"/>
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.RoundedCornerLayout
+            android:id="@+id/layout_red"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="20dp"
+            android:background="@color/colorRed"/>
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.RoundedCornerLayout
+            android:id="@+id/layout_orange"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="20dp"
+            android:background="@color/colorSecondaryDark"/>
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.RoundedCornerLayout
+            android:id="@+id/layout_green"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:background="@color/colorGreen"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

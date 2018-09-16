@@ -1,21 +1,19 @@
 package com.mahta.rastin.broadcastapplicationadmin.helper;
 
 
-import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.model.Group;
 import com.mahta.rastin.broadcastapplicationadmin.model.Media;
+import com.mahta.rastin.broadcastapplicationadmin.model.Message;
 import com.mahta.rastin.broadcastapplicationadmin.model.Post;
 import com.mahta.rastin.broadcastapplicationadmin.model.Program;
 import com.mahta.rastin.broadcastapplicationadmin.model.UserToken;
 
 import java.util.List;
 
-import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
-import io.realm.Sort;
 
 public class RealmController {
 
@@ -84,6 +82,13 @@ public class RealmController {
     //find all objects in the Group.class
     public List<Group> getGroupList() {
         return realm.where(Group.class).findAll();
+    }
+
+    //returns group title
+    public String getGroupTitle(int groupId) {
+
+        Group group = realm.where(Group.class).equalTo("id", groupId).findFirst();
+        return group.getTitle();
     }
 
     //check if Group.class is empty
@@ -189,6 +194,34 @@ public class RealmController {
     public void addProgram(Program program){
         realm.beginTransaction();
         realm.copyToRealm(program);
+        realm.commitTransaction();
+    }
+
+    /***********************************************************************************************
+     * This Section Will Handle CRUD operation on Message Model
+     **********************************************************************************************/
+    //find all objects in the Post.class
+    public RealmResults<Message> getAllMessages() {
+        return realm.where(Message.class).findAll();
+    }
+
+    //check if Post.class is empty
+    public boolean hasMessages() {
+        return !realm.where(Message.class).findAll().isEmpty();
+    }
+
+    //clear all objects from Post.class
+    public void clearAllMessages() {
+        realm.beginTransaction();
+        RealmResults<Message> result = realm.where(Message.class).findAll();
+        result.deleteAllFromRealm();
+        realm.commitTransaction();
+    }
+
+    //add a Post to Realm
+    public void addMessage(Message message){
+        realm.beginTransaction();
+        realm.copyToRealm(message);
         realm.commitTransaction();
     }
 

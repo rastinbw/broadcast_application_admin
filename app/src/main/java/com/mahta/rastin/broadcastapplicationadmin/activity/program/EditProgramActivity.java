@@ -10,15 +10,22 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
+import com.mahta.rastin.broadcastapplicationadmin.activity.post.EditPostActivity;
+import com.mahta.rastin.broadcastapplicationadmin.activity.post.NewPostActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
+import com.mahta.rastin.broadcastapplicationadmin.dialog.ColorDialog;
+import com.mahta.rastin.broadcastapplicationadmin.dialog.UrlDialog;
 import com.mahta.rastin.broadcastapplicationadmin.editor.RichEditor;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
+import com.mahta.rastin.broadcastapplicationadmin.interfaces.ColorDialogListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
+import com.mahta.rastin.broadcastapplicationadmin.interfaces.UrlDialogListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Group;
+import com.mahta.rastin.broadcastapplicationadmin.model.Message;
 import com.mahta.rastin.broadcastapplicationadmin.model.Program;
 
 import java.security.Key;
@@ -50,8 +57,6 @@ public class EditProgramActivity extends AppCompatActivity implements View.OnCli
 
 
 
-
-
         mEditor = findViewById(R.id.post_editor);
 
         //this is needed to request focus when clicked on bottom of editor
@@ -65,7 +70,7 @@ public class EditProgramActivity extends AppCompatActivity implements View.OnCli
         mEditor.setPlaceholder("متن");
 
         // to adjust text direction
-//        String html = "<div dir='rtl'>" + "<br/>" + "</div>";
+        String html = "<div>" + program.getContent() + "<br/>" + "</div>";
 
         mEditor.setHtml(program.getContent());
 
@@ -73,6 +78,10 @@ public class EditProgramActivity extends AppCompatActivity implements View.OnCli
         //to start activity with no focus on fields
         mEditor.requestFocus();
 
+
+        mEditor.getSettings().setLoadWithOverviewMode(true);
+        mEditor.getSettings().setBuiltInZoomControls(true);
+        mEditor.getSettings().setDisplayZoomControls(false);
 
 
         mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
@@ -100,12 +109,19 @@ public class EditProgramActivity extends AppCompatActivity implements View.OnCli
         });
 
         findViewById(R.id.action_txt_color).setOnClickListener(new View.OnClickListener() {
-            private boolean isChanged;
 
             @Override public void onClick(View v) {
 
-                mEditor.setTextColor(isChanged ? Color.BLACK : Color.RED);
-                isChanged = !isChanged;
+                ColorDialog colorDialog = new ColorDialog(EditProgramActivity.this);
+                colorDialog.setOnSelectColorListener(new ColorDialogListener() {
+                    @Override
+                    public void onSelectColor(int color) {
+
+                        mEditor.setTextColor(color);
+
+                    }
+                });
+                colorDialog.show();
             }
         });
 
@@ -127,17 +143,19 @@ public class EditProgramActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-        findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-
-                mEditor.insertImage("http://www.1honeywan.com/dachshund/image/7.21/7.21_3_thumb.JPG",
-                        "dachshund");
-            }
-        });
-
         findViewById(R.id.action_insert_link).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                mEditor.insertLink("https://github.com/wasabeef", "wasabeef");
+
+                UrlDialog urlDialog = new UrlDialog(EditProgramActivity.this);
+
+                urlDialog.setOnInsertDialogListener(new UrlDialogListener() {
+                    @Override
+                    public void onInsertUrl(String title, String url) {
+
+                        mEditor.insertLink(url, title);
+                    }
+                });
+                urlDialog.show();
             }
         });
     }
@@ -169,6 +187,9 @@ public class EditProgramActivity extends AppCompatActivity implements View.OnCli
         adapter = new ArrayAdapter<>(this, R.layout.layout_group_spinner_item, groups);
 
         spinner.setAdapter(adapter);
+
+        //setting default choice
+        spinner.setSelection(adapter.getPosition(RealmController.getInstance().getGroupTitle(program.getGroup_id())));
     }
 
     @Override
@@ -184,6 +205,12 @@ public class EditProgramActivity extends AppCompatActivity implements View.OnCli
             String title = edttitle.getText().toString();
             String preview = edtPreview.getText().toString();
             String content = mEditor.getHtml();
+
+            if (title.isEmpty() || preview.isEmpty() || content.isEmpty()) {
+
+                G.toastShort("اطلاعات ورودی ناکافی است", EditProgramActivity.this);
+                return;
+            }
 
             String groupTitle = spinner.getSelectedItem().toString();
 

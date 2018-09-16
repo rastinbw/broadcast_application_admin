@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.activity.media.MediaListActivity;
+import com.mahta.rastin.broadcastapplicationadmin.activity.message.MessageListActivity;
 import com.mahta.rastin.broadcastapplicationadmin.activity.post.PostListActivity;
 import com.mahta.rastin.broadcastapplicationadmin.activity.program.ProgramListActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
@@ -26,16 +27,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //setting tollbar title
         ((TextViewPlus) findViewById(R.id.txtTitle)).setText("داشبورد");
 
-
-        announceCard = findViewById(R.id.announce_card);
-        mediaCard = findViewById(R.id.media_card);
-        helpCard = findViewById(R.id.help_card);
-        scheduleCard = findViewById(R.id.schedules_card);
-
-        announceCard.setOnClickListener(this);
-        mediaCard.setOnClickListener(this);
-        helpCard.setOnClickListener(this);
-        scheduleCard.setOnClickListener(this);
+        findViewById(R.id.announce_card).setOnClickListener(this);
+        findViewById(R.id.media_card).setOnClickListener(this);
+        findViewById(R.id.help_card).setOnClickListener(this);
+        findViewById(R.id.schedules_card).setOnClickListener(this);
+        findViewById(R.id.users_card).setOnClickListener(this);
+        findViewById(R.id.message_card).setOnClickListener(this);
 
     }
 
@@ -97,6 +94,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
 
                 break;
+
+            case R.id.message_card:
+
+                intent = new Intent(MainActivity.this, MessageListActivity.class);
+                startActivity(intent);
+
+                break;
+
+            case R.id.users_card:
+
+                intent = new Intent(MainActivity.this, UsersActivity.class);
+                startActivity(intent);
+
+                break;
+
+
         }
     }
 }

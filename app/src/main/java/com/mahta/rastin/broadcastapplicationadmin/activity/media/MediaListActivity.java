@@ -59,8 +59,6 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_list);
 
-        //must clear realm before loading
-        clearMedia();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setupSearchBar(toolbar);
@@ -149,6 +147,14 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
         rcvPosts.addOnScrollListener(scrollListener);
 
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        reset();
         loadMedia(Constant.MEDIA_REQUEST_COUNT, 0, 0, "null");
     }
 

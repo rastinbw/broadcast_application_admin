@@ -75,6 +75,30 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/layout_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:indicatorColor="@color/colorAccent"
+        app:indicatorName="LineScaleIndicator"
+        />
+
+    <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="لطفا منتظر بمانید"
+        app:fontTextView="shabnam.ttf"
+        />
+
+    </LinearLayout>
 
 
 </LinearLayout>

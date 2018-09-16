@@ -4,10 +4,12 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
+import com.mahta.rastin.broadcastapplicationadmin.activity.program.NewProgramActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.file_picker.controller.DialogSelectionListener;
@@ -29,6 +31,7 @@ public class NewMediaActivity extends AppCompatActivity implements View.OnClickL
     private EditTextPlus edtTitle, edtDesc;
     private TextViewPlus txtFile;
     private File file;
+    private LinearLayout loadingLayout;
 
 
     @Override
@@ -39,10 +42,12 @@ public class NewMediaActivity extends AppCompatActivity implements View.OnClickL
         findViewById(R.id.imgBack).setOnClickListener(this);
         findViewById(R.id.txtApply).setOnClickListener(this);
         findViewById(R.id.txtBack).setOnClickListener(this);
-        txtFile = findViewById(R.id.txt_file);
 
+
+        txtFile = findViewById(R.id.txt_file);
         edtTitle = findViewById(R.id.edt_title);
         edtDesc = findViewById(R.id.edt_desc);
+        loadingLayout = findViewById(R.id.layout_loading);
 
         txtFile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +120,14 @@ public class NewMediaActivity extends AppCompatActivity implements View.OnClickL
             String title = edtTitle.getText().toString().trim();
             String description = edtDesc.getText().toString().trim();
 
+            if (title.isEmpty() || description.isEmpty() || file == null) {
+
+                G.toastShort("اطلاعات ورودی ناکافی است", NewMediaActivity.this);
+                return;
+            }
+
+            loadingLayout.setVisibility(View.VISIBLE);
+
             ContentValues contentValues = new ContentValues();
 
             contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
@@ -126,11 +139,15 @@ public class NewMediaActivity extends AppCompatActivity implements View.OnClickL
                 @Override
                 public void onResult(String result) {
 
-                    if (JSONParser.getResultCodeFromJson(result) == 1000){
+                    if (JSONParser.getResultCodeFromJson(result) == Keys.RESULT_COUNT_LIMIT){
 
-                        Toast.makeText(NewMediaActivity.this, "رسانه جدید افزوده شد", Toast.LENGTH_SHORT).show();
+                        G.toastShort("تعداد رسانه مجاز : " + JSONParser.getLimitationCode(result) , NewMediaActivity.this);
+
+                    } else if (JSONParser.getResultCodeFromJson(result) == Keys.RESULT_SUCCESS) {
+                        G.toastShort("اطلاعیه جدید افزوده شد", NewMediaActivity.this);
                         finish();
                     }
+                    loadingLayout.setVisibility(View.GONE);
                 }
             }).execute();
 

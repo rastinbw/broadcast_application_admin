@@ -83,6 +83,7 @@
     <string name="share_to">اشتراک گزاری ازطریق</string>
     <string name="grade">پایه تحصیلی :</string>
     <string name="there_is_no_program">برنامه کلاسی وجود ندارد</string>
+    <string name="there_is_no_message">پیامی وجود ندارد</string>
     <string name="favorite_programs">برنامه های کلاسی مورد علاقه</string>
     <string name="all_groups">همه گروه ها</string>
     <string name="choose_group">انتخاب گروه آموزشی</string>
@@ -92,14 +93,12 @@
     <string name="click_twice">برای خروج دوباره کلیک کنید</string>
 
 
-    <string-array name="slide_titles">
-        <item>شنبه</item>
-        <item>یکشنبه</item>
-        <item>دوشنبه</item>
-        <item>سه شنبه</item>
-        <item>چهارشنبه</item>
-        <item>پنجشنبه</item>
-    </string-array>
+    <string name="saturday">شنبه</string>
+    <string name="sunday">یکشنبه</string>
+    <string name="monday">دوشنبه</string>
+    <string name="tuesday">سه شنبه</string>
+    <string name="wednesday">چهارشنبه</string>
+    <string name="thursday">پنجشنبه</string>
 
 
     <string name="cancel_button_label">Cancel</string>

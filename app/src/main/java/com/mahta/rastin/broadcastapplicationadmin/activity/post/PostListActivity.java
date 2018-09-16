@@ -59,10 +59,6 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_list);
 
-        //must clear realm before loading
-        clearPosts();
-
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setupSearchBar(toolbar);
 
@@ -150,7 +146,7 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
         // Adds the scroll listener to RecyclerView
         rcvPosts.addOnScrollListener(scrollListener);
 
-        loadPosts(Constant.POST_REQUEST_COUNT,0,0, searchPhrase);
+
     }
 
 
@@ -158,6 +154,8 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
     protected void onResume() {
         super.onResume();
 
+        reset();
+        loadPosts(Constant.POST_REQUEST_COUNT,0,0, searchPhrase);
     }
 
     @Override

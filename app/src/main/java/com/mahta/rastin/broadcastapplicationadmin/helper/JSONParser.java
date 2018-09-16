@@ -4,6 +4,7 @@ import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.model.Group;
 import com.mahta.rastin.broadcastapplicationadmin.model.Media;
+import com.mahta.rastin.broadcastapplicationadmin.model.Message;
 import com.mahta.rastin.broadcastapplicationadmin.model.Post;
 import com.mahta.rastin.broadcastapplicationadmin.model.Program;
 import com.mahta.rastin.broadcastapplicationadmin.model.UserToken;
@@ -31,6 +32,19 @@ public class JSONParser {
         return resultCode;
     }
 
+    public static int getLimitationCode(String content){
+        int resultCode;
+
+        try {
+            JSONObject obj = new JSONObject(content);
+            resultCode = obj.getInt(Keys.KEY_DATA);
+
+        } catch (JSONException e) {
+            G.e("error_getLimitCode: " + e.getMessage());
+            return 0;
+        }
+        return resultCode;
+    }
 
     public static UserToken parseToken(String content){
 
@@ -56,6 +70,7 @@ public class JSONParser {
                 List<Group> groupList = new ArrayList<>();
 
                 for (int i = 0; i < data.length(); i++) {
+
                     if (!data.isNull(i)){
                         JSONObject jgroup = data.getJSONObject(i);
                         Group group = new Group();
@@ -140,6 +155,40 @@ public class JSONParser {
                     }
                 }
                 return programList;
+            }else
+                return null;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            G.e("error_parsePrograms: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public static List<Message> parseMessages(String content){
+
+        try {
+            JSONObject obj = new JSONObject(content);
+            JSONArray data = obj.getJSONArray(Keys.KEY_DATA);
+
+            if (data.length() > 0){
+                List<Message> messageList = new ArrayList<>();
+
+                for (int i = 0; i < data.length(); i++) {
+                    if (!data.isNull(i)){
+
+                        JSONObject jprogram = data.getJSONObject(i);
+                        Message message = new Message();
+
+                        message.setId(jprogram.getInt(Keys.KEY_ID));
+                        message.setTitle(jprogram.getString(Keys.KEY_TITLE));
+                        message.setContent(jprogram.getString(Keys.KEY_CONTENT));
+                        message.setDate(jprogram.getString(Keys.KEY_DATE_UPDATED));
+                        message.setGroup_id(jprogram.getInt(Keys.KEY_GROUP_ID));
+                        messageList.add(message);
+                    }
+                }
+                return messageList;
             }else
                 return null;
 

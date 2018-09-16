@@ -155,7 +155,7 @@ public class HttpManager{
 
                         httpResult = response.body().string();
 
-                        if(onResultListener!=null){
+                        if(onResultListener != null){
                             G.HANDLER.post(new Runnable() {
                                 @Override
                                 public void run() {
