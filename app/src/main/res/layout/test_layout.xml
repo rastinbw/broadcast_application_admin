@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGrayLight"
+    android:orientation="vertical"
+    tools:context=".activity.main.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/container_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_simple_toolbar" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <!-- Row 1 -->
+        <!-- Column 1 -->
+
+        <LinearLayout
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:layout_gravity="center"
+                    android:background="@color/colorGrayLight"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/media"
+                        />
+
+                    <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="رسانه"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorBlueDark"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:fontTextView="shabnam.ttf"/>
+                </LinearLayout>
+
+            <!-- Row 2 -->
+            <!-- Column 1 -->
+
+
+                <LinearLayout
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:layout_gravity="center"
+                    android:background="@color/colorGrayLight"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/message"
+                        />
+
+                    <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="پیام ها"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorBlueDark"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:fontTextView="shabnam.ttf"/>
+                </LinearLayout>
+
+
+            <!-- Row 3 -->
+            <!-- Column 1 -->
+
+                <LinearLayout
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:layout_gravity="center"
+                    android:background="@color/colorGrayLight"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/help"
+                        />
+
+                    <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="راهنما"
+                        android:textAlignment="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorBlueDark"
+                        android:textStyle="bold"
+                        app:fontTextView="shabnam.ttf"/>
+                </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Row 1 -->
+            <!-- Column 2 -->
+
+
+                <LinearLayout
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:background="@color/colorGrayLight"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/announcement"
+                        />
+
+                    <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="اطلاعیه ها"
+                        android:textAlignment="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorBlueDark"
+                        android:textStyle="bold"
+                        app:fontTextView="shabnam.ttf"/>
+                </LinearLayout>
+
+
+            <!-- Row 2 -->
+            <!-- Column 2 -->
+
+                <LinearLayout
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@color/colorGrayLight"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/schedule"
+                        />
+
+                    <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="برنامه ها"
+                        android:textAlignment="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorBlueDark"
+                        android:textStyle="bold"
+                        app:fontTextView="shabnam.ttf"/>
+                </LinearLayout>
+
+
+            <!-- Row 3 -->
+            <!-- Column 2 -->
+
+
+                <LinearLayout
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:layout_gravity="center"
+                    android:background="@color/colorGrayLight"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/users"
+                        />
+
+                    <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="کاربران"
+                        android:textAlignment="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/colorBlueDark"
+                        android:textStyle="bold"
+                        app:fontTextView="shabnam.ttf"/>
+                </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

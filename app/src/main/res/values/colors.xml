@@ -27,6 +27,7 @@
     <color name="colorGrayDark">#6c6e70</color>
     <color name="colorGreen">#0b9b01</color>
     <color name="colorBlue">#0062ff</color>
+    <color name="colorBlueDark">#003ea2</color>
 
     <color name="dot_active">#1c7660</color>
     <color name="dot_inactive">#2dba97</color>

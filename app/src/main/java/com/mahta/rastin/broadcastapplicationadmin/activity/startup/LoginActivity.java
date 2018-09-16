@@ -1,11 +1,13 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.startup;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
@@ -42,7 +44,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         edtPass = findViewById(R.id.edt_pass);
         txtLogin = findViewById(R.id.txt_login);
         layoutLogin = findViewById(R.id.layout_login);
-
         indicator = findViewById(R.id.login_loader);
 
         layoutLogin.setOnClickListener(this);

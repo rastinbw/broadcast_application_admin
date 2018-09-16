@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.activity.media.MediaListActivity;
@@ -17,7 +18,7 @@ import com.mahta.rastin.broadcastapplicationadmin.global.G;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private CardView announceCard, mediaCard, helpCard, scheduleCard;
+    private LinearLayout lnlToolbar;
     private boolean doubleBackToExitPressedOnce = false;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -108,8 +109,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
 
                 break;
-
-
         }
     }
 }
