@@ -49,7 +49,8 @@
             android:inputType="textEmailAddress"
             android:padding="10dp"
             android:textColorHint="@android:color/white"
-            android:textSize="20sp"
+            android:textSize="17sp"
+            app:fontEditText="shabnam.ttf"
         />
 
         <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
@@ -62,16 +63,18 @@
             android:background="@drawable/shape_rounded_edit_text"
             android:drawableLeft="@drawable/ic_lock"
             android:drawableStart="@drawable/ic_lock"
+            android:maxLines="1"
             android:hint=" رمز عبور"
             android:padding="10dp"
             android:textColorHint="@android:color/white"
-            android:textSize="20sp"
+            android:textSize="17sp"
+            app:fontEditText="shabnam.ttf"
             />
 
         <LinearLayout
             android:id="@+id/layout_login"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginEnd="30dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="30dp"
@@ -83,18 +86,18 @@
                 android:id="@+id/txt_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="20dp"
                 android:text="ورود"
                 android:textColor="@color/textColorPrimary"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:visibility="visible"
-                app:fontTextView="20sp"/>
+                app:fontTextView="shabnam.ttf"/>
 
             <com.wang.avi.AVLoadingIndicatorView
                 android:id="@+id/login_loader"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:visibility="gone"
                 />
 

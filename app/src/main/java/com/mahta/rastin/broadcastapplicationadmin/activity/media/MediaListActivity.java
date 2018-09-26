@@ -20,8 +20,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
+import com.mahta.rastin.broadcastapplicationadmin.activity.message.MessageListActivity;
 import com.mahta.rastin.broadcastapplicationadmin.adapter.MediaAdapter;
 import com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus;
+import com.mahta.rastin.broadcastapplicationadmin.dialog.DeleteDialog;
 import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
@@ -29,9 +31,11 @@ import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.EndlessRecyclerViewScrollListener;
+import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnDialogDeleteListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Media;
+import com.mahta.rastin.broadcastapplicationadmin.model.Message;
 
 import java.util.List;
 
@@ -111,6 +115,47 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
                     G.toastLong(G.getStringFromResource(R.string.no_internet, MediaListActivity.this), MediaListActivity.this);
                 }
 
+            }
+        });
+
+        adapter.setOnItemDeleteListener(new OnItemClickListener() {
+            @Override
+            public void onItemClicked(View view, final int position) {
+
+                final Media media = RealmController.getInstance().getAllMedia().get(position);
+
+                DeleteDialog deleteDialog = new DeleteDialog(MediaListActivity.this);
+
+                deleteDialog.setOnDeleteListener(new OnDialogDeleteListener() {
+                    @Override
+                    public void onConfirmDeleteItem(boolean confirm) {
+
+                        if (confirm) {
+
+                            ContentValues contentValues = new ContentValues();
+
+                            contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
+
+                            new HttpCommand(HttpCommand.COMMAND_DELETE_MEDIA, contentValues, media.getId()+"")
+                                    .setOnResultListener(new OnResultListener() {
+                                        @Override
+                                        public void onResult(String result) {
+
+                                            if (JSONParser.getResultCodeFromJson(result) == Keys.RESULT_SUCCESS) {
+                                                G.toastShort("رسانه با موفقیت حذف شد", MediaListActivity.this);
+
+                                                // rastin's movement
+                                                RealmController.getInstance().removeMedia(media.getId());
+                                                adapter.notifyItemRemoved(position);
+                                            }
+                                        }
+                                    }).execute();
+                        }
+
+                    }
+                });
+
+                deleteDialog.show();
             }
         });
 

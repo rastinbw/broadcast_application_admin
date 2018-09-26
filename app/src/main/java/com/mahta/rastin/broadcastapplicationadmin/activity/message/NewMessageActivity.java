@@ -1,6 +1,7 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.message;
 
 import android.content.ContentValues;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,11 +10,13 @@ import android.widget.Spinner;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
+import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
+import com.mahta.rastin.broadcastapplicationadmin.helper.Utils;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Group;
 
@@ -28,11 +31,12 @@ public class NewMessageActivity extends AppCompatActivity implements View.OnClic
     private ArrayAdapter adapter;
     String[] groups;
     private String messageContent;
+    boolean serverResponsed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_message);
+        setContentView(R.layout.activity_new_edit_message);
 
         initViews();
     }
@@ -84,6 +88,19 @@ public class NewMessageActivity extends AppCompatActivity implements View.OnClic
                 return;
             }
 
+            Utils.changeLoadingResource(NewMessageActivity.this, 0);
+
+            //using this way just to handle scenarios that server didn't respond in SERVER_RESPONSE_TIME
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    if (!serverResponsed) {
+                        Utils.changeLoadingResource(NewMessageActivity.this, 1);
+                    }
+                }
+            }, Constant.SERVER_RESPONSE_TIME);
+
             ContentValues contentValues = new ContentValues();
 
             contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
@@ -94,6 +111,8 @@ public class NewMessageActivity extends AppCompatActivity implements View.OnClic
             new HttpCommand(HttpCommand.COMMAND_CREATE_MESSAGE, contentValues).setOnResultListener(new OnResultListener() {
                 @Override
                 public void onResult(String result) {
+
+                    serverResponsed = true;
 
                     if (JSONParser.getResultCodeFromJson(result) == Keys.RESULT_SUCCESS) {
                         G.toastShort("پیام جدید افزوده شد", NewMessageActivity.this);

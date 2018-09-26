@@ -1,7 +1,6 @@
 package com.mahta.rastin.broadcastapplicationadmin.helper;
 
 import android.content.ContentValues;
-import android.util.Log;
 
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
@@ -11,9 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import io.realm.Realm;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -39,7 +35,7 @@ public class HttpManager{
                 .build();
     }
 
-    public void post(String url, ContentValues params, String[] args){
+    public void post(String url, ContentValues params, String[] args) {
 
         StringBuilder aBuilder = new StringBuilder();
         aBuilder.append(url);
@@ -61,7 +57,6 @@ public class HttpManager{
             }
 
         RequestBody body = builder.build();
-
 
         Request request = new Request.Builder()
                 .url(aBuilder.toString())

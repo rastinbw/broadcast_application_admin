@@ -24,6 +24,7 @@ import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.adapter.MessageAdapter;
 import com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
+import com.mahta.rastin.broadcastapplicationadmin.dialog.DeleteDialog;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.GroupListDialog;
 import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
@@ -32,6 +33,7 @@ import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.EndlessRecyclerViewScrollListener;
+import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnDialogDeleteListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnDismissListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
@@ -142,6 +144,48 @@ public class MessageListActivity extends AppCompatActivity implements SwipeRefre
 
             }
         });
+
+        adapter.setOnItemDeleteListener(new OnItemClickListener() {
+            @Override
+            public void onItemClicked(View view, final int position) {
+
+                final Message message = RealmController.getInstance().getAllMessages().get(position);
+
+                DeleteDialog deleteDialog = new DeleteDialog(MessageListActivity.this);
+
+                deleteDialog.setOnDeleteListener(new OnDialogDeleteListener() {
+                    @Override
+                    public void onConfirmDeleteItem(boolean confirm) {
+
+                        if (confirm) {
+
+                            ContentValues contentValues = new ContentValues();
+
+                            contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
+
+                            new HttpCommand(HttpCommand.COMMAND_DELETE_MESSAGE, contentValues, message.getId()+"")
+                                    .setOnResultListener(new OnResultListener() {
+                                @Override
+                                public void onResult(String result) {
+
+                                    if (JSONParser.getResultCodeFromJson(result) == Keys.RESULT_SUCCESS) {
+                                        G.toastShort("پیام با موفقیت حذف شد", MessageListActivity.this);
+
+                                        // rastin's movement
+                                        RealmController.getInstance().removeMessage(message.getId());
+                                        adapter.notifyItemRemoved(position);
+                                    }
+                                }
+                            }).execute();
+                        }
+
+                    }
+                });
+
+                deleteDialog.show();
+            }
+        });
+
         rcvMessages.setAdapter(adapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

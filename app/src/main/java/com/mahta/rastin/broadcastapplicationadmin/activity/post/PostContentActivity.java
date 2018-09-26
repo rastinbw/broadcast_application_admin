@@ -17,7 +17,7 @@ import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
-import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnDeleteListener;
+import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnDialogDeleteListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Post;
 
@@ -32,7 +32,6 @@ public class PostContentActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_post_content);
 
         currentPost = getIntent().getParcelableExtra(Keys.KEY_EXTRA_FLAG);
-
 
         setupToolbar();
 
@@ -69,6 +68,12 @@ public class PostContentActivity extends AppCompatActivity implements View.OnCli
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     public void onClick(View v) {
 
         int id  = v.getId();
@@ -80,19 +85,21 @@ public class PostContentActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.imgEdit:
+
                 Intent intent = new Intent(PostContentActivity.this, EditPostActivity.class);
                 intent.putExtra(Keys.KEY_EXTRA_FLAG, currentPost);
                 startActivity(intent);
 
+                finish();
                 break;
 
             case R.id.imgDelete:
 
                 DeleteDialog deleteDialog = new DeleteDialog(PostContentActivity.this);
 
-                deleteDialog.setOnDeleteListener(new OnDeleteListener() {
+                deleteDialog.setOnDeleteListener(new OnDialogDeleteListener() {
                     @Override
-                    public void onDeleteItem(boolean confirm) {
+                    public void onConfirmDeleteItem(boolean confirm) {
 
                         if (confirm) {
 

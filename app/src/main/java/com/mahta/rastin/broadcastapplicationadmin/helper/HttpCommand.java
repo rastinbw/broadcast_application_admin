@@ -1,9 +1,14 @@
 package com.mahta.rastin.broadcastapplicationadmin.helper;
 
 import android.content.ContentValues;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 
+import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -210,7 +215,7 @@ public class HttpCommand {
                 if(onResultListener != null){
                     onResultListener.onResult(result);
 
-                    G.i(result);
+                    G.i("result : " + result);
                 }
             }
         });
@@ -259,9 +264,19 @@ public class HttpCommand {
 
     private void commandDeleteProgram() { httpManager.post(G.BASE_URL+"program/delete",currentParams, currentArgs);  }
 
-    private void commandCreateMedia() throws IOException { httpManager.upload(G.BASE_URL+"media/create", file, currentParams, currentArgs);}
+//    private void commandCreateMedia() throws IOException { httpManager.upload(G.BASE_URL+"media/create", file, currentParams, currentArgs);}
 
-    private void commandUpdateMediaFile() throws IOException { httpManager.post(G.BASE_URL+"media/update", currentParams, currentArgs); }
+    private void commandCreateMedia() throws IOException {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                new UploadProgress(G.BASE_URL+"media/create", file, currentParams, currentArgs);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void commandUpdateMediaFile() throws IOException { httpManager.upload(G.BASE_URL+"media/update", file, currentParams, currentArgs); }
 
     private void commandUpdateMediaNoFile() { httpManager.post(G.BASE_URL+"media/update",currentParams, currentArgs); }
 

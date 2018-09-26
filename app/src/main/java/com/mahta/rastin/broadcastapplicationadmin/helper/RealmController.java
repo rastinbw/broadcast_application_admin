@@ -1,6 +1,7 @@
 package com.mahta.rastin.broadcastapplicationadmin.helper;
 
 
+import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.model.Group;
 import com.mahta.rastin.broadcastapplicationadmin.model.Media;
@@ -149,6 +150,16 @@ public class RealmController {
         return realm.where(Media.class).findAll();
     }
 
+    public void removeMedia(int id){
+        realm.beginTransaction();
+        RealmResults<Media> result = realm.where(Media.class)
+                .equalTo(Keys.KEY_ID, id).findAll();
+
+        result.deleteAllFromRealm();
+        realm.commitTransaction();
+        G.i("Removing " + id);
+    }
+
     //check if Media.class is empty
     public boolean hasMedia() {
         return !realm.where(Media.class).findAll().isEmpty();
@@ -204,6 +215,17 @@ public class RealmController {
     public RealmResults<Message> getAllMessages() {
         return realm.where(Message.class).findAll();
     }
+
+    public void removeMessage(int id){
+        realm.beginTransaction();
+        RealmResults<Message> result = realm.where(Message.class)
+                .equalTo(Keys.KEY_ID, id).findAll();
+
+        result.deleteAllFromRealm();
+        realm.commitTransaction();
+        G.i("Removing " + id);
+    }
+
 
     //check if Post.class is empty
     public boolean hasMessages() {

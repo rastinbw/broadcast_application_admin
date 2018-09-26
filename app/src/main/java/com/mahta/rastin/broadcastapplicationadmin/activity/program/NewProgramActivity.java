@@ -3,32 +3,43 @@ package com.mahta.rastin.broadcastapplicationadmin.activity.program;
 import android.content.ContentValues;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.activity.post.NewPostActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
+import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.ProgramFormDialog;
+import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
+import com.mahta.rastin.broadcastapplicationadmin.helper.Utils;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnProgramFormSaveListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Group;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.List;
 
 public class NewProgramActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditTextPlus edtTitle, edtPreview;
-    private ButtonPlus btnSaturday, btnSunday, btnMonday, btnTuesday, btnWednesday, btnThursday, btnFriday;
+    private ButtonPlus btnSaturday, btnSunday, btnMonday, btnTuesday, btnWednesday, btnThursday;
+    TextViewPlus txtApply;
+    AVLoadingIndicatorView loadingIndicator;
+    boolean serverResponsed = false;
 
     private List<Group> groupList;
     private Spinner spinner;
@@ -47,8 +58,11 @@ public class NewProgramActivity extends AppCompatActivity implements View.OnClic
 
     private void initViews() {
 
+        txtApply = findViewById(R.id.txtApply);
+        loadingIndicator = findViewById(R.id.apply_loader);
+        txtApply.setOnClickListener(this);
+
         findViewById(R.id.imgBack).setOnClickListener(this);
-        findViewById(R.id.txtApply).setOnClickListener(this);
         findViewById(R.id.txtBack).setOnClickListener(this);
 
         btnSunday = findViewById(R.id.btn_sunday);
@@ -123,6 +137,20 @@ public class NewProgramActivity extends AppCompatActivity implements View.OnClic
                 return;
             }
 
+            Utils.changeLoadingResource(NewProgramActivity.this, 0);
+
+            //using this way just to handle scenarios that server didn't respond in SERVER_RESPONSE_TIME
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    if (!serverResponsed) {
+                        Utils.changeLoadingResource(NewProgramActivity.this, 1);
+                    }
+                }
+            }, Constant.SERVER_RESPONSE_TIME);
+
+
             programContent = "<table border='1' cellspacing=\"1\" style=\"width:445.5px; text-align: center\"> <tbody>"
                     + dayContent[0]
                     + dayContent[1]
@@ -147,11 +175,14 @@ public class NewProgramActivity extends AppCompatActivity implements View.OnClic
                 @Override
                 public void onResult(String result) {
 
+                    serverResponsed = true;
+
                     if (JSONParser.getResultCodeFromJson(result) == Keys.RESULT_COUNT_LIMIT){
 
                         G.toastShort("تعداد برنامه مجاز : " + JSONParser.getLimitationCode(result) , NewProgramActivity.this);
 
                     } else if (JSONParser.getResultCodeFromJson(result) == Keys.RESULT_SUCCESS) {
+
                         G.toastShort("اطلاعیه جدید افزوده شد", NewProgramActivity.this);
                         finish();
                     }
@@ -169,6 +200,10 @@ public class NewProgramActivity extends AppCompatActivity implements View.OnClic
         dialog.setOnSaveListener(new OnProgramFormSaveListener() {
             @Override
             public void onSave(String day, String content) {
+
+                //to close keyboard after closing dialog
+                getWindow().setSoftInputMode(WindowManager.
+                        LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
                 switch (day) {
 

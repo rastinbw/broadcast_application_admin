@@ -41,6 +41,11 @@
             android:background="@drawable/shape_program_edittext"
             android:gravity="center"
             android:hint="نام درس"
+            android:inputType="text"
+            android:maxLength="12"
+            android:maxLines="1"
+            android:padding="2dp"
+            android:textSize="17sp"
             app:fontEditText="shabnam.ttf"/>
 
         <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
@@ -53,6 +58,7 @@
             android:background="@drawable/shape_program_edittext"
             android:gravity="center"
             android:hint="10"
+            android:inputType="time"
             app:fontEditText="shabnam.ttf"/>
 
         <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
@@ -72,6 +78,7 @@
             android:background="@drawable/shape_program_edittext"
             android:gravity="center"
             android:hint="8 : 30"
+            android:inputType="time"
             app:fontEditText="shabnam.ttf"/>
 
     </LinearLayout>
@@ -92,6 +99,11 @@
             android:background="@drawable/shape_program_edittext"
             android:gravity="center"
             android:hint="نام درس"
+            android:inputType="text"
+            android:maxLength="12"
+            android:maxLines="1"
+            android:padding="2dp"
+            android:textSize="17sp"
             app:fontEditText="shabnam.ttf"/>
 
         <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
@@ -104,6 +116,7 @@
             android:background="@drawable/shape_program_edittext"
             android:gravity="center"
             android:hint="10"
+            android:inputType="time"
             app:fontEditText="shabnam.ttf"/>
 
         <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
@@ -124,6 +137,7 @@
             android:background="@drawable/shape_program_edittext"
             android:gravity="center"
             android:hint="8 : 30"
+            android:inputType="time"
             app:fontEditText="shabnam.ttf"/>
 
     </LinearLayout>
@@ -144,6 +158,11 @@
             android:background="@drawable/shape_program_edittext"
             android:gravity="center"
             android:hint="نام درس"
+            android:inputType="text"
+            android:maxLength="12"
+            android:maxLines="1"
+            android:padding="2dp"
+            android:textSize="17sp"
             app:fontEditText="shabnam.ttf"/>
 
         <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
@@ -156,6 +175,7 @@
             android:background="@drawable/shape_program_edittext"
             android:gravity="center"
             android:hint="10"
+            android:inputType="time"
             app:fontEditText="shabnam.ttf"/>
 
         <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
@@ -175,6 +195,7 @@
             android:background="@drawable/shape_program_edittext"
             android:gravity="center"
             android:hint="8 : 30"
+            android:inputType="time"
             app:fontEditText="shabnam.ttf"/>
 
     </LinearLayout>
@@ -195,6 +216,11 @@
             android:background="@drawable/shape_program_edittext"
             android:gravity="center"
             android:hint="نام درس"
+            android:inputType="text"
+            android:maxLength="12"
+            android:maxLines="1"
+            android:padding="2dp"
+            android:textSize="17sp"
             app:fontEditText="shabnam.ttf"/>
 
         <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
@@ -207,6 +233,7 @@
             android:background="@drawable/shape_program_edittext"
             android:gravity="center"
             android:hint="10"
+            android:inputType="time"
             app:fontEditText="shabnam.ttf"/>
 
         <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
@@ -226,6 +253,7 @@
             android:background="@drawable/shape_program_edittext"
             android:gravity="center"
             android:hint="8 : 30"
+            android:inputType="time"
             app:fontEditText="shabnam.ttf"/>
 
     </LinearLayout>
@@ -245,22 +273,19 @@
             android:layout_marginEnd="40dp"
             android:layout_weight="1"
             android:background="@drawable/rb_b"
-            app:fontButton="shabnam.ttf"
-            android:text="ثبت"/>
+            android:text="ثبت"
+            app:fontButton="shabnam.ttf"/>
 
         <com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus
             android:id="@+id/btn_cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:fontButton="shabnam.ttf"
             android:layout_weight="1"
             android:background="@drawable/shape_button_disable"
-            android:text="لغو"/>
-
+            android:text="لغو"
+            app:fontButton="shabnam.ttf"/>
 
     </LinearLayout>
-
-
 
 
 </LinearLayout>

@@ -20,16 +20,27 @@
                 android:id="@+id/txtApply"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginEnd="4dp"
+                android:paddingEnd="20dp"
                 android:ellipsize="end"
                 android:gravity="end|center_vertical"
                 android:maxLines="1"
                 android:text="ثبت"
                 android:textColor="#ffffff"
                 android:textSize="16sp"
-                app:fontTextView="shabnam_bold.ttf"/>
+                app:fontTextView="shabnam_bold.ttf"
+                android:visibility="visible"/>
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/apply_loader"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginBottom="10dp"
+                android:layout_alignParentStart="true"
+                android:visibility="gone"
+                />
 
             <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
                 android:id="@+id/txtBack"
@@ -50,7 +61,7 @@
         <ImageView
             android:id="@+id/imgBack"
             android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="5dp"
             app:srcCompat="@drawable/ic_arrow_forward_24dp"/>

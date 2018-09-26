@@ -106,7 +106,6 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
                     intent.putExtra(Keys.KEY_EXTRA_FLAG, RealmController.getInstance().getAllPosts().get(position));
                     startActivity(intent);
 
-
                 }else {
                     G.toastLong(G.getStringFromResource(R.string.no_internet, PostListActivity.this), PostListActivity.this);
                 }

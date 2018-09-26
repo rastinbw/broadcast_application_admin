@@ -1,6 +1,7 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.media;
 
 import android.content.ContentValues;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,18 +9,19 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
-import com.mahta.rastin.broadcastapplicationadmin.activity.message.EditMessageActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.file_picker.controller.DialogSelectionListener;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.file_picker.model.DialogConfigs;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.file_picker.model.DialogProperties;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.file_picker.view.FilePickerDialog;
+import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
+import com.mahta.rastin.broadcastapplicationadmin.helper.Utils;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Media;
 
@@ -30,13 +32,14 @@ public class EditMediaActivity extends AppCompatActivity implements View.OnClick
     private Media media;
     private EditTextPlus edtTitle, edtDesc;
     private TextViewPlus txtFile;
-    private File file;
+    private File file = null;
     private LinearLayout loadingLayout;
+    boolean serverResponsed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_media_new);
+        setContentView(R.layout.activity_media_new_edit);
 
         findViewById(R.id.imgBack).setOnClickListener(this);
         findViewById(R.id.txtApply).setOnClickListener(this);
@@ -82,7 +85,6 @@ public class EditMediaActivity extends AppCompatActivity implements View.OnClick
                 });
 
                 dialog.show();
-
             }
         });
     }
@@ -108,7 +110,6 @@ public class EditMediaActivity extends AppCompatActivity implements View.OnClick
 
             txtFile.setText(file.getName());
         }
-
     }
 
 
@@ -131,7 +132,19 @@ public class EditMediaActivity extends AppCompatActivity implements View.OnClick
                 return;
             }
 
-            loadingLayout.setVisibility(View.VISIBLE);
+            Utils.changeLoadingResource(EditMediaActivity.this, 0);
+
+            //using this way just to handle scenarios that server didn't respond in SERVER_RESPONSE_TIME
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    if (!serverResponsed) {
+                        Utils.changeLoadingResource(EditMediaActivity.this, 1);
+                    }
+                }
+            }, Constant.UPLOAD_TIME_OUT);
+
 
             ContentValues contentValues = new ContentValues();
 
@@ -139,19 +152,35 @@ public class EditMediaActivity extends AppCompatActivity implements View.OnClick
             contentValues.put(Keys.KEY_TITLE, title);
             contentValues.put(Keys.KEY_DESCRIPTION, description);
 
+
                 new HttpCommand(HttpCommand.COMMAND_UPDATE_MEDIA, file, contentValues, media.getId()+"").setOnResultListener(new OnResultListener() {
                     @Override
                     public void onResult(String result) {
+
+                        serverResponsed = true;
 
                         if (JSONParser.getResultCodeFromJson(result) == 1000) {
 
                             Toast.makeText(EditMediaActivity.this, "رسانه با موفقیت ویرایش شد", Toast.LENGTH_SHORT).show();
                             finish();
                         }
-                        loadingLayout.setVisibility(View.GONE);
                     }
                 }).execute();
+        }
+    }
 
+    public void changeLoadingResource(int state) {
+
+        switch (state) {
+            case 0:
+                loadingLayout.setVisibility(View.VISIBLE);
+                findViewById(R.id.txtApply).setVisibility(View.GONE);
+                break;
+
+            case 1:
+                loadingLayout.setVisibility(View.GONE);
+                findViewById(R.id.txtApply).setVisibility(View.VISIBLE);
+                break;
         }
     }
 }

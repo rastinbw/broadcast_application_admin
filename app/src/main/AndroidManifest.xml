@@ -13,10 +13,14 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/managemnet"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
+        android:theme="@style/AppTheme.NoActionBar"
+        >
+
         <activity
             android:name=".activity.startup.SplashActivity"
-            android:theme="@style/AppTheme.SplashActivity">
+            android:theme="@style/AppTheme.SplashActivity"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,26 +29,64 @@
         </activity>
 
         <activity android:name=".activity.startup.LoginActivity"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".activity.main.MainActivity" />
+        <activity android:name=".activity.main.MainActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".activity.post.PostListActivity" />
-        <activity android:name=".activity.media.NewMediaActivity" />
-        <activity android:name=".activity.program.ProgramListActivity" />
-        <activity android:name=".activity.main.HelpActivity" />
-        <activity android:name=".activity.post.NewPostActivity" />
-        <activity android:name=".activity.post.EditPostActivity" />
-        <activity android:name=".activity.program.EditProgramActivity" />
-        <activity android:name=".activity.media.MediaListActivity" />
-        <activity android:name=".activity.program.NewProgramActivity" />
-        <activity android:name=".activity.media.EditMediaActivity" />
-        <activity android:name=".activity.post.PostContentActivity" />
-        <activity android:name=".activity.program.ProgramContentActivity" />
-        <activity android:name=".activity.message.MessageListActivity" />
-        <activity android:name=".activity.main.UsersActivity" />
-        <activity android:name=".activity.message.NewMessageActivity" />
-        <activity android:name=".activity.message.EditMessageActivity"></activity>
+        <activity android:name=".activity.post.PostListActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.media.NewMediaActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.program.ProgramListActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.main.HelpActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.post.NewPostActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.post.EditPostActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.program.EditProgramActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.media.MediaListActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.program.NewProgramActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.media.EditMediaActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.post.PostContentActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.program.ProgramContentActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.message.MessageListActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.main.UsersActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.message.NewMessageActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.message.EditMessageActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>

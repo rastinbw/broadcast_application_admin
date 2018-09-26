@@ -4,15 +4,12 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
-import com.mahta.rastin.broadcastapplicationadmin.activity.post.EditPostActivity;
-import com.mahta.rastin.broadcastapplicationadmin.activity.post.PostContentActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.DeleteDialog;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
@@ -20,7 +17,7 @@ import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
-import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnDeleteListener;
+import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnDialogDeleteListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Program;
 
@@ -85,13 +82,15 @@ public class ProgramContentActivity extends AppCompatActivity implements View.On
             intent.putExtra(Keys.KEY_EXTRA_FLAG, currentProgram);
             startActivity(intent);
 
+            finish();
+
         } else if (id == R.id.imgDelete) {
 
             DeleteDialog deleteDialog = new DeleteDialog(ProgramContentActivity.this);
 
-            deleteDialog.setOnDeleteListener(new OnDeleteListener() {
+            deleteDialog.setOnDeleteListener(new OnDialogDeleteListener() {
                 @Override
-                public void onDeleteItem(boolean confirm) {
+                public void onConfirmDeleteItem(boolean confirm) {
 
                     if (confirm) {
 

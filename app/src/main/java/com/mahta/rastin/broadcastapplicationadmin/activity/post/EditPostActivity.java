@@ -1,7 +1,9 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.post;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,11 +14,13 @@ import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.ColorDialog;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.UrlDialog;
 import com.mahta.rastin.broadcastapplicationadmin.editor.RichEditor;
+import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
+import com.mahta.rastin.broadcastapplicationadmin.helper.Utils;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.ColorDialogListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.UrlDialogListener;
@@ -25,16 +29,15 @@ import com.mahta.rastin.broadcastapplicationadmin.model.Post;
 
 public class EditPostActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Post post;
+    private Post currentPost;
     private EditTextPlus edttitle, edtPreview;
     private RichEditor mEditor;
+    boolean serverResponsed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_new_edit);
-
-
 
         findViewById(R.id.imgBack).setOnClickListener(this);
         findViewById(R.id.txtApply).setOnClickListener(this);
@@ -43,13 +46,13 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         edttitle = findViewById(R.id.edt_title);
         edtPreview = findViewById(R.id.edt_preview);
 
-        post = getIntent().getParcelableExtra(Keys.KEY_EXTRA_FLAG);
+        currentPost = getIntent().getParcelableExtra(Keys.KEY_EXTRA_FLAG);
 
-        edttitle.setText(post.getTitle());
-        edtPreview.setText(post.getPreview());
+        edttitle.setText(currentPost.getTitle());
+        edtPreview.setText(currentPost.getPreview());
 
 
-        mEditor = findViewById(R.id.post_editor);
+        mEditor = findViewById(R.id.rich_editor);
 
         //this is needed to request focus when clicked on bottom of editor
         mEditor.setEditorHeight(200);
@@ -61,16 +64,13 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
 
         mEditor.setPlaceholder("متن");
 
-        String html = "<div dir='rtl'>" + post.getContent() + "</div>";
+        String html = "<div dir='rtl'>" + currentPost.getContent() + "</div>";
 
         mEditor.setHtml(html);
 
         //to start activity with no focus on fields
         mEditor.requestFocus();
 
-
-
-//        Log.i("MYTAG", post.getContent());
 
 
         mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
@@ -156,7 +156,7 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
     public void onBackPressed() {
         super.onBackPressed();
 
-        finish();
+        goBackToContent();
     }
 
     @Override
@@ -165,19 +165,32 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         int id = v.getId();
 
         if (id == R.id.imgBack || id == R.id.txtBack) {
-            finish();
+            goBackToContent();
 
         } else if (id == R.id.txtApply) {
 
-            String title = edttitle.getText().toString().trim();
-            String preview = edtPreview.getText().toString().trim();
-            String html = mEditor.getHtml();
+            final String title = edttitle.getText().toString().trim();
+            final String preview = edtPreview.getText().toString().trim();
+            final String html = mEditor.getHtml();
 
             if (title.isEmpty() || preview.isEmpty() || html.isEmpty()) {
 
                 G.toastShort("اطلاعات ورودی ناکافی است", EditPostActivity.this);
                 return;
             }
+
+            Utils.changeLoadingResource(EditPostActivity.this, 0);
+
+            //using this way just to handle scenarios that server didn't respond in SERVER_RESPONSE_TIME
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    if (!serverResponsed) {
+                        Utils.changeLoadingResource(EditPostActivity.this, 1);
+                    }
+                }
+            }, Constant.SERVER_RESPONSE_TIME);
 
             ContentValues contentValues = new ContentValues();
 
@@ -186,21 +199,40 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
             contentValues.put("preview_content", preview);
             contentValues.put("content", html);
 
-            new HttpCommand(HttpCommand.COMMAND_UPDATE_POST, contentValues, post.getId()+"").setOnResultListener(new OnResultListener() {
+            new HttpCommand(HttpCommand.COMMAND_UPDATE_POST, contentValues, currentPost.getId()+"").setOnResultListener(new OnResultListener() {
                 @Override
                 public void onResult(String result) {
+
+                    serverResponsed = true;
 
                     if (JSONParser.getResultCodeFromJson(result) == 1000){
 
                         Toast.makeText(EditPostActivity.this, "اطلاعیه با موفقیت ویرایش شد", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(EditPostActivity.this, PostContentActivity.class);
+
+                        currentPost.setTitle(title);
+                        currentPost.setPreview(preview);
+                        currentPost.setContent(html);
+
+                        intent.putExtra(Keys.KEY_EXTRA_FLAG, currentPost);
+                        startActivity(intent);
+
                         finish();
                     }
 
                 }
             }).execute();
 
-
-
         }
+    }
+
+    private void goBackToContent() {
+
+        Intent intent = new Intent(EditPostActivity.this, PostContentActivity.class);
+        intent.putExtra(Keys.KEY_EXTRA_FLAG, currentPost);
+        startActivity(intent);
+
+        finish();
     }
 }

@@ -2,27 +2,27 @@ package com.mahta.rastin.broadcastapplicationadmin.activity.media;
 
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
-import com.mahta.rastin.broadcastapplicationadmin.activity.program.NewProgramActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.file_picker.controller.DialogSelectionListener;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.file_picker.model.DialogConfigs;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.file_picker.model.DialogProperties;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.file_picker.view.FilePickerDialog;
+import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
+import com.mahta.rastin.broadcastapplicationadmin.helper.Utils;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
-import com.mahta.rastin.broadcastapplicationadmin.model.Media;
 
 import java.io.File;
 
@@ -32,12 +32,13 @@ public class NewMediaActivity extends AppCompatActivity implements View.OnClickL
     private TextViewPlus txtFile;
     private File file;
     private LinearLayout loadingLayout;
+    boolean serverResponsed = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_media_new);
+        setContentView(R.layout.activity_media_new_edit);
 
         findViewById(R.id.imgBack).setOnClickListener(this);
         findViewById(R.id.txtApply).setOnClickListener(this);
@@ -77,7 +78,6 @@ public class NewMediaActivity extends AppCompatActivity implements View.OnClickL
                 });
 
                 dialog.show();
-
             }
     });
     }
@@ -103,7 +103,6 @@ public class NewMediaActivity extends AppCompatActivity implements View.OnClickL
 
             txtFile.setText(file.getName());
         }
-
     }
 
 
@@ -126,7 +125,22 @@ public class NewMediaActivity extends AppCompatActivity implements View.OnClickL
                 return;
             }
 
-            loadingLayout.setVisibility(View.VISIBLE);
+            Utils.changeLoadingResource(NewMediaActivity.this, 0);
+
+            //using this way just to handle scenarios that server didn't respond in SERVER_RESPONSE_TIME
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    if (!serverResponsed) {
+                        Utils.changeLoadingResource(NewMediaActivity.this, 1);
+                    }
+                }
+            }, Constant.UPLOAD_TIME_OUT);
+
+//            loadingLayout.setVisibility(View.VISIBLE);
+
+
 
             ContentValues contentValues = new ContentValues();
 
@@ -134,10 +148,16 @@ public class NewMediaActivity extends AppCompatActivity implements View.OnClickL
             contentValues.put(Keys.KEY_TITLE, title);
             contentValues.put(Keys.KEY_DESCRIPTION, description);
 
+//            new UploadHelper(NewMediaActivity.this, file, contentValues);
 
-            new HttpCommand(HttpCommand.COMMAND_CREATE_MEDIA, file, contentValues, null).setOnResultListener(new OnResultListener() {
+
+
+
+            new HttpCommand(HttpCommand.COMMAND_CREATE_MEDIA, file, contentValues).setOnResultListener(new OnResultListener() {
                 @Override
                 public void onResult(String result) {
+
+                    serverResponsed = true;
 
                     if (JSONParser.getResultCodeFromJson(result) == Keys.RESULT_COUNT_LIMIT){
 
@@ -147,7 +167,7 @@ public class NewMediaActivity extends AppCompatActivity implements View.OnClickL
                         G.toastShort("اطلاعیه جدید افزوده شد", NewMediaActivity.this);
                         finish();
                     }
-                    loadingLayout.setVisibility(View.GONE);
+//                    loadingLayout.setVisibility(View.GONE);
                 }
             }).execute();
 

@@ -1,7 +1,6 @@
 package com.mahta.rastin.broadcastapplicationadmin.adapter;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,14 +12,7 @@ import android.widget.TextView;
 
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
-import com.mahta.rastin.broadcastapplicationadmin.dialog.DeleteDialog;
-import com.mahta.rastin.broadcastapplicationadmin.global.G;
-import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
-import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
-import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
-import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
-import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnDeleteListener;
-import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
+import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
 import com.mahta.rastin.broadcastapplicationadmin.model.Media;
 
 import io.realm.RealmResults;
@@ -28,6 +20,7 @@ import io.realm.RealmResults;
 public class MediaAdapter extends RealmRecyclerViewAdapter<Media,MediaAdapter.CustomViewHolder>{
 
     private LayoutInflater inflater;
+    private com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener onItemDeleteListener;
     private com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener onItemClickListener;
     Media current = null;
     private Activity activity;
@@ -49,6 +42,7 @@ public class MediaAdapter extends RealmRecyclerViewAdapter<Media,MediaAdapter.Cu
 
         current = realmResults.get(position); //This is nice
         holder.txtTitle.setText(current.getTitle());
+        holder.txtDesc.setText(current.getDescription());
 
         try {
             com.mahta.rastin.broadcastapplication.helper.DateConverter converter = new com.mahta.rastin.broadcastapplication.helper.DateConverter();
@@ -72,7 +66,7 @@ public class MediaAdapter extends RealmRecyclerViewAdapter<Media,MediaAdapter.Cu
 
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView txtTitle;
+        TextViewPlus txtTitle, txtDesc;
         TextView txtDate;
         RelativeLayout lnlListItem;
         ImageButton imgDelete;
@@ -81,57 +75,40 @@ public class MediaAdapter extends RealmRecyclerViewAdapter<Media,MediaAdapter.Cu
             super(itemView);
 
             txtTitle = itemView.findViewById(R.id.txtBack);
+            txtDesc = itemView.findViewById(R.id.txtPreview);
             txtDate = itemView.findViewById(R.id.txtDate);
             lnlListItem = itemView.findViewById(R.id.lnlListItem);
             imgDelete = itemView.findViewById(R.id.imgbtn_delete);
 
             lnlListItem.setOnClickListener(this);
 
-            imgDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    DeleteDialog deleteDialog = new DeleteDialog(activity);
-
-                    deleteDialog.setOnDeleteListener(new OnDeleteListener() {
-                        @Override
-                        public void onDeleteItem(boolean confirm) {
-
-                            if (confirm) {
-
-
-                                ContentValues contentValues = new ContentValues();
-
-                                contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
-
-                                new HttpCommand(HttpCommand.COMMAND_DELETE_MEDIA, contentValues, current.getId()+"").setOnResultListener(new OnResultListener() {
-                                    @Override
-                                    public void onResult(String result) {
-
-                                        if (JSONParser.getResultCodeFromJson(result) == Keys.RESULT_SUCCESS) {
-                                            G.toastShort("رسانه با موفقیت حذف شد", activity);
-                                        }
-                                    }
-                                }).execute();
-                            }
-
-                        }
-                    });
-
-                    deleteDialog.show();
-                }
-            });
+            imgDelete.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            if (onItemClickListener != null)
-                onItemClickListener.onItemClicked(view,getAdapterPosition());
+            final int id = view.getId();
+
+            switch (id) {
+
+                case R.id.lnlListItem:
+                    if (onItemClickListener != null)
+                        onItemClickListener.onItemClicked(view, getAdapterPosition());
+                    break;
+
+                case R.id.imgbtn_delete:
+                    if (onItemDeleteListener != null)
+                        onItemDeleteListener.onItemClicked(view, getAdapterPosition());
+                    break;
+            }
         }
 
     }
 
     public void setOnItemClickListener(com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener onItemClickListener){
         this.onItemClickListener = onItemClickListener;
+    }
+    public void setOnItemDeleteListener(com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener onItemDeleteListener){
+        this.onItemDeleteListener = onItemDeleteListener;
     }
 }

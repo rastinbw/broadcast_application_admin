@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
@@ -59,11 +60,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         pass = edtPass.getText().toString().trim();
         email = edtEmail.getText().toString().trim();
 
+
+
         if (pass.isEmpty() || email.isEmpty()) {
 
             G.toastShort("اطلاعات ورودی ناکافی است", LoginActivity.this);
             return;
         }
+
+         pass = arabicToDecimal(pass);
+
+        G.i(pass);
 
         //using this way just to handle scenarios that server didn't respond in SERVER_RESPONSE_TIME
         new Handler().postDelayed(new Runnable() {
@@ -79,6 +86,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         authenticate();
 
+    }
+
+
+    private static String arabicToDecimal(String number) {
+
+        char[] chars = new char[number.length()];
+
+        for(int i = 0;i < number.length();i++) {
+
+            char ch = number.charAt(i);
+            if (ch >= 0x0660 && ch <= 0x0669)
+                ch -= 0x0660 - '0';
+            else if (ch >= 0x06f0 && ch <= 0x06F9)
+                ch -= 0x06f0 - '0';
+            chars[i] = ch;
+        }
+        return new String(chars);
     }
 
     private void authenticate() {
