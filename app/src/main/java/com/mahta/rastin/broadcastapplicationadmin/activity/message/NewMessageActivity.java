@@ -41,6 +41,7 @@ public class NewMessageActivity extends AppCompatActivity implements View.OnClic
 
     private String messageContent, title;
     boolean serverResponsed = false;
+    boolean genderSelected = false;
     private int gender;
 
     @Override
@@ -90,6 +91,7 @@ public class NewMessageActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View v) {
 
+                genderSelected = true;
                 gender = 1;
 
                 btnBoy.setBackgroundResource(R.drawable.rb_b);
@@ -101,6 +103,7 @@ public class NewMessageActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View v) {
 
+                genderSelected = true;
                 gender = 0;
 
                 btnBoy.setBackgroundResource(R.drawable.shape_button_white);
@@ -133,6 +136,11 @@ public class NewMessageActivity extends AppCompatActivity implements View.OnClic
                 G.toastShort("اطلاعات ورودی ناکافی است", NewMessageActivity.this);
                 return;
             }
+            if (!genderSelected) {
+
+                G.toastShort("جنیست باید تعیین شود", NewMessageActivity.this);
+                return;
+            }
 
             Utils.changeLoadingResource(NewMessageActivity.this, 0);
 
@@ -148,6 +156,7 @@ public class NewMessageActivity extends AppCompatActivity implements View.OnClic
             }, Constant.SERVER_RESPONSE_TIME);
 
             ContentValues contentValues = new ContentValues();
+
 
             contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
             contentValues.put(Keys.KEY_TITLE, title);

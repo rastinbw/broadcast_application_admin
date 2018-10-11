@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
@@ -36,6 +37,7 @@ public class EditMessageActivity extends AppCompatActivity implements View.OnCli
     private ArrayAdapter gradeAdapter, fieldAdapter;
 
     private ButtonPlus btnGirl, btnBoy;
+    private LinearLayout layoutField, layoutGrade;
 
     String[] groups;
     String[] fields;
@@ -67,8 +69,12 @@ public class EditMessageActivity extends AppCompatActivity implements View.OnCli
         gradeSpinner = findViewById(R.id.spinner_group);
         fieldSpinner = findViewById(R.id.spinner_field);
 
+
         edtTitle = findViewById(R.id.edt_title);
         edtContent = findViewById(R.id.edt_content);
+
+        edtTitle.setText(message.getTitle());
+        edtContent.setText(message.getContent());
 
         groupList = RealmController.getInstance().getGroupList();
         fieldList = RealmController.getInstance().getFieldList();
@@ -104,28 +110,13 @@ public class EditMessageActivity extends AppCompatActivity implements View.OnCli
             btnBoy.setBackgroundResource(R.drawable.rb_b);
         }
 
-//        btnBoy.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                gender = 1;
-//
-//                btnBoy.setBackgroundResource(R.drawable.rb_b);
-//                btnGirl.setBackgroundResource(R.drawable.shape_button_white);
-//            }
-//        });
-//
-//        btnGirl.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                gender = 0;
-//
-//                btnBoy.setBackgroundResource(R.drawable.shape_button_white);
-//                btnGirl.setBackgroundResource(R.drawable.rb_b);
-//
-//            }
-//        });
+
+
+        layoutField = findViewById(R.id.layout_field);
+        layoutGrade = findViewById(R.id.layout_grade);
+
+        btnBoy.setOnClickListener(this);
+        btnGirl.setOnClickListener(this);
 
     }
 
@@ -184,6 +175,9 @@ public class EditMessageActivity extends AppCompatActivity implements View.OnCli
                 }
             }).execute();
 
+        } else if (id == btnBoy.getId() || id == btnGirl.getId()) {
+
+            G.toastShort("این ویژگی غیر قابل تغییر است", EditMessageActivity.this);
         }
     }
 
