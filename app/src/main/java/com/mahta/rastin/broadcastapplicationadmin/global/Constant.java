@@ -3,6 +3,8 @@ package com.mahta.rastin.broadcastapplicationadmin.global;
 public class Constant {
     public static final long TIME_OUT = 6000;
     public static final long SPLASH_TIME = 3000;
+    public static final long DOUBLE_CLICK_EXIT = 2200;
+    public static final long DOUBLE_CLICK_DIALOG = 350;
     public static final long SERVER_RESPONSE_TIME = 3000;
     public static final long UPLOAD_TIME_OUT = 300000;
     public static final int DRAWER_LAYOUT_CLOSING_DELAY = 400;
@@ -18,4 +20,6 @@ public class Constant {
     public static final String TYPE_PROGRAM = "program";
     public static final String TYPE_HTML = "html";
     public static final String TYPE_MESSAGE= "message";
+    public static final String TYPE_FIELD= "field";
+    public static final String TYPE_GROUP= "group";
 }

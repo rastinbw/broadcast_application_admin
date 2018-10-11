@@ -27,7 +27,7 @@ public class G extends Application {
     public static final String TAG = "mahta";
 
 //    public static final String DOMAIN = "http://192.168.8.102/broadcast_application_server-master/public";
-    public static final String DOMAIN = "http://192.168.1.6/broadcast_app_server/public";
+    public static final String DOMAIN = "http://192.168.1.3/broadcast_app_server/public";
 //    public static final String DOMAIN = "https://schoolbroadcastpanel.ir";
     public static final String ABOUT_US_URL = DOMAIN + "/about_us";
 

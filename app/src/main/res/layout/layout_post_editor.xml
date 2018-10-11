@@ -1,112 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/shape_dialog"
     android:orientation="vertical"
-    tools:context=".activity.post.NewPostActivity">
+    tools:context=".activity.post.PostActivity">
+
+    <LinearLayout
+        android:id="@+id/container_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_simple_toolbar_2" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-
-        <LinearLayout
-            android:id="@+id/container_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:orientation="vertical">
-
-            <include
-                android:id="@+id/toolbar"
-                layout="@layout/layout_simple_toolbar_2" />
-
-        </LinearLayout>
-
-        <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
-            android:id="@+id/edt_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/shape_rounded_edit_text"
-            android:drawableLeft="@drawable/ic_label"
-            android:drawableStart="@drawable/ic_label"
-            android:hint=" عنوان"
-            android:inputType="text"
-            android:layoutDirection="rtl"
-            android:maxLength="50"
-            android:maxLines="1"
-            android:padding="10dp"
-            android:textColorHint="@android:color/white"
-            android:textSize="16sp"
-            app:fontEditText="shabnam.ttf"
-            />
-
-        <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
-            android:id="@+id/edt_preview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/shape_rounded_edit_text"
-            android:hint=" پیش نمایش"
-            android:layoutDirection="rtl"
-            android:lines="2"
-            android:maxLength="150"
-            android:padding="10dp"
-            android:textColorHint="@android:color/white"
-            android:textSize="14sp"
-            app:fontEditText="shabnam.ttf"
-            />
+        android:layout_height="match_parent"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_margin="30dp"
-            android:background="@drawable/shape_rounded_edit_text"
-            android:layoutDirection="rtl"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layoutDirection="rtl"
-                android:text="گروه"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="14sp"
-                app:fontTextView="shabnam.ttf"/>
-
-            <Spinner
-                android:id="@+id/spinner_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="15dp"
-                android:layout_marginStart="15dp"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="275dp"
-            android:layout_marginBottom="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginStart="30dp"
+            android:layout_height="fill_parent"
             android:orientation="vertical"
             >
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/shape_header_dialog"
                 >
 
                 <LinearLayout
@@ -202,4 +133,4 @@
 
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>

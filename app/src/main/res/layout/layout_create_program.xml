@@ -1,0 +1,731 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.program.ProgramActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layoutDirection="rtl"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:id="@+id/container_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layoutDirection="ltr"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/layout_simple_toolbar_2" />
+
+        </LinearLayout>
+
+        <!-- time row -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="ساعت"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                app:fontTextView="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_time1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_webview"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="datetime"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_time2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_webview"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="datetime"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_time3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_webview"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="datetime"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_time4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_webview"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="datetime"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_time5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_webview"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="datetime"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+        </LinearLayout>
+
+        <!-- saturday row -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/saturday"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                app:fontTextView="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_sat1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_sat2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_sat3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_sat4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_sat5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+        </LinearLayout>
+
+        <!-- sunday row -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text"
+                android:gravity="center"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:text="@string/sunday"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                app:fontTextView="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_sun1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_sun2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_sun3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_sun4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_sun5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+        </LinearLayout>
+
+        <!-- monday row -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text"
+                android:gravity="center"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:text="@string/monday"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                app:fontTextView="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_mon1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_mon2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_mon3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_mon4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_mon5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+        </LinearLayout>
+
+        <!-- tuesday row -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text"
+                android:gravity="center"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:text="@string/tuesday"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                app:fontTextView="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_tue1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_tue2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_tue3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_tue4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_tue5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+        </LinearLayout>
+
+        <!-- wednesday row -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text"
+                android:gravity="center"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:text="@string/wednesday"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                app:fontTextView="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_wed1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_wed2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_wed3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_wed4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_wed5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+        </LinearLayout>
+
+        <!-- thursday row -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text"
+                android:gravity="center"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:text="@string/thursday"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                app:fontTextView="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_thu1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_thu2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_thu3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_thu4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+                android:id="@+id/edt_thu5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text_secondary"
+                android:gravity="center"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textSize="14sp"
+                app:fontEditText="shabnam.ttf" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

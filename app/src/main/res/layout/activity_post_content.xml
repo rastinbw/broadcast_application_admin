@@ -40,8 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="2dp"
-                    android:scrollbarAlwaysDrawHorizontalTrack="true">
-                </WebView>
+                    android:scrollbars="none"/>
 
                 <LinearLayout
                     android:id="@+id/lnlLoading"

@@ -12,6 +12,7 @@ import com.mahta.rastin.broadcastapplicationadmin.activity.message.MessageListAc
 import com.mahta.rastin.broadcastapplicationadmin.activity.post.PostListActivity;
 import com.mahta.rastin.broadcastapplicationadmin.activity.program.ProgramListActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
+import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void run() {
                 doubleBackToExitPressedOnce = false;
             }
-        }, 2200);
+        }, Constant.DOUBLE_CLICK_EXIT);
     }
 
     @Override

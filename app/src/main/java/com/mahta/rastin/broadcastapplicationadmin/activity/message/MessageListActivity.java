@@ -25,7 +25,7 @@ import com.mahta.rastin.broadcastapplicationadmin.adapter.MessageAdapter;
 import com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
 import com.mahta.rastin.broadcastapplicationadmin.dialog.DeleteDialog;
-import com.mahta.rastin.broadcastapplicationadmin.dialog.GroupListDialog;
+import com.mahta.rastin.broadcastapplicationadmin.dialog.FilterDialog;
 import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
@@ -48,12 +48,14 @@ public class MessageListActivity extends AppCompatActivity implements SwipeRefre
     public SwipeRefreshLayout swipeRefreshLayout;
     private FloatingActionButton btnNewMessage;
     private EndlessRecyclerViewScrollListener scrollListener;
-    private TextViewPlus txtGroups;
+    private TextViewPlus txtGroupTitle;
+    private TextViewPlus txtFieldTitle;
     private MessageAdapter adapter;
     private TextView txtNoMessages;
     public SearchView searchView;
     private String searchPhrase = "null";
     private String mGroupId = "null";
+    private String mFieldId = "null";
     private boolean isLoaded;
     private LinearLayout lnlLoading;
     private LinearLayout lnlNoNetwork;
@@ -72,22 +74,55 @@ public class MessageListActivity extends AppCompatActivity implements SwipeRefre
 
         RecyclerView rcvMessages = findViewById(R.id.rcvPrograms);
 
-        findViewById(R.id.lnlGroup).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.lnlGradeFilter).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                GroupListDialog dialog = new GroupListDialog(MessageListActivity.this);
+                FilterDialog dialog = new FilterDialog(MessageListActivity.this, Constant.TYPE_GROUP);
 
                 dialog.setOnDismissListener(new OnDismissListener() {
                     @Override
-                    public void onDismiss(String groupId, String groupTitle) {
+                    public void onDismiss(String filterId, String filterTitle) {
 
-                        mGroupId = groupId;
-                        txtGroups.setText(groupTitle);
-                        G.i(groupId);
+                        // if any filter is chosen
+                        if (!filterTitle.isEmpty()) {
+                            txtGroupTitle.setText(filterTitle);
 
-                        reset();
-                        loadMessages(Constant.PROGRAM_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId);
+                            mGroupId = filterId;
+                            txtGroupTitle.setText(filterTitle);
+
+                            reset();
+                            loadMessages(Constant.PROGRAM_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId, mFieldId);
+                        }
+
+                    }
+                });
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        findViewById(R.id.lnlFieldFilter).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FilterDialog dialog = new FilterDialog(MessageListActivity.this, Constant.TYPE_FIELD);
+
+                dialog.setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(String filterId, String filterTitle) {
+
+                        // if any filter is chosen
+                        if (!filterTitle.isEmpty()) {
+                            txtFieldTitle.setText(filterTitle);
+
+                            mFieldId = filterId;
+                            G.i(filterId);
+
+                            reset();
+                            loadMessages(Constant.PROGRAM_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId, mFieldId);
+                        }
+
                     }
                 });
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -117,12 +152,12 @@ public class MessageListActivity extends AppCompatActivity implements SwipeRefre
         btnTryAgain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                G.i("pressed");
-                loadMessages(Constant.PROGRAM_REQUEST_COUNT,0,0, searchPhrase, mGroupId);
+                loadMessages(Constant.PROGRAM_REQUEST_COUNT,0,0, searchPhrase, mGroupId, mFieldId);
             }
         });
 
-        txtGroups = findViewById(R.id.txtGroup);
+        txtGroupTitle = findViewById(R.id.txtGroup);
+        txtFieldTitle = findViewById(R.id.txtField);
         txtNoMessages = findViewById(R.id.txtNoProgram);
         lnlLoading = findViewById(R.id.lnlLoading);
         lnlNoNetwork = findViewById(R.id.lnlNoNetwork);
@@ -202,7 +237,7 @@ public class MessageListActivity extends AppCompatActivity implements SwipeRefre
                 G.i("passed threshold p: " + page + " activity: " + totalItemsCount);
 
                 if (!noMoreMessage){
-                    loadMessages(Constant.PROGRAM_REQUEST_COUNT,totalItemsCount,page, searchPhrase, mGroupId);
+                    loadMessages(Constant.PROGRAM_REQUEST_COUNT,totalItemsCount,page, searchPhrase, mGroupId, mFieldId);
                 }else
                     noMoreMessage = false;
             }
@@ -220,8 +255,6 @@ public class MessageListActivity extends AppCompatActivity implements SwipeRefre
         // Adds the scroll listener to RecyclerView
         rcvMessages.addOnScrollListener(scrollListener);
 
-
-
     }
 
     @Override
@@ -229,7 +262,7 @@ public class MessageListActivity extends AppCompatActivity implements SwipeRefre
         super.onResume();
 
         reset();
-        loadMessages(Constant.PROGRAM_REQUEST_COUNT,0,0, searchPhrase, mGroupId);
+        loadMessages(Constant.PROGRAM_REQUEST_COUNT,0,0, searchPhrase, mGroupId, mFieldId);
     }
 
     @Override
@@ -282,7 +315,7 @@ public class MessageListActivity extends AppCompatActivity implements SwipeRefre
                 if (searchView.getQuery().length() == 0) {
                     reset();
                     searchPhrase = "null";
-                    loadMessages(Constant.PROGRAM_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId);
+                    loadMessages(Constant.PROGRAM_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId, mFieldId);
                 }
                 return false;
             }
@@ -291,7 +324,7 @@ public class MessageListActivity extends AppCompatActivity implements SwipeRefre
 
                 reset();
                 searchPhrase = query;
-                loadMessages(Constant.PROGRAM_REQUEST_COUNT, 0, 0, query, mGroupId);
+                loadMessages(Constant.PROGRAM_REQUEST_COUNT, 0, 0, query, mGroupId, mFieldId);
 //                //Make it visible
 //                prgWait.setVisibility(View.VISIBLE);
             }
@@ -300,7 +333,7 @@ public class MessageListActivity extends AppCompatActivity implements SwipeRefre
 
     }
 
-    private void loadMessages(final int count, final int start, final int page, String searchPhrase, String groupId){
+    private void loadMessages(final int count, final int start, final int page, String searchPhrase, String groupId, String fieldId){
         isLoading = true;
 
         if (isFirstLoad){
@@ -324,7 +357,7 @@ public class MessageListActivity extends AppCompatActivity implements SwipeRefre
         ContentValues contentValues = new ContentValues();
         contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
 
-        new HttpCommand(HttpCommand.COMMAND_GET_POSTS, contentValues,Constant.TYPE_MESSAGE, count + "" , page + "" , searchPhrase, groupId)
+        new HttpCommand(HttpCommand.COMMAND_GET_POSTS, contentValues,Constant.TYPE_MESSAGE, count + "" , page + "" , searchPhrase, groupId, fieldId)
                 .setOnResultListener(new OnResultListener() {
                     @Override
                     public void onResult(String result) {
@@ -343,7 +376,7 @@ public class MessageListActivity extends AppCompatActivity implements SwipeRefre
                             if (messages != null) {
 
                                 for (Message message : messages) {
-                                    G.i(message.getId() + "");
+                                    G.i(message.getField_id() + "");
                                     RealmController.getInstance().addMessage(message);
                                 }
                                 adapter.notifyItemRangeInserted(start - 1, messages.size());
@@ -409,7 +442,7 @@ public class MessageListActivity extends AppCompatActivity implements SwipeRefre
     public void onRefresh() {
         if (!isLoading){
             reset();
-            loadMessages(Constant.POST_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId);
+            loadMessages(Constant.POST_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId, mFieldId);
         }
     }
 

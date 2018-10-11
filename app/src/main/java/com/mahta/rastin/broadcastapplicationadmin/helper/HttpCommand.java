@@ -1,14 +1,9 @@
 package com.mahta.rastin.broadcastapplicationadmin.helper;
 
 import android.content.ContentValues;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 
-import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,9 +33,11 @@ public class HttpCommand {
 
     public static final String COMMAND_CHECK_TOKEN = "check token";
     public static final String COMMAND_GET_GROUP_LIST = "get group list";
+    public static final String COMMAND_GET_FIELD_LIST = "get field list";
     public static final String COMMAND_LOGIN = "login";
 
     public static final String COMMAND_GET_POSTS = "get posts";
+
     public static final String COMMAND_CREATE_POST = "create post";
     public static final String COMMAND_UPDATE_POST = "update post";
     public static final String COMMAND_DELETE_POST = "delete post";
@@ -196,6 +193,12 @@ public class HttpCommand {
                     }
                     break;
 
+
+                case COMMAND_GET_FIELD_LIST:
+                    commandGetFieldList();
+                    break;
+
+
                 default:
                     G.e("Invalid Command");
             }
@@ -248,7 +251,9 @@ public class HttpCommand {
 
     private void setCommandLogin() {httpManager.post(G.BASE_URL+"login", currentParams, currentArgs);}
 
-    private void commandGetGroupList() { httpManager.post(G.BASE_URL+"groups",currentParams, currentArgs);}
+    private void commandGetGroupList() { httpManager.post(G.BASE_URL+"groups",currentParams, currentArgs); }
+
+    private void commandGetFieldList() { httpManager.post(G.BASE_URL+"fields",currentParams, currentArgs);}
 
     private void commandCreatePost() { httpManager.post(G.BASE_URL+"post/create", currentParams, currentArgs );}
 
@@ -264,17 +269,17 @@ public class HttpCommand {
 
     private void commandDeleteProgram() { httpManager.post(G.BASE_URL+"program/delete",currentParams, currentArgs);  }
 
-//    private void commandCreateMedia() throws IOException { httpManager.upload(G.BASE_URL+"media/create", file, currentParams, currentArgs);}
+    private void commandCreateMedia() throws IOException { httpManager.upload(G.BASE_URL+"media/create", file, currentParams, currentArgs);}
 
-    private void commandCreateMedia() throws IOException {
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                new UploadProgress(G.BASE_URL+"media/create", file, currentParams, currentArgs);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    private void commandCreateMedia() throws IOException {
+//        try {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//                new UploadProgress(G.BASE_URL+"media/create", file, currentParams, currentArgs);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private void commandUpdateMediaFile() throws IOException { httpManager.upload(G.BASE_URL+"media/update", file, currentParams, currentArgs); }
 

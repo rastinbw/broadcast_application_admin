@@ -75,7 +75,7 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(MediaListActivity.this, NewMediaActivity.class);
+                Intent intent = new Intent(MediaListActivity.this, MediaActivity.class);
                 startActivity(intent);
             }
         });
@@ -107,7 +107,7 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
 
                 if (G.isNetworkAvailable(MediaListActivity.this)){
 
-                    Intent intent = new Intent(MediaListActivity.this, EditMediaActivity.class);
+                    Intent intent = new Intent(MediaListActivity.this, MediaActivity.class);
                     intent.putExtra(Keys.KEY_EXTRA_FLAG, RealmController.getInstance().getAllMedia().get(position));
                     startActivity(intent);
 
@@ -283,7 +283,7 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
         ContentValues contentValues = new ContentValues();
         contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
 
-        new HttpCommand(HttpCommand.COMMAND_GET_POSTS, contentValues,Constant.TYPE_MEDIA,count + "", page + "", searchPhrase, "null")
+        new HttpCommand(HttpCommand.COMMAND_GET_POSTS, contentValues,Constant.TYPE_MEDIA,count + "", page + "", searchPhrase, "null", "null")
                 .setOnResultListener(new OnResultListener() {
             @Override
             public void onResult(String result) {
@@ -301,7 +301,7 @@ public class MediaListActivity extends AppCompatActivity implements SwipeRefresh
 
                     if (media != null) {
                         for (Media m : media) {
-                            G.i(m.getId() + "");
+                            G.i(m.getPath() + "\n");
                             RealmController.getInstance().addMedia(m);
                         }
                         adapter.notifyItemRangeInserted(start - 1, media.size());

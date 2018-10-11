@@ -78,7 +78,7 @@ public class ProgramContentActivity extends AppCompatActivity implements View.On
 
         } else if (id == R.id.imgEdit) {
 
-            Intent intent = new Intent(ProgramContentActivity.this, EditProgramActivity.class);
+            Intent intent = new Intent(ProgramContentActivity.this, ProgramActivity.class);
             intent.putExtra(Keys.KEY_EXTRA_FLAG, currentProgram);
             startActivity(intent);
 

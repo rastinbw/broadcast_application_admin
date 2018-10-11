@@ -1,14 +1,12 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.startup;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.PasswordTransformationMethod;
+import android.view.Gravity;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
@@ -22,6 +20,7 @@ import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
+import com.mahta.rastin.broadcastapplicationadmin.model.Field;
 import com.mahta.rastin.broadcastapplicationadmin.model.Group;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -49,9 +48,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         layoutLogin.setOnClickListener(this);
 
+//        edtPass.setGravity(Gravity.START);
+
         //setting tollbar title
         ((TextViewPlus) findViewById(R.id.txtTitle)).setText("پنل مدیریت");
-
     }
 
     @Override
@@ -60,8 +60,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         pass = edtPass.getText().toString().trim();
         email = edtEmail.getText().toString().trim();
 
-
-
         if (pass.isEmpty() || email.isEmpty()) {
 
             G.toastShort("اطلاعات ورودی ناکافی است", LoginActivity.this);
@@ -69,8 +67,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
          pass = arabicToDecimal(pass);
-
-        G.i(pass);
 
         //using this way just to handle scenarios that server didn't respond in SERVER_RESPONSE_TIME
         new Handler().postDelayed(new Runnable() {
@@ -85,7 +81,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         authenticate();
-
     }
 
 
@@ -125,8 +120,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onResult(String result) {
 
-                    serverResponsed = true;
-
                     switch (JSONParser.getResultCodeFromJson(result)) {
 
                         case 1000:
@@ -152,6 +145,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 }
                             }).execute();
 
+                            //getting field list
+                            new HttpCommand(HttpCommand.COMMAND_GET_FIELD_LIST, contentValues).setOnResultListener(new OnResultListener() {
+                                @Override
+                                public void onResult(String result) {
+
+                                    serverResponsed = true;
+
+                                    RealmController.getInstance().clearAllFields();
+                                    List<Field> list = JSONParser.parseFields(result);
+
+                                    if (list != null) {
+                                        for (Field field : list) {
+                                            RealmController.getInstance().addField(field);
+                                            G.i(field.getTitle());
+                                        }
+                                    }
+                                }
+                            }).execute();
+
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
@@ -170,7 +182,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             changeLoadingResource(1);
                             break;
                     }
-
                 }
             }).execute();
 

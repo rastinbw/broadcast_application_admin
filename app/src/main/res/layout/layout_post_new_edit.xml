@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.post.NewPostActivity">
+    tools:context=".activity.post.InsertPostFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,16 +29,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:maxLines="1"
-            android:inputType="text"
-            android:maxLength="50"
             android:layout_marginRight="30dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/shape_rounded_edit_text"
             android:drawableLeft="@drawable/ic_label"
             android:drawableStart="@drawable/ic_label"
             android:hint=" عنوان"
+            android:inputType="text"
             android:layoutDirection="rtl"
+            android:maxLength="50"
+            android:maxLines="1"
             android:padding="10dp"
             android:textColorHint="@android:color/white"
             android:textSize="16sp"
@@ -60,25 +60,6 @@
             android:textSize="14sp"
             app:fontEditText="shabnam.ttf"
             />
-
-        <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
-            android:id="@+id/edt_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:maxLines="1"
-            android:inputType="text"
-            android:maxLength="50"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/shape_rounded_edit_text"
-            android:hint=" متن"
-            android:layoutDirection="rtl"
-            android:padding="10dp"
-            android:textColorHint="@android:color/white"
-            android:textSize="16sp"
-            app:fontEditText="shabnam.ttf"
-            />
-
 
     </LinearLayout>
 

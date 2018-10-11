@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
+import com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
 import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
@@ -18,6 +19,7 @@ import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 import com.mahta.rastin.broadcastapplicationadmin.helper.Utils;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
+import com.mahta.rastin.broadcastapplicationadmin.model.Field;
 import com.mahta.rastin.broadcastapplicationadmin.model.Group;
 import com.mahta.rastin.broadcastapplicationadmin.model.Message;
 
@@ -28,17 +30,25 @@ public class EditMessageActivity extends AppCompatActivity implements View.OnCli
     private EditTextPlus edtTitle, edtContent;
 
     private List<Group> groupList;
-    private Spinner spinner;
-    private ArrayAdapter adapter;
-    String[] groups;
-    boolean serverResponsed = false;
+    private List<Field> fieldList;
 
+    private Spinner gradeSpinner, fieldSpinner;
+    private ArrayAdapter gradeAdapter, fieldAdapter;
+
+    private ButtonPlus btnGirl, btnBoy;
+
+    String[] groups;
+    String[] fields;
+
+    private String messageContent, title;
+    boolean serverResponsed = false;
+    private int gender;
     private Message message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_edit_message);
+        setContentView(R.layout.activity_new_message);
 
         message = getIntent().getParcelableExtra(Keys.KEY_EXTRA_FLAG);
 
@@ -51,28 +61,72 @@ public class EditMessageActivity extends AppCompatActivity implements View.OnCli
         findViewById(R.id.txtApply).setOnClickListener(this);
         findViewById(R.id.txtBack).setOnClickListener(this);
 
-        spinner = findViewById(R.id.spinner_group);
+        btnBoy = findViewById(R.id.btn_male);
+        btnGirl = findViewById(R.id.btn_female);
+
+        gradeSpinner = findViewById(R.id.spinner_group);
+        fieldSpinner = findViewById(R.id.spinner_field);
 
         edtTitle = findViewById(R.id.edt_title);
         edtContent = findViewById(R.id.edt_content);
 
-        edtTitle.setText(message.getTitle());
-        edtContent.setText(message.getContent());
-
         groupList = RealmController.getInstance().getGroupList();
+        fieldList = RealmController.getInstance().getFieldList();
 
         groups = new String[groupList.size()];
+        fields = new String[fieldList.size()];
 
         for (int i = 0; i < groupList.size(); i++) {
-
             groups[i] = groupList.get(i).getTitle();
         }
 
-        adapter = new ArrayAdapter<>(this, R.layout.layout_group_spinner_item, groups);
+        for (int i = 0; i < fieldList.size(); i++) {
+            fields[i] = fieldList.get(i).getTitle();
+        }
 
-        spinner.setAdapter(adapter);
+        gradeAdapter = new ArrayAdapter<>(this, R.layout.layout_spinner_item, groups);
+        gradeSpinner.setAdapter(gradeAdapter);
+        gradeSpinner.setSelection(gradeAdapter.getPosition(RealmController.getInstance().getGroupTitle(message.getGroup_id())));
 
-        spinner.setSelection(adapter.getPosition(RealmController.getInstance().getGroupTitle(message.getGroup_id())));
+
+        fieldAdapter = new ArrayAdapter<>(this, R.layout.layout_spinner_item, fields);
+        fieldSpinner.setAdapter(fieldAdapter);
+        fieldSpinner.setSelection(fieldAdapter.getPosition(RealmController.getInstance().getFieldTitle(message.getField_id())));
+
+
+        fieldSpinner.setEnabled(false);
+        gradeSpinner.setEnabled(false);
+
+        if (message.getGender() == 0) {
+            btnGirl.setBackgroundResource(R.drawable.rb_b);
+
+        } else {
+            btnBoy.setBackgroundResource(R.drawable.rb_b);
+        }
+
+//        btnBoy.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                gender = 1;
+//
+//                btnBoy.setBackgroundResource(R.drawable.rb_b);
+//                btnGirl.setBackgroundResource(R.drawable.shape_button_white);
+//            }
+//        });
+//
+//        btnGirl.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                gender = 0;
+//
+//                btnBoy.setBackgroundResource(R.drawable.shape_button_white);
+//                btnGirl.setBackgroundResource(R.drawable.rb_b);
+//
+//            }
+//        });
+
     }
 
 
@@ -87,7 +141,7 @@ public class EditMessageActivity extends AppCompatActivity implements View.OnCli
         } else if (id == R.id.txtApply) {
 
             String title = edtTitle.getText().toString().trim();
-            int groupId = groupList.get(spinner.getSelectedItemPosition()).getId();
+            int groupId = groupList.get(gradeSpinner.getSelectedItemPosition()).getId();
             String messageContent = edtContent.getText().toString().trim();
 
             if (title.isEmpty() || messageContent.isEmpty()) {
@@ -133,8 +187,4 @@ public class EditMessageActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
 }

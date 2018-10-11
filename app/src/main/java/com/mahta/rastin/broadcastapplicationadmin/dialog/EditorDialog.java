@@ -54,7 +54,6 @@ public class EditorDialog extends Dialog {
             }
         });
 
-        mEditor = findViewById(R.id.rich_editor);
 
 
 
@@ -250,32 +249,6 @@ public class EditorDialog extends Dialog {
                 urlDialog.show();
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

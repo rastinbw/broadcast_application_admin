@@ -49,6 +49,8 @@ public class PostContentActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
+        wbvContent.setInitialScale(230);
+
         wbvContent.getSettings().setLoadWithOverviewMode(true);
         wbvContent.getSettings().setBuiltInZoomControls(true);
         wbvContent.getSettings().setDisplayZoomControls(false);
@@ -86,7 +88,7 @@ public class PostContentActivity extends AppCompatActivity implements View.OnCli
 
             case R.id.imgEdit:
 
-                Intent intent = new Intent(PostContentActivity.this, EditPostActivity.class);
+                Intent intent = new Intent(PostContentActivity.this, PostActivity.class);
                 intent.putExtra(Keys.KEY_EXTRA_FLAG, currentPost);
                 startActivity(intent);
 

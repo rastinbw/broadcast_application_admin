@@ -39,7 +39,7 @@ public class EditMediaActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_media_new_edit);
+        setContentView(R.layout.layout_insert_media);
 
         findViewById(R.id.imgBack).setOnClickListener(this);
         findViewById(R.id.txtApply).setOnClickListener(this);
@@ -169,18 +169,4 @@ public class EditMediaActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    public void changeLoadingResource(int state) {
-
-        switch (state) {
-            case 0:
-                loadingLayout.setVisibility(View.VISIBLE);
-                findViewById(R.id.txtApply).setVisibility(View.GONE);
-                break;
-
-            case 1:
-                loadingLayout.setVisibility(View.GONE);
-                findViewById(R.id.txtApply).setVisibility(View.VISIBLE);
-                break;
-        }
-    }
 }

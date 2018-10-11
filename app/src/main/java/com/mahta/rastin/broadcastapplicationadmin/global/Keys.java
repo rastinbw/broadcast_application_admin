@@ -4,9 +4,12 @@ public class Keys {
 
     //Inner Keys
     public static final String KEY_EXTRA_FLAG = "extra_flag";
+    public static final String KEY_FRAGMENT_TAG = "extra_flag";
     public static final String POST_LIST_TAG = "post_list_tag";
     public static final String PROGRAM_LIST_TAG = "program_list_tag";
+    public static final String KEY_UPDATE = "update_flag";
     public static final int LOGIN_OK = 1001;
+
 
     //Server Result Codes
     public static final int RESULT_SUCCESS = 1000;
@@ -42,4 +45,6 @@ public class Keys {
     public static final String KEY_NEW_PASSWORD = "new_password";
     public static final String KEY_GRADE = "grade";
     public static final String KEY_GROUP_ID = "group_id";
+    public static final String KEY_FIELD_ID = "field_id";
+    public static final String KEY_GENDER = "gender";
 }

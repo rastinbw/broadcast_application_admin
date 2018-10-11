@@ -1,55 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/shape_dialog"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <RelativeLayout
-        android:background="@drawable/shape_header_dialog"
         android:layout_width="match_parent"
-        android:layout_height="35dp">
+        android:layout_height="35dp"
+        android:background="@drawable/shape_header_dialog">
 
         <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
-            android:layout_centerInParent="true"
+            android:id="@+id/txtDialogTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fontTextView="shabnam_bold.ttf"
+            android:layout_centerInParent="true"
+            android:text="@string/choose_grade"
             android:textColor="#ffffff"
             android:textSize="14sp"
-            android:text="@string/choose_group"/>
+            app:fontTextView="shabnam_bold.ttf"/>
 
     </RelativeLayout>
 
     <android.support.v7.widget.CardView
-        android:orientation="vertical"
         android:layout_width="300dp"
-        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_marginTop="8dp"
+        android:orientation="vertical"
         app:cardCornerRadius="6dp">
 
         <RelativeLayout
+            android:id="@+id/lytNoFilter"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/colorPrimary"
             android:clickable="true"
             android:focusable="true"
-            android:background="@color/colorPrimary"
-            android:id="@+id/btnAllGroups"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="35dp">
+            android:orientation="horizontal">
 
             <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
-                android:id="@+id/txtBack"
-                android:textSize="13sp"
-                android:textColor="#ffffff"
+                android:id="@+id/txtAllFilters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:text="@string/all_groups"
                 android:layout_centerInParent="true"
+                android:maxLines="1"
+                android:text="@string/all_grades"
+                android:textColor="#ffffff"
+                android:textSize="13sp"
                 app:fontTextView="shabnam_bold.ttf"/>
 
         </RelativeLayout>
@@ -59,9 +60,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rcvGroups"
         android:layout_width="300dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
-        android:layout_height="match_parent">
+        android:layout_marginBottom="8dp">
     </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

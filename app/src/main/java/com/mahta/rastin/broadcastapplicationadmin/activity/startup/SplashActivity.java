@@ -17,6 +17,7 @@ import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
+import com.mahta.rastin.broadcastapplicationadmin.model.Field;
 import com.mahta.rastin.broadcastapplicationadmin.model.Group;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -85,8 +86,6 @@ public class SplashActivity extends AppCompatActivity {
                 @Override
                 public void onResult(String result) {
 
-                    serverResponsed = true;
-
                     if (JSONParser.getResultCodeFromJson(result) == Keys.RESULT_SUCCESS) {
 
                         G.i("Token is currect");
@@ -106,12 +105,33 @@ public class SplashActivity extends AppCompatActivity {
                                         G.i(group.getTitle());
                                     }
                                 }
+                            }
+                        }).execute();
+
+                        //getting field list
+                        new HttpCommand(HttpCommand.COMMAND_GET_FIELD_LIST, contentValues).setOnResultListener(new OnResultListener() {
+                            @Override
+                            public void onResult(String result) {
+
+                                serverResponsed = true;
+
+                                RealmController.getInstance().clearAllFields();
+                                List<Field> list = JSONParser.parseFields(result);
+
+                                if (list != null) {
+                                    for (Field field : list) {
+                                        RealmController.getInstance().addField(field);
+                                        G.i(field.getTitle());
+                                    }
+                                }
                                 startIntent(intent);
                             }
                         }).execute();
 
                     } else {
                         G.i("Token is incorrect");
+
+                        serverResponsed = true;
 
                         intent = new Intent(SplashActivity.this, LoginActivity.class);
                         startIntent(intent);

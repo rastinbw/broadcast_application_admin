@@ -24,7 +24,7 @@ import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.adapter.ProgramAdapter;
 import com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
-import com.mahta.rastin.broadcastapplicationadmin.dialog.GroupListDialog;
+import com.mahta.rastin.broadcastapplicationadmin.dialog.FilterDialog;
 import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
@@ -46,12 +46,14 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
     public SwipeRefreshLayout swipeRefreshLayout;
     private FloatingActionButton btnNewProgram;
     private EndlessRecyclerViewScrollListener scrollListener;
-    private TextViewPlus txtGroups;
+    private TextViewPlus txtGroupTitle;
+    private TextViewPlus txtFieldTitle;
     private ProgramAdapter adapter;
     private TextView txtNoPrograms;
     public SearchView searchView;
     private String searchPhrase = "null";
     private String mGroupId = "null";
+    private String mFieldId = "null";
     private boolean isLoaded;
     private LinearLayout lnlLoading;
     private LinearLayout lnlNoNetwork;
@@ -72,22 +74,55 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
 
         RecyclerView rcvPrograms = findViewById(R.id.rcvPrograms);
 
-        findViewById(R.id.lnlGroup).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.lnlGradeFilter).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                GroupListDialog dialog = new GroupListDialog(ProgramListActivity.this);
+                FilterDialog dialog = new FilterDialog(ProgramListActivity.this, Constant.TYPE_GROUP);
 
                 dialog.setOnDismissListener(new OnDismissListener() {
                     @Override
-                    public void onDismiss(String groupId, String groupTitle) {
+                    public void onDismiss(String filterId, String filterTitle) {
 
-                        mGroupId = groupId;
-                        txtGroups.setText(groupTitle);
-                        G.i(groupId);
+                        // if any filter is chosen
+                        if (!filterTitle.isEmpty()) {
+                            txtGroupTitle.setText(filterTitle);
 
-                        reset();
-                        loadPrograms(Constant.PROGRAM_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId);
+                            mGroupId = filterId;
+                            G.i(filterId);
+
+                            reset();
+                            loadPrograms(Constant.PROGRAM_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId, mFieldId);
+                        }
+
+                    }
+                });
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        findViewById(R.id.lnlFieldFilter).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FilterDialog dialog = new FilterDialog(ProgramListActivity.this, Constant.TYPE_FIELD);
+
+                dialog.setOnDismissListener(new OnDismissListener() {
+                    @Override
+                    public void onDismiss(String filterId, String filterTitle) {
+
+                        // if any filter is chosen
+                        if (!filterTitle.isEmpty()) {
+                            txtFieldTitle.setText(filterTitle);
+
+                            mFieldId = filterId;
+                            G.i(filterId);
+
+                            reset();
+                            loadPrograms(Constant.PROGRAM_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId, mFieldId);
+                        }
+
                     }
                 });
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -100,7 +135,7 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(ProgramListActivity.this, NewProgramActivity.class);
+                Intent intent = new Intent(ProgramListActivity.this, ProgramActivity.class);
                 startActivity(intent);
             }
         });
@@ -118,11 +153,12 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
             @Override
             public void onClick(View v) {
                 G.i("pressed");
-                loadPrograms(Constant.PROGRAM_REQUEST_COUNT,0,0, searchPhrase, mGroupId);
+                loadPrograms(Constant.PROGRAM_REQUEST_COUNT,0,0, searchPhrase, mGroupId, mFieldId);
             }
         });
 
-        txtGroups = findViewById(R.id.txtGroup);
+        txtGroupTitle = findViewById(R.id.txtGroup);
+        txtFieldTitle = findViewById(R.id.txtField);
         txtNoPrograms = findViewById(R.id.txtNoProgram);
         lnlLoading = findViewById(R.id.lnlLoading);
         lnlNoNetwork = findViewById(R.id.lnlNoNetwork);
@@ -160,7 +196,7 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
                 G.i("passed threshold p: " + page + " activity: " + totalItemsCount);
 
                 if (!noMoreProgram){
-                    loadPrograms(Constant.PROGRAM_REQUEST_COUNT,totalItemsCount,page, searchPhrase, mGroupId);
+                    loadPrograms(Constant.PROGRAM_REQUEST_COUNT,totalItemsCount,page, searchPhrase, mGroupId, mFieldId);
                 }else
                     noMoreProgram = false;
             }
@@ -185,7 +221,7 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
         super.onResume();
 
         reset();
-        loadPrograms(Constant.PROGRAM_REQUEST_COUNT,0,0, searchPhrase, mGroupId);
+        loadPrograms(Constant.PROGRAM_REQUEST_COUNT,0,0, searchPhrase, mGroupId, mFieldId);
     }
 
     @Override
@@ -245,7 +281,7 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
                 if (searchView.getQuery().length() == 0) {
                     reset();
                     searchPhrase = "null";
-                    loadPrograms(Constant.PROGRAM_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId);
+                    loadPrograms(Constant.PROGRAM_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId, mFieldId);
                 }
                 return false;
             }
@@ -254,7 +290,7 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
 
                 reset();
                 searchPhrase = query;
-                loadPrograms(Constant.PROGRAM_REQUEST_COUNT, 0, 0, query, mGroupId);
+                loadPrograms(Constant.PROGRAM_REQUEST_COUNT, 0, 0, query, mGroupId, mFieldId);
 //                //Make it visible
 //                prgWait.setVisibility(View.VISIBLE);
             }
@@ -263,7 +299,7 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
 
     }
 
-    private void loadPrograms(final int count, final int start, final int page, String searchPhrase, String groupId){
+    private void loadPrograms(final int count, final int start, final int page, String searchPhrase, String groupId, String fieldId){
         isLoading = true;
 
         if (isFirstLoad){
@@ -287,7 +323,7 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
         ContentValues contentValues = new ContentValues();
         contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
 
-        new HttpCommand(HttpCommand.COMMAND_GET_POSTS, contentValues,Constant.TYPE_PROGRAM, count + "" , page + "" , searchPhrase, groupId)
+        new HttpCommand(HttpCommand.COMMAND_GET_POSTS, contentValues,Constant.TYPE_PROGRAM, count + "" , page + "" , searchPhrase, groupId , fieldId)
                 .setOnResultListener(new OnResultListener() {
                     @Override
                     public void onResult(String result) {
@@ -306,7 +342,6 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
                             if (programs != null) {
 
                                 for (Program program : programs) {
-                                    G.i(program.getId() + "");
                                     RealmController.getInstance().addProgram(program);
                                 }
                                 adapter.notifyItemRangeInserted(start - 1, programs.size());
@@ -372,7 +407,7 @@ public class ProgramListActivity extends AppCompatActivity implements SwipeRefre
     public void onRefresh() {
         if (!isLoading){
             reset();
-            loadPrograms(Constant.POST_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId);
+            loadPrograms(Constant.POST_REQUEST_COUNT, 0, 0, searchPhrase, mGroupId, mFieldId);
         }
     }
 

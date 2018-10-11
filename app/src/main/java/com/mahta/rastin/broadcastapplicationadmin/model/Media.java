@@ -6,8 +6,7 @@ import android.os.Parcelable;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Media extends RealmObject implements Parcelable {
-
+public class Media extends RealmObject implements Parcelable{
     @PrimaryKey
     private int id;
 
@@ -21,19 +20,20 @@ public class Media extends RealmObject implements Parcelable {
 
     public Media(){}
 
-    private Media (Parcel parcel) {
 
-        id = parcel.readInt();
-        title = parcel.readString();
-        description = parcel.readString();
-        path  = parcel.readString();
-        date = parcel.readString();
+    //parcelable part***********************************************************************
+    protected Media(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        description = in.readString();
+        path = in.readString();
+        date = in.readString();
     }
 
-    public static final Creator<Media> CREATOR = new Creator<Media>() {
+    public static final Parcelable.Creator<Media> CREATOR = new Parcelable.Creator<Media>() {
         @Override
-        public Media createFromParcel(Parcel parcel) {
-            return new Media(parcel);
+        public Media createFromParcel(Parcel in) {
+            return new Media(in);
         }
 
         @Override
@@ -49,13 +49,14 @@ public class Media extends RealmObject implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
         dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(description);
         dest.writeString(path);
         dest.writeString(date);
     }
+    //parcelable part***********************************************************************
+
 
     public int getId() {
         return id;
@@ -96,6 +97,4 @@ public class Media extends RealmObject implements Parcelable {
     public void setDescription(String description) {
         this.description = description;
     }
-
-
 }

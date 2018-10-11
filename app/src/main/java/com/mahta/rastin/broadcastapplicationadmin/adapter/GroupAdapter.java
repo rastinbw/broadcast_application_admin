@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnItemClickListener;
+import com.mahta.rastin.broadcastapplicationadmin.model.Field;
 import com.mahta.rastin.broadcastapplicationadmin.model.Group;
 
 import java.util.List;
@@ -18,30 +19,32 @@ import java.util.List;
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.CustomViewHolder> {
 
     private LayoutInflater inflater;
-    private List<Group> data;
+    private List<Group> groupList;
     private OnItemClickListener onItemClickListener;
 
-    public GroupAdapter(Context context, List<Group> data) {
+    public GroupAdapter(Context context, List<Group> groupList) {
         inflater = LayoutInflater.from(context);
-        this.data = data;
+
+            this.groupList = groupList;
     }
 
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = inflater.inflate(R.layout.layout_group_adapter_item,parent,false);
+        View view = inflater.inflate(R.layout.layout_filter_adapter_item,parent,false);
         return new CustomViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
-        final Group current = data.get(position); //This is nice
+
+        final Group current = groupList.get(position);
         holder.txtTitle.setText(current.getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return groupList.size();
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

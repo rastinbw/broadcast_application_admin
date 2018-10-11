@@ -1,10 +1,13 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.media;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
 
@@ -32,55 +35,92 @@ public class NewMediaActivity extends AppCompatActivity implements View.OnClickL
     private TextViewPlus txtFile;
     private File file;
     private LinearLayout loadingLayout;
+
+    private LinearLayout bottomSheetLinearLayout;
+    private BottomSheetBehavior bottomSheetBehavior;
+
+    private String path;
     boolean serverResponsed = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_media_new_edit);
+        setContentView(R.layout.layout_insert_media);
 
         findViewById(R.id.imgBack).setOnClickListener(this);
         findViewById(R.id.txtApply).setOnClickListener(this);
         findViewById(R.id.txtBack).setOnClickListener(this);
-
 
         txtFile = findViewById(R.id.txt_file);
         edtTitle = findViewById(R.id.edt_title);
         edtDesc = findViewById(R.id.edt_desc);
         loadingLayout = findViewById(R.id.layout_loading);
 
+
+        edtTitle.setOnClickListener(this);
+        edtDesc.setOnClickListener(this);
+
+        findViewById(R.id.lay_inStorage).setOnClickListener(this);
+        findViewById(R.id.lay_sdStorage).setOnClickListener(this);
+
+        bottomSheetLinearLayout = findViewById(R.id.bottomsheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLinearLayout);
+
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+
         txtFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                DialogProperties properties = new DialogProperties();
+                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
 
-                properties.selection_mode = DialogConfigs.SINGLE_MODE;
-                properties.selection_type = DialogConfigs.FILE_SELECT;
-                properties.root = new File(DialogConfigs.DEFAULT_DIR);
-                properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
-                properties.offset = new File(DialogConfigs.DEFAULT_DIR);
-                //user "/" in order to browse all files
+                } else if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
-                properties.extensions = null;
+                } else {
+                    // hiding keyboard
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(edtDesc.getWindowToken(), 0);
 
-                FilePickerDialog dialog = new FilePickerDialog(NewMediaActivity.this, properties);
-
-                dialog.setTitle("Select a File");
-
-                dialog.setDialogSelectionListener(new DialogSelectionListener() {
-                    @Override
-                    public void onSelectedFilePaths(String[] files) {
-
-                        HandleSelectedFile(files);
-                    }
-                });
-
-                dialog.show();
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
             }
-    });
+        });
     }
+
+    private void showFileChooser() {
+
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        DialogProperties properties = new DialogProperties();
+
+        properties.selection_mode = DialogConfigs.SINGLE_MODE;
+        properties.selection_type = DialogConfigs.FILE_SELECT;
+        properties.root = new File(path);
+        properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
+        properties.offset = new File(DialogConfigs.DEFAULT_DIR);
+        //user "/" in order to browse all files
+
+        properties.extensions = null;
+
+        FilePickerDialog dialog = new FilePickerDialog(NewMediaActivity.this, properties);
+
+        dialog.setTitle("Select a File");
+
+        dialog.setDialogSelectionListener(new DialogSelectionListener() {
+            @Override
+            public void onSelectedFilePaths(String[] files) {
+
+                HandleSelectedFile(files);
+            }
+        });
+
+        dialog.show();
+    }
+
 
     private void HandleSelectedFile(String[] files) {
 
@@ -100,11 +140,20 @@ public class NewMediaActivity extends AppCompatActivity implements View.OnClickL
         } else {
 
             file = selectedFile;
-
             txtFile.setText(file.getName());
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+        if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     @Override
     public void onClick(View v) {
@@ -150,9 +199,6 @@ public class NewMediaActivity extends AppCompatActivity implements View.OnClickL
 
 //            new UploadHelper(NewMediaActivity.this, file, contentValues);
 
-
-
-
             new HttpCommand(HttpCommand.COMMAND_CREATE_MEDIA, file, contentValues).setOnResultListener(new OnResultListener() {
                 @Override
                 public void onResult(String result) {
@@ -171,6 +217,20 @@ public class NewMediaActivity extends AppCompatActivity implements View.OnClickL
                 }
             }).execute();
 
+        } else if (id == R.id.lay_inStorage) {
+
+            path = DialogConfigs.DEFAULT_DIR;
+            showFileChooser();
+
+        } else if (id == R.id.lay_sdStorage) {
+
+            path = "/sdcard1";
+            showFileChooser();
+
+        } else if (id == R.id.edt_title || id == R.id.edt_desc) {
+
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
     }
+
 }

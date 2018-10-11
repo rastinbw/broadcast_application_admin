@@ -6,29 +6,32 @@ import android.os.Parcelable;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Message extends RealmObject implements Parcelable{
-
+public class Message extends RealmObject implements Parcelable {
     @PrimaryKey
     private int id;
+
+    private int group_id;
+
+    private int field_id;
+
+    private int gender;
 
     private String title;
 
     private String content;
 
-    private String date;
+    private String Date;
 
-    private int group_id;
-
-    public Message(){}
+    public Message()    {}
 
     //parcelable part***********************************************************************
     protected Message(Parcel in) {
-
         id = in.readInt();
         title = in.readString();
         content = in.readString();
-        date = in.readString();
+        field_id = in.readInt();
         group_id = in.readInt();
+        gender = in.readInt();
     }
 
     public static final Parcelable.Creator<Message> CREATOR = new Parcelable.Creator<Message>() {
@@ -50,12 +53,12 @@ public class Message extends RealmObject implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
         dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(content);
-        dest.writeString(date);
+        dest.writeInt(field_id);
         dest.writeInt(group_id);
+        dest.writeInt(gender);
     }
     //parcelable part***********************************************************************
 
@@ -84,11 +87,11 @@ public class Message extends RealmObject implements Parcelable{
     }
 
     public String getDate() {
-        return date;
+        return Date;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.Date = date;
     }
 
     public int getGroup_id() {
@@ -97,5 +100,21 @@ public class Message extends RealmObject implements Parcelable{
 
     public void setGroup_id(int group_id) {
         this.group_id = group_id;
+    }
+
+    public int getField_id() {
+        return field_id;
+    }
+
+    public void setField_id(int field_id) {
+        this.field_id = field_id;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
     }
 }

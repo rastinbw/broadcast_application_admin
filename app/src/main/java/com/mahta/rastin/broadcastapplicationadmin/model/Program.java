@@ -7,7 +7,6 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class Program extends RealmObject implements Parcelable{
-
     @PrimaryKey
     private int id;
 
@@ -23,11 +22,13 @@ public class Program extends RealmObject implements Parcelable{
     
     private int group_id;
 
+    private int field_id;
+
+
     public Program(){}
 
     //parcelable part***********************************************************************
     protected Program(Parcel in) {
-
         id = in.readInt();
         title = in.readString();
         content = in.readString();
@@ -35,9 +36,10 @@ public class Program extends RealmObject implements Parcelable{
         date = in.readString();
         category = in.readString();
         group_id = in.readInt();
+        field_id = in.readInt();
     }
 
-    public static final Parcelable.Creator<Program> CREATOR = new Parcelable.Creator<Program>() {
+    public static final Creator<Program> CREATOR = new Creator<Program>() {
         @Override
         public Program createFromParcel(Parcel in) {
             return new Program(in);
@@ -56,7 +58,6 @@ public class Program extends RealmObject implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
         dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(content);
@@ -64,6 +65,7 @@ public class Program extends RealmObject implements Parcelable{
         dest.writeString(date);
         dest.writeString(category);
         dest.writeInt(group_id);
+        dest.writeInt(field_id);
     }
     //parcelable part***********************************************************************
 
@@ -123,4 +125,13 @@ public class Program extends RealmObject implements Parcelable{
     public void setGroup_id(int group_id) {
         this.group_id = group_id;
     }
+
+    public int getField_id() {
+        return field_id;
+    }
+
+    public void setField_id(int field_id) {
+        this.field_id = field_id;
+    }
+
 }

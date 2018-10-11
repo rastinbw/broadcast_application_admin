@@ -1,20 +1,15 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.program;
 
 import android.content.ContentValues;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
-import com.mahta.rastin.broadcastapplicationadmin.activity.post.NewPostActivity;
 import com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
 import com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus;
@@ -93,7 +88,7 @@ public class NewProgramActivity extends AppCompatActivity implements View.OnClic
             groups[i] = groupList.get(i).getTitle();
         }
 
-        adapter = new ArrayAdapter<>(this, R.layout.layout_group_spinner_item, groups);
+        adapter = new ArrayAdapter<>(this, R.layout.layout_spinner_item, groups);
 
         spinner.setAdapter(adapter);
 

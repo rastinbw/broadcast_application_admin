@@ -2,7 +2,6 @@ package com.mahta.rastin.broadcastapplicationadmin.activity.program;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,9 +11,6 @@ import android.widget.Spinner;
 
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus;
-import com.mahta.rastin.broadcastapplicationadmin.dialog.ColorDialog;
-import com.mahta.rastin.broadcastapplicationadmin.dialog.UrlDialog;
-import com.mahta.rastin.broadcastapplicationadmin.editor.RichEditor;
 import com.mahta.rastin.broadcastapplicationadmin.global.Constant;
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
@@ -22,9 +18,7 @@ import com.mahta.rastin.broadcastapplicationadmin.helper.HttpCommand;
 import com.mahta.rastin.broadcastapplicationadmin.helper.JSONParser;
 import com.mahta.rastin.broadcastapplicationadmin.helper.RealmController;
 import com.mahta.rastin.broadcastapplicationadmin.helper.Utils;
-import com.mahta.rastin.broadcastapplicationadmin.interfaces.ColorDialogListener;
 import com.mahta.rastin.broadcastapplicationadmin.interfaces.OnResultListener;
-import com.mahta.rastin.broadcastapplicationadmin.interfaces.UrlDialogListener;
 import com.mahta.rastin.broadcastapplicationadmin.model.Group;
 import com.mahta.rastin.broadcastapplicationadmin.model.Program;
 
@@ -34,7 +28,6 @@ public class EditProgramActivity extends AppCompatActivity implements View.OnCli
 
     private Program currentProgram;
     private EditTextPlus edttitle, edtPreview;
-    private RichEditor mEditor;
     private List<Group> groupList;
     private Spinner spinner;
     private ArrayAdapter adapter;
@@ -44,110 +37,11 @@ public class EditProgramActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_program_edit);
+        setContentView(R.layout.layout_insert_program);
 
         currentProgram = getIntent().getParcelableExtra(Keys.KEY_EXTRA_FLAG);
 
         initViews();
-
-
-        mEditor = findViewById(R.id.rich_editor);
-
-        //this is needed to request focus when clicked on bottom of editor
-        mEditor.setEditorHeight(200);
-
-        mEditor.setEditorFontSize(17);
-        mEditor.setEditorFontColor(Color.BLACK);
-
-        mEditor.setPadding(10, 10, 10, 10);
-
-        mEditor.setPlaceholder("متن");
-
-        // to adjust text direction
-        String html = "<div>" + currentProgram.getContent() + "<br/>" + "</div>";
-
-        mEditor.setHtml(currentProgram.getContent());
-
-
-        mEditor.getSettings().setLoadWithOverviewMode(true);
-        mEditor.getSettings().setBuiltInZoomControls(true);
-        mEditor.getSettings().setDisplayZoomControls(false);
-
-
-        mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
-            @Override public void onTextChange(String text) {
-
-            }
-        });
-
-        findViewById(R.id.action_bold).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setBold();
-            }
-        });
-
-        findViewById(R.id.action_italic).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setItalic();
-            }
-        });
-
-        findViewById(R.id.action_underline).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setUnderline();
-            }
-        });
-
-        findViewById(R.id.action_txt_color).setOnClickListener(new View.OnClickListener() {
-
-            @Override public void onClick(View v) {
-
-                ColorDialog colorDialog = new ColorDialog(EditProgramActivity.this);
-                colorDialog.setOnSelectColorListener(new ColorDialogListener() {
-                    @Override
-                    public void onSelectColor(int color) {
-
-                        mEditor.setTextColor(color);
-
-                    }
-                });
-                colorDialog.show();
-            }
-        });
-
-        findViewById(R.id.action_align_center).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setAlignCenter();
-            }
-        });
-
-        findViewById(R.id.action_align_right).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setAlignRight();
-            }
-        });
-
-        findViewById(R.id.action_insert_bullets).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.setBullets();
-            }
-        });
-
-        findViewById(R.id.action_insert_link).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-
-                UrlDialog urlDialog = new UrlDialog(EditProgramActivity.this);
-
-                urlDialog.setOnInsertDialogListener(new UrlDialogListener() {
-                    @Override
-                    public void onInsertUrl(String title, String url) {
-
-                        mEditor.insertLink(url, title);
-                    }
-                });
-                urlDialog.show();
-            }
-        });
     }
 
     private void initViews() {
@@ -174,7 +68,7 @@ public class EditProgramActivity extends AppCompatActivity implements View.OnCli
         }
 
 
-        adapter = new ArrayAdapter<>(this, R.layout.layout_group_spinner_item, groups);
+        adapter = new ArrayAdapter<>(this, R.layout.layout_spinner_item, groups);
 
         spinner.setAdapter(adapter);
 
@@ -201,7 +95,7 @@ public class EditProgramActivity extends AppCompatActivity implements View.OnCli
 
             final String title = edttitle.getText().toString();
             final String preview = edtPreview.getText().toString();
-            final String content = mEditor.getHtml();
+            final String content = "";
 
             if (title.isEmpty() || preview.isEmpty() || content.isEmpty()) {
 

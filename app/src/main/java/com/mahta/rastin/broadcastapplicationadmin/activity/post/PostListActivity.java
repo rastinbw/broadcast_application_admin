@@ -69,7 +69,7 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
         findViewById(R.id.btnNewPost).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PostListActivity.this, NewPostActivity.class);
+                Intent intent = new Intent(PostListActivity.this, PostActivity.class);
                 startActivity(intent);
             }
         });
@@ -250,7 +250,7 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
         ContentValues contentValues = new ContentValues();
         contentValues.put(Keys.KEY_TOKEN, RealmController.getInstance().getUserToken().getToken());
 
-        new HttpCommand(HttpCommand.COMMAND_GET_POSTS, contentValues,Constant.TYPE_HTML, count + "", page + "", searchPhrase, "null")
+        new HttpCommand(HttpCommand.COMMAND_GET_POSTS, contentValues,Constant.TYPE_HTML, count + "", page + "", searchPhrase, "null", "null")
                 .setOnResultListener(new OnResultListener() {
                     @Override
                     public void onResult(String result) {
@@ -269,7 +269,6 @@ public class PostListActivity extends AppCompatActivity implements SwipeRefreshL
                             if (posts != null) {
 
                                 for (Post post : posts) {
-                                    G.i(post.getId() + "");
                                     RealmController.getInstance().addPost(post);
                                 }
                                 adapter.notifyItemRangeInserted(start - 1, posts.size());

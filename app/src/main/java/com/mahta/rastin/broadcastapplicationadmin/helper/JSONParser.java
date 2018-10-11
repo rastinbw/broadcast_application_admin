@@ -2,6 +2,7 @@ package com.mahta.rastin.broadcastapplicationadmin.helper;
 
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
+import com.mahta.rastin.broadcastapplicationadmin.model.Field;
 import com.mahta.rastin.broadcastapplicationadmin.model.Group;
 import com.mahta.rastin.broadcastapplicationadmin.model.Media;
 import com.mahta.rastin.broadcastapplicationadmin.model.Message;
@@ -91,6 +92,37 @@ public class JSONParser {
         }
     }
 
+    public static List<Field> parseFields(String content){
+
+        try {
+            JSONObject obj = new JSONObject(content);
+            JSONArray data = obj.getJSONArray(Keys.KEY_DATA);
+
+            if (data.length() > 0){
+                List<Field> fieldList = new ArrayList<>();
+
+                for (int i = 0; i < data.length(); i++) {
+
+                    if (!data.isNull(i)){
+                        JSONObject jgroup = data.getJSONObject(i);
+                        Field field = new Field();
+
+                        field.setId(jgroup.getInt(Keys.KEY_ID));
+                        field.setTitle(jgroup.getString(Keys.KEY_TITLE));
+                        fieldList.add(field);
+                    }
+                }
+                return fieldList;
+            }else
+                return null;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            G.e("9: " + e.getMessage());
+            return null;
+        }
+    }
+
 
     public static List<Post> parsePosts(String content){
 
@@ -150,7 +182,13 @@ public class JSONParser {
                         program.setContent(jprogram.getString(Keys.KEY_CONTENT));
                         program.setPreview(jprogram.getString(Keys.KEY_PREVIEW));
                         program.setDate(jprogram.getString(Keys.KEY_DATE_UPDATED));
-                        program.setGroup_id(jprogram.getInt(Keys.KEY_GROUP_ID));
+
+                        if (!jprogram.isNull(Keys.KEY_GROUP_ID))
+                            program.setGroup_id(jprogram.getInt(Keys.KEY_GROUP_ID));
+
+                        if (!jprogram.isNull(Keys.KEY_FIELD_ID))
+                            program.setField_id(jprogram.getInt(Keys.KEY_FIELD_ID));
+
                         programList.add(program);
                     }
                 }
@@ -185,6 +223,8 @@ public class JSONParser {
                         message.setContent(jprogram.getString(Keys.KEY_CONTENT));
                         message.setDate(jprogram.getString(Keys.KEY_DATE_UPDATED));
                         message.setGroup_id(jprogram.getInt(Keys.KEY_GROUP_ID));
+                        message.setField_id(jprogram.getInt(Keys.KEY_FIELD_ID));
+                        message.setGender(jprogram.getInt(Keys.KEY_GENDER));
                         messageList.add(message);
                     }
                 }

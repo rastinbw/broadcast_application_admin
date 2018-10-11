@@ -3,6 +3,7 @@ package com.mahta.rastin.broadcastapplicationadmin.helper;
 
 import com.mahta.rastin.broadcastapplicationadmin.global.G;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
+import com.mahta.rastin.broadcastapplicationadmin.model.Field;
 import com.mahta.rastin.broadcastapplicationadmin.model.Group;
 import com.mahta.rastin.broadcastapplicationadmin.model.Media;
 import com.mahta.rastin.broadcastapplicationadmin.model.Message;
@@ -244,6 +245,43 @@ public class RealmController {
     public void addMessage(Message message){
         realm.beginTransaction();
         realm.copyToRealm(message);
+        realm.commitTransaction();
+    }
+
+    /***********************************************************************************************
+     * This Section Will Handle CRUD operation on Group Model
+     **********************************************************************************************/
+    //find all objects in the Group.class
+    public List<Field> getFieldList() {
+        return realm.where(Field.class).findAll();
+    }
+
+    //returns group title
+    public String getFieldTitle(int fieldId) {
+
+        Field field = realm.where(Field.class).equalTo("id", fieldId).findFirst();
+        return field.getTitle();
+    }
+
+    //check if Group.class is empty
+    public boolean hasField() {
+        return !realm.where(Field.class).findAll().isEmpty();
+    }
+
+    //add a Group to Realm
+    public void addField(Field field){
+        realm.beginTransaction();
+        realm.copyToRealm(field);
+        realm.commitTransaction();
+    }
+
+    //remove UserToken from realm
+    public void clearAllFields() {
+
+        realm.beginTransaction();
+        RealmResults<Field> result = realm.where(Field.class).findAll();
+
+        result.deleteAllFromRealm();
         realm.commitTransaction();
     }
 

@@ -85,10 +85,17 @@
     <string name="there_is_no_program">برنامه کلاسی وجود ندارد</string>
     <string name="there_is_no_message">پیامی وجود ندارد</string>
     <string name="favorite_programs">برنامه های کلاسی مورد علاقه</string>
-    <string name="all_groups">همه گروه ها</string>
-    <string name="choose_group">انتخاب گروه آموزشی</string>
+    <string name="all_grades">همه پایه ها</string>
+    <string name="all_fields">همه رشته ها</string>
+    <string name="choose_grade">انتخاب پایه تحصیلی</string>
+    <string name="choose_field">انتخاب رشته تحصیلی</string>
     <string name="rules">قوانین</string>
     <string name="new_program">برنامه کلاسی جدید</string>
+    <string name="next">بعدی</string>
+
+    <string name="choose_file_from">انتخاب فایل از</string>
+    <string name="internal_storage">حافظه داخلی</string>
+    <string name="memory_card">کارت حافظه</string>
 
     <string name="click_twice">برای خروج دوباره کلیک کنید</string>
 

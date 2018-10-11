@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomsheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:layoutDirection="rtl"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="?android:attr/actionBarSize"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
+    >
+
+    <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:gravity="center_vertical"
+        android:text="@string/choose_file_from"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        app:fontTextView="shabnam_bold.ttf"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/white"
+        />
+
+    <LinearLayout
+        android:id="@+id/lay_inStorage"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:src="@drawable/ic_internal_storage"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="@string/internal_storage"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:fontTextView="shabnam.ttf"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lay_sdStorage"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:src="@drawable/ic_sd_storage"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="@string/memory_card"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:fontTextView="shabnam.ttf"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

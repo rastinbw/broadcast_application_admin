@@ -64,7 +64,6 @@ public class MessageAdapter extends RealmRecyclerViewAdapter<Message,MessageAdap
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
     @Override
