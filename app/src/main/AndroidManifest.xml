@@ -35,9 +35,6 @@
             android:name=".activity.post.PostListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.media.NewMediaActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activity.program.ProgramListActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -54,9 +51,6 @@
             android:name=".activity.program.NewProgramActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".activity.media.EditMediaActivity"
-            android:screenOrientation="portrait" />
         <activity android:name=".activity.post.PostContentActivity" />
         <activity android:name=".activity.program.ProgramContentActivity" />
         <activity
