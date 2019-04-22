@@ -26,9 +26,9 @@ public class G extends Application {
     public static AppCompatActivity currentActivity;
     public static final String TAG = "mahta";
 
-//    public static final String DOMAIN = "http://192.168.8.102/broadcast_application_server-master/public";
-    public static final String DOMAIN = "http://192.168.1.3/broadcast_app_server/public";
-//    public static final String DOMAIN = "https://schoolbroadcastpanel.ir";
+//    public static final String DOMAIN = "http://127.0.0.1/broadcast_app_server/public";
+//    public static final String DOMAIN = "http://192.168.1.5/broadcast_app_server/public";
+    public static final String DOMAIN = "https://schoolbroadcastpanel.ir";
     public static final String ABOUT_US_URL = DOMAIN + "/about_us";
 
     public static final String RULES_URL = DOMAIN + "/rules";

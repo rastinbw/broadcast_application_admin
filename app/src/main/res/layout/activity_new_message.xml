@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.post.InsertPostFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/container_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/layout_simple_toolbar_2" />
+
+        </LinearLayout>
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+            android:id="@+id/edt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:maxLines="1"
+            android:inputType="text"
+            android:maxLength="50"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/shape_rounded_edit_text"
+            android:drawableLeft="@drawable/ic_label"
+            android:drawableStart="@drawable/ic_label"
+            android:hint=" عنوان"
+            android:layoutDirection="rtl"
+            android:padding="10dp"
+            android:textColorHint="@android:color/white"
+            android:textSize="16sp"
+            app:fontEditText="shabnam.ttf"
+            />
+
+        <LinearLayout
+            android:id="@+id/layout_grade"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/shape_rounded_edit_text"
+            android:layoutDirection="rtl"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layoutDirection="rtl"
+                android:text="پایه"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="14sp"
+                app:fontTextView="shabnam.ttf"/>
+
+            <Spinner
+                android:id="@+id/spinner_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_field"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="30dp"
+            android:background="@drawable/shape_rounded_edit_text"
+            android:layoutDirection="rtl"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            >
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layoutDirection="rtl"
+                android:text="رشته"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="14sp"
+                app:fontTextView="shabnam.ttf"/>
+
+            <Spinner
+                android:id="@+id/spinner_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="30dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus
+                android:id="@+id/btn_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_button_white"
+                android:padding="10dp"
+                android:text="پسر"
+                android:textSize="15sp"
+                app:fontButton="shabnam.ttf"/>
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.ButtonPlus
+                android:id="@+id/btn_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/shape_button_white"
+                android:padding="10dp"
+                android:text="دختر"
+                android:textSize="15sp"
+                app:fontButton="shabnam.ttf"/>
+
+        </LinearLayout>
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+            android:id="@+id/edt_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:maxLength="250"
+            android:background="@drawable/shape_rounded_edit_text"
+            android:hint=" متن"
+            android:inputType="textMultiLine"
+            android:layoutDirection="rtl"
+            android:lines="3"
+            android:padding="10dp"
+            android:textColorHint="@android:color/white"
+            android:textSize="14sp"
+            app:fontEditText="shabnam.ttf"
+            />
+
+    </LinearLayout>
+
+</ScrollView>

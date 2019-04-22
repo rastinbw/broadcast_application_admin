@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.media.MediaActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/container_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/layout_simple_toolbar_2" />
+
+        </LinearLayout>
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+            android:id="@+id/edt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:background="@drawable/shape_rounded_edit_text"
+            android:drawableLeft="@drawable/ic_label"
+            android:drawableStart="@drawable/ic_label"
+            android:hint=" عنوان"
+            android:inputType="text"
+            android:layoutDirection="rtl"
+            android:maxLength="50"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:textColorHint="@android:color/white"
+            android:textSize="16sp"
+            app:fontEditText="shabnam.ttf"
+            />
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.EditTextPlus
+            android:id="@+id/edt_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:maxLength="150"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/shape_rounded_edit_text"
+            android:hint=" توضیحات"
+            android:inputType="textMultiLine"
+            android:layoutDirection="rtl"
+            android:lines="2"
+            android:maxLines="2"
+            android:padding="10dp"
+            android:textColorHint="@android:color/white"
+            android:textSize="14sp"
+            app:fontEditText="shabnam.ttf"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:layoutDirection="rtl"
+            android:orientation="horizontal">
+
+
+            <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+                android:id="@+id/txt_file"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rounded_edit_text"
+                android:hint=" فایل انتخاب نشده است"
+                android:layoutDirection="rtl"
+                android:lines="1"
+                android:padding="10dp"
+                android:textColorHint="@android:color/white"
+                android:textSize="14sp"
+                app:fontTextView="shabnam.ttf" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:indicatorColor="@color/colorAccent"
+            app:indicatorName="LineScaleIndicator"
+            />
+
+        <com.mahta.rastin.broadcastapplicationadmin.custom.TextViewPlus
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="لطفا منتظر بمانید"
+            app:fontTextView="shabnam.ttf"
+            />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <include
+        layout="@layout/layout_media_bottomsheet"/>
+
+</android.support.design.widget.CoordinatorLayout>

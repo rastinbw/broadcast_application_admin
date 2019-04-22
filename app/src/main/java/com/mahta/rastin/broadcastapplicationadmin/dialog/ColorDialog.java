@@ -24,6 +24,8 @@ public class ColorDialog extends Dialog implements View.OnClickListener {
 
     public ColorDialog(@NonNull Activity activity) {
         super(activity);
+
+
         this.activity = activity;
     }
 

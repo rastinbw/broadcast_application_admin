@@ -1,6 +1,5 @@
 package com.mahta.rastin.broadcastapplicationadmin.activity.media;
 
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 import com.mahta.rastin.broadcastapplicationadmin.R;
 import com.mahta.rastin.broadcastapplicationadmin.global.Keys;
 import com.mahta.rastin.broadcastapplicationadmin.model.Media;
-import com.mahta.rastin.broadcastapplicationadmin.model.Message;
 
 public class MediaActivity extends AppCompatActivity {
 
